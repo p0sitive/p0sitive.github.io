@@ -9,7 +9,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-<link rel="shortcut icon" href="http://p0sitive.github.io//favicon.ico?v=1570967848044">
+<link rel="shortcut icon" href="http://p0sitive.github.io//favicon.ico?v=1572439474319">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
 <link rel="stylesheet" href="http://p0sitive.github.io//styles/main.css">
 
@@ -36,7 +36,7 @@
   <div class="top-container" data-aos="fade-right">
     <div class="top-header-container">
       <a class="site-title-container" href="http://p0sitive.github.io/">
-        <img src="http://p0sitive.github.io//images/avatar.png?v=1570967848044" class="site-logo">
+        <img src="http://p0sitive.github.io//images/avatar.png?v=1572439474319" class="site-logo">
         <h1 class="site-title">慕子河的博客</h1>
       </a>
       <div class="menu-btn" @click="menuVisible = !menuVisible">
@@ -99,6 +99,20 @@
             <h2 class="post-title">SVGA动画框架介绍</h2>
             <div class="post-date">2019-10-13</div>
             
+              <div class="tag-container">
+                
+                  <a href="http://p0sitive.github.io//tag/svga" class="tag">
+                    svga
+                  </a>
+                
+                  <a href="http://p0sitive.github.io//tag/android" class="tag">
+                    android
+                  </a>
+                
+              </div>
+            
+
+            
             <div class="post-content">
               <p>人都是视觉动物，一个App的动效做的炫酷，优雅，是很吸引用户使用的。</p>
 <!-- more -->
@@ -110,7 +124,6 @@
 <li>GIF动图实现</li>
 <li>Lottie，svga</li>
 <li>显示视频</li>
-<li></li>
 </ul>
 <p><strong>自定义View</strong>：需要自己实现动画的细节，开发效率和效果可能不够好。</p>
 <p><strong>APNG</strong>：一整个png的序列图。png是支持alpha通道的，因此显示效果和以png为主的帧动画一致。但android原生ImageView并不支持这种图片格式的显示，需要第三方库去支持。</p>
@@ -317,6 +330,10 @@ fun startAnimation(range: SVGARange?, reverse: Boolean = false) {
 <p>下面做一个svga和Lottie的对比</p>
 <p>以Lottie官方给出的点赞动效为例，我下载了最新版<code>Adobe After Effects 2019</code>，并且安装了svga和Lottie导出动画的插件<code>BodyMovin</code>和<code>SGVA Converter</code>。分别导出这个动效的json文件和svga文件</p>
 <p>并且放到一个简单页面中播放对比。两个文件都放置在asset文件夹中，播放页面中没有其他UI元素。</p>
+<h3 id="svga">svga</h3>
+<figure data-type="image" tabindex="5"><img src="https://i.loli.net/2019/10/30/IVepP9X1ahy4KbE.gif" alt="demo-svga.gif" width="288" height="594"></figure>
+<h3 id="lottie">Lottie</h3>
+<figure data-type="image" tabindex="6"><img src="https://i.loli.net/2019/10/30/aQziZbUlWJvH2t9.gif" alt="demo-lottie.gif" width="288" height="594"></figure>
 <table>
 <thead>
 <tr>
@@ -345,9 +362,9 @@ fun startAnimation(range: SVGARange?, reverse: Boolean = false) {
 </tbody>
 </table>
 <p>svga</p>
-<figure data-type="image" tabindex="5"><img src="https://i.loli.net/2019/10/12/ljSDzRAkHPwmBxb.png" alt="svga-gpu.png"></figure>
+<figure data-type="image" tabindex="7"><img src="https://i.loli.net/2019/10/12/ljSDzRAkHPwmBxb.png" alt="svga-gpu.png" width="288" height="594"></figure>
 <p>Lottie<br>
-<img src="https://i.loli.net/2019/10/12/HfCbBl6qLuYtTwX.png" alt="lottie-gpu.png"></p>
+<img src="https://i.loli.net/2019/10/12/HfCbBl6qLuYtTwX.png" alt="lottie-gpu.png" width="288" height="594"></p>
 <p>分析可知：<br>
 Lottie文件是导出的json文件，内部的元素明文显示。svga则是使用了<code>protocol buffers</code>+<code>zlib</code>方式做了压缩，文件体积比较小。在播放动效时，svga在导出时已经做了高阶差值计算，因此只用绘制图形即可，相较于Lottie绘制效率较高。</p>
 <p>参考：</p>
@@ -360,19 +377,26 @@ Lottie文件是导出的json文件，内部的元素明文显示。svga则是使
 </ul>
 
             </div>
-            
-              <div class="tag-container">
-                
-                  <a href="http://p0sitive.github.io//tag/svga" class="tag">
-                    svga
-                  </a>
-                
-                  <a href="http://p0sitive.github.io//tag/android" class="tag">
-                    android
-                  </a>
-                
-              </div>
-            
+            <!-- <div class="toc-container">
+              <ul class="markdownIt-TOC">
+<li>
+<ul>
+<li>
+<ul>
+<li><a href="#svga%E5%8A%A8%E7%94%BB%E6%96%87%E4%BB%B6%E8%A7%A3%E6%9E%90">SVGA动画文件解析</a></li>
+<li><a href="#svga%E5%8A%A8%E7%94%BB%E6%92%AD%E6%94%BE">SVGA动画播放</a></li>
+<li><a href="#svga">svga</a></li>
+<li><a href="#lottie">Lottie</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            </div> -->
+            <div style="margin-top: 112px"></div>
+            <div class="reward"><div class="reward-button">赏 <span class="reward-code"> <span class="alipay-code"> <img class="alipay-img" src="http://p0sitive.github.io//media/images/alipay.png"><b>支付宝扫码打赏</b> </span> <span class="wechat-code"> <img class="wechat-img" src="http://p0sitive.github.io//media/images/wechat.png"><b>微信打赏</b> </span> </span></div></div>
+
             
               <div class="next-post">
                 <div class="next">下一篇</div>
