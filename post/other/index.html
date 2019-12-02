@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>svga | 慕子河的博客</title>
+<title>其他 | 慕子河的博客</title>
 <meta name="description" content="温故而知新">
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -13,6 +13,12 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
 <link rel="stylesheet" href="http://p0sitive.github.io//styles/main.css">
 
+
+  
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css" />
+  
+
+  
 
 
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
@@ -95,29 +101,56 @@
 
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
-          <h2 class="current-tag">标签: svga</h2>
-          
-            <article class="post-item">
-              <div class="left">
-                <a href="http://p0sitive.github.io//post/introduce-svga">
-                  <h2 class="post-title">SVGA动画框架介绍</h2>
-                </a>
-                <div class="post-date">
-                  2019-10-13
-                </div>
-                <div class="post-abstract">
-                  <p>人都是视觉动物，一个App的动效做的炫酷，优雅，是很吸引用户使用的。</p>
+          <div class="post-detail">
+            <h2 class="post-title">其他</h2>
+            <div class="post-date">2019-11-20</div>
+            
 
-                </div>
+            
+              <div class="feature-container" style="background-image: url('https://i.loli.net/2019/12/02/upcZoJyOmA42bPQ.jpg')">
               </div>
-              
-            </article>
-          
+            
+            <div class="post-content">
+              <blockquote>
+<p>题图：pakutaso.com</p>
+</blockquote>
+<hr>
+<blockquote>
+<p>他山之石 可以攻玉<br>
+记录一些看到比较有深度或是很棒的文章</p>
+</blockquote>
+<p><a href="https://deerchao.cn/tutorials/regex/regex.htm#top">正则表达式30分钟入门教程</a></p>
+<p><a href="https://farer.org/2017/04/06/hometown/">清明返乡杂感</a></p>
+<blockquote>
+<p>自己熟练掌握的一项技能，能够靠它吃一辈子的饭吗？<br>
+一种生意是否能永远做下去，而且能够持续赢利？<br>
+谁能保证我们不会有一天就像这条街一样，突然发现自己已经出局，气数已尽？<br>
+而在那个时候，我们能够发挥自己各方面的能力，白手起家，开辟出新的道路吗？<br>
+走出舒适区。<br>
+去了解自己不曾了解的东西，去探索被自己忽视的东西，去观察体会自己不认同的东西，去跟上潮流，去学习更新的、更有生产力的思想和能力。<br>
+自身跟随环境不断进化，才可能在日新月异中立于不败之地。<br>
+自勉。</p>
+</blockquote>
+<p><a href="https://juejin.im/post/5cc485936fb9a031f41607a8">Matrix源码分析————Resource Canary</a></p>
 
-          <div class="pagination-container">
-  
-  
-</div>
+            </div>
+            <!-- <div class="toc-container">
+              
+            </div> -->
+            <div style="margin-top: 112px"></div>
+            <div class="reward"><div class="reward-button">赏 <span class="reward-code"> <span class="alipay-code"> <img class="alipay-img" src="http://p0sitive.github.io//media/images/alipay.png"><b>支付宝扫码打赏</b> </span> <span class="wechat-code"> <img class="wechat-img" src="http://p0sitive.github.io//media/images/wechat.png"><b>微信打赏</b> </span> </span></div></div>
+
+            
+
+            
+              
+                <div id="gitalk-container" data-aos="fade-in"></div>
+              
+
+              
+            
+
+          </div>
 
         </div>
       </div>
@@ -139,6 +172,29 @@ var app = new Vue({
 })
 
 </script>
+
+
+
+  
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    <script>
+
+      var gitalk = new Gitalk({
+        clientID: 'd91c7d19b57e27d0dce4',
+        clientSecret: '17ea8ee73139e14382ef34772d66905aa0681ee8',
+        repo: 'p0sitive.github.io',
+        owner: 'p0sitive',
+        admin: ['p0sitive'],
+        id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+        distractionFreeMode: false  // Facebook-like distraction free mode
+      })
+
+      gitalk.render('gitalk-container')
+
+    </script>
+  
+
+  
 
 
 
