@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>http://p0sitive.github.io/</id>
     <title>慕子河的博客</title>
-    <updated>2019-12-02T12:17:27.374Z</updated>
+    <updated>2019-12-24T08:37:45.803Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="http://p0sitive.github.io/"/>
     <link rel="self" href="http://p0sitive.github.io//atom.xml"/>
@@ -10,6 +10,13 @@
     <logo>http://p0sitive.github.io//images/avatar.png</logo>
     <icon>http://p0sitive.github.io//favicon.ico</icon>
     <rights>All rights reserved 2019, 慕子河的博客</rights>
+    <entry>
+        <title type="html"><![CDATA[gradle wrapper与gradle缓存简介]]></title>
+        <id>http://p0sitive.github.io//post/gradle-wrapper-and-gradle-cache</id>
+        <link href="http://p0sitive.github.io//post/gradle-wrapper-and-gradle-cache">
+        </link>
+        <updated>2019-12-24T08:28:43.000Z</updated>
+    </entry>
     <entry>
         <title type="html"><![CDATA[SVGA动画框架介绍]]></title>
         <id>http://p0sitive.github.io//post/introduce-svga</id>
