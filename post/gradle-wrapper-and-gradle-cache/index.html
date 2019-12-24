@@ -9,7 +9,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-<link rel="shortcut icon" href="http://p0sitive.github.io//favicon.ico?v=1577176374652">
+<link rel="shortcut icon" href="http://p0sitive.github.io//favicon.ico?v=1577177122979">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
 <link rel="stylesheet" href="http://p0sitive.github.io//styles/main.css">
 
@@ -36,7 +36,7 @@
   <div class="top-container" data-aos="fade-right">
     <div class="top-header-container">
       <a class="site-title-container" href="http://p0sitive.github.io/">
-        <img src="http://p0sitive.github.io//images/avatar.png?v=1577176374652" class="site-logo">
+        <img src="http://p0sitive.github.io//images/avatar.png?v=1577177122979" class="site-logo">
         <h1 class="site-title">慕子河的博客</h1>
       </a>
       <div class="menu-btn" @click="menuVisible = !menuVisible">
@@ -120,10 +120,10 @@
 
             
             <div class="post-content">
-              <blockquote>
+              <figure data-type="image" tabindex="1"><img src="http://p0sitive.github.io//post-images/1577176193286.png" alt=""></figure>
+<blockquote>
 <p>Gradle在Android工程编译中起着重要的作用，但对于大多数Android开发者而言Gradle是一个熟悉的陌生人，因此多了解一些Gradle内部细节可以有助我们平时的开发。由于近期参与了扎克项目的研发，对于gradle有一些学习。这篇文章将会从gradle wrapper和.gradle两个方面进行简述。</p>
 </blockquote>
-<figure data-type="image" tabindex="1"><img src="http://p0sitive.github.io//post-images/1577176193286.png" alt=""></figure>
 <h1 id="gradle-wrapper">gradle wrapper</h1>
 <p>Gradle Wrapper称为Gradle包装器，是对Gradle的一层包装。为什么需要Gradle Wrapper呢？比如在一个开发团队中，如果每进来一个成员，都需要在计算机中安装Gradle，这个时候运行Gradle的环境和版本就会对构建结果带来不确定性。针对这个问题，Gradle提供了一个解决方案，那就是Gradle Wrapper，它是一个脚本，可以在计算机没有安装Gradle的情况下运行Gradle构建，并且能够指定Gradle的版本，开发人员可以快速启动并运行Gradle项目，而不必手动安装，这样就标准化了项目，从而提高了开发效率。AS在新建项目时会自带Gradle Wrapper，这也是我们很少去单独去下载安装Gradle的原因。Gradle Wrapper的工作流程如下图所示。</p>
 <figure data-type="image" tabindex="2"><img src="https://a.58cdn.com.cn/app58/icons/wrapper_workflow.png" alt=""></figure>
