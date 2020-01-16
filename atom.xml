@@ -2,20 +2,50 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>http://p0sitive.github.io/</id>
     <title>慕子河的博客</title>
-    <updated>2019-12-24T08:46:09.745Z</updated>
+    <updated>2020-01-16T09:49:04.335Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="http://p0sitive.github.io/"/>
     <link rel="self" href="http://p0sitive.github.io//atom.xml"/>
     <subtitle>温故而知新</subtitle>
     <logo>http://p0sitive.github.io//images/avatar.png</logo>
     <icon>http://p0sitive.github.io//favicon.ico</icon>
-    <rights>All rights reserved 2019, 慕子河的博客</rights>
+    <rights>All rights reserved 2020, 慕子河的博客</rights>
+    <entry>
+        <title type="html"><![CDATA[APP前后台切换那些事]]></title>
+        <id>http://p0sitive.github.io//post/app-foreground-listener</id>
+        <link href="http://p0sitive.github.io//post/app-foreground-listener">
+        </link>
+        <updated>2020-01-16T09:36:23.000Z</updated>
+        <summary type="html"><![CDATA[<blockquote>
+<p>监听app前后台切换对于App来说是一个比较实用的功能。一些功能的实现离不开前后台切换的时机，比如App进入前台检查剪切板、统计用户在线时间等等。下面本文就从前后台切换监听说起。</p>
+</blockquote>
+]]></summary>
+        <content type="html"><![CDATA[<blockquote>
+<p>监听app前后台切换对于App来说是一个比较实用的功能。一些功能的实现离不开前后台切换的时机，比如App进入前台检查剪切板、统计用户在线时间等等。下面本文就从前后台切换监听说起。</p>
+</blockquote>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[gradle wrapper与gradle缓存简介]]></title>
         <id>http://p0sitive.github.io//post/gradle-wrapper-and-gradle-cache</id>
         <link href="http://p0sitive.github.io//post/gradle-wrapper-and-gradle-cache">
         </link>
         <updated>2019-12-24T08:28:43.000Z</updated>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[对称加密与非对称加密小记]]></title>
+        <id>http://p0sitive.github.io//post/encrypt-two-types</id>
+        <link href="http://p0sitive.github.io//post/encrypt-two-types">
+        </link>
+        <updated>2019-10-28T09:46:52.000Z</updated>
+        <summary type="html"><![CDATA[<blockquote>
+<p>最近项目中需要使用加密传输用户IMEI信息。因此对于加密解密做一次整理小结</p>
+</blockquote>
+]]></summary>
+        <content type="html"><![CDATA[<blockquote>
+<p>最近项目中需要使用加密传输用户IMEI信息。因此对于加密解密做一次整理小结</p>
+</blockquote>
+]]></content>
     </entry>
     <entry>
         <title type="html"><![CDATA[SVGA动画框架介绍]]></title>

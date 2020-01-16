@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>APP前后台切换那些事 | 慕子河的博客</title>
+<meta name="description" content="温故而知新">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="http://p0sitive.github.io//favicon.ico?v=1579168140139">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="http://p0sitive.github.io//styles/main.css">
+
+
+  
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css" />
+  
+
+  
+
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+
+
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="http://p0sitive.github.io/">
+        <img src="http://p0sitive.github.io//images/avatar.png?v=1579168140139" class="site-logo">
+        <h1 class="site-title">慕子河的博客</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="http://p0sitive.github.io//post/other/" class="site-nav">
+            其他
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+          <a class="social-link" href="https://github.com/p0sitive" target="_blank">
+            <i class="fab fa-github"></i>
+          </a>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="http://p0sitive.github.io//atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">APP前后台切换那些事</h2>
+            <div class="post-date">2020-01-16</div>
+            
+              <div class="tag-container">
+                
+                  <a href="http://p0sitive.github.io//tag/android" class="tag">
+                    android
+                  </a>
+                
+              </div>
+            
+
+            
+            <div class="post-content">
+              <blockquote>
+<p>监听app前后台切换对于App来说是一个比较实用的功能。一些功能的实现离不开前后台切换的时机，比如App进入前台检查剪切板、统计用户在线时间等等。下面本文就从前后台切换监听说起。</p>
+</blockquote>
+<!-- more -->
+<p>App前后台切换，本质上就是当前App任务栈顶页面的<code>onPause</code>和<code>onResume</code>方法被调用了，并且页面<code>onPause</code>后回到了桌面或者切换到其他App。在Android系统中并未有App到前后台相关的广播，因此我们只能在App自己实现相关的监听方法。</p>
+<h2 id="方案1">方案1</h2>
+<p>在App的基类BaseActivity中监听<code>Activity</code>的<code>onStart</code>和<code>onStop</code>方法。在<code>onStart</code>方法内部记录当前类名和hash值，并且在<code>onStop</code>方法内将记录拿出对比，若类名和hash值一致，则说明App没有进行页面内的跳转，而是被用户切换到后台。</p>
+<p>具体实现：</p>
+<pre><code>    public void onResume() {
+		String topActivityName = PublicPreferencesUtils.getTopActivityName();
+		boolean isBackByHome = PublicPreferencesUtils.isBackByHome();
+		if(isBackByHome &amp;&amp; mActivityName.equals(topActivityName)) {
+			// 表示由Home键回到程序，而且程序的进程没有被杀掉
+			mHomeClickListener.onClickToFront();
+		}
+
+		PublicPreferencesUtils.saveTopActivityName(mActivityName);
+		PublicPreferencesUtils.saveBackByHome(false); // 重置
+	}
+
+	public void onStop() {
+		if(!mActivity.isFinishing()){ // 如果程序没有退出
+			String topActivityName = PublicPreferencesUtils.getTopActivityName();
+			if(mActivityName.equals(topActivityName)) {
+				// 则表示用户按了Home键，程序进入后台运行
+				mHomeClickListener.onClickToBack();
+				
+				// 保存是按Home键进入的后台
+				PublicPreferencesUtils.saveBackByHome(true);
+			}
+		}
+	}
+</code></pre>
+<p>这个方案能够监听到App的前后台切换，但也仅限于全部页面继承自BaseActivity才可以准确的获取切换时机。</p>
+<blockquote>
+<p>若有页面没有继承BaseActivity，则获取的监听回调可能是错误的！</p>
+</blockquote>
+<h2 id="方案2">方案2</h2>
+<p>还是在基类BaseActivity中做文章。我们可以在<code>onStop</code>方法里添加对于当前前台进程的判断。若前台进程为当前应用进程，则认为App正在前台显示，否则切换到了后台。</p>
+<p>具体实现：</p>
+<pre><code>    public boolean isRunningForeground() {
+        ActivityManager activityManager = (ActivityManager) this.getSystemService(Context.ACTIVITY_SERVICE);
+        List&lt;ActivityManager.RunningAppProcessInfo&gt; appProcessInfos = activityManager.getRunningAppProcesses();
+        for (ActivityManager.RunningAppProcessInfo appProcessInfo : appProcessInfos) {
+            if (appProcessInfo.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
+                if (appProcessInfo.processName.equals(this.getApplicationInfo().processName)) {
+                    Log.d(TAG,&quot;App isRunningForeGround&quot;);
+                    return true;
+                }
+            }
+        }
+        Log.d(TAG, &quot;App isRunningBackGround&quot;);
+        return false;
+    }
+</code></pre>
+<h2 id="方案3">方案3</h2>
+<p>在Application类中，提供了一个应用生命周期回调的注册方法，用来对应用的生命周期进行集中管理，这个接口叫<code>registerActivityLifecycleCallbacks</code>，可以通过它注册自己的<code>ActivityLifeCycleCallback</code>，每一个Activity的生命周期都会回调到这里的对应方法。其实这个注册方法的本质和我们实现BaseActivity是一样的，只是将生命周期的管理移到了Activity本身的实现中。</p>
+<pre><code>public class ForegroundHelper implements Application.ActivityLifecycleCallbacks {
+    //launch页标记
+    private static final String LAUNCH_ACTIVITY_TAG = LaunchActivity.TAG;
+    //当前记录的Activity个数
+    private int finalCount;
+    //回调listener
+    private CopyOnWriteArrayList&lt;AppStatusListener&gt; mListeners;
+
+    private ForegroundHelper() {
+        mListeners = new CopyOnWriteArrayList&lt;&gt;();
+    }
+
+    public static ForegroundHelper getInstance() {
+        return Singleton.mInstance;
+    }
+
+    /**
+     * 添加监听
+     *
+     * @param appStatusListener
+     */
+    public void addAppStatusListener(AppStatusListener appStatusListener) {
+        mListeners.add(appStatusListener);
+    }
+
+    /**
+     * 移除监听
+     *
+     * @param appStatusListener
+     */
+    public void removeAppStatusListener(AppStatusListener appStatusListener) {
+        mListeners.remove(appStatusListener);
+    }
+    
+    ···省略部分代码···
+
+    @Override
+    public void onActivityStarted(Activity activity) {
+        finalCount++;
+        //如果mFinalCount ==1，说明是从后台到前台
+        LOGGER.d(&quot;ForegroundHelper&quot;, finalCount + &quot;&quot;);
+        if (finalCount == 1) {
+            boolean isAppStart = checkAppStart(activity);
+            //说明从后台回到了前台
+            LOGGER.d(&quot;ForegroundHelper&quot;, isAppStart ? &quot;app启动了&quot; : &quot;从后台回到了前台&quot;);
+            notifyForeground(isAppStart);
+        }
+    }
+
+    private boolean checkAppStart(Activity activity) {
+        boolean result = false;
+        if (activity.getClass().getSimpleName().equals(LAUNCH_ACTIVITY_TAG)) {
+            result = activity.isTaskRoot();
+        }
+        return result;
+    }
+    
+
+    @Override
+    public void onActivityStopped(Activity activity) {
+        finalCount--;
+        //如果mFinalCount ==0，说明是前台到后台
+        LOGGER.d(&quot;ForegroundHelper&quot;, finalCount + &quot;&quot;);
+        if (finalCount == 0) {
+            //说明从前台回到了后台
+            LOGGER.d(&quot;ForegroundHelper&quot;, &quot;从前台到了后台&quot;);
+            notifyBackground();
+        }
+
+    }
+    ···省略部分代码···
+
+</code></pre>
+<p>在Application的<code>onCreate</code>方法中添加<code>registerActivityLifecycleCallbacks(ForegroundHelper.getInstance())</code>即可监听到App前后台启动的时机。</p>
+<h2 id="判断启动">判断启动</h2>
+<p>为什么要判断启动呢？这里有个概念是从桌面点击icon进入App不算是严格意义上的<strong>回到前台</strong>，而是启动App到达了前台，因此需要添加一个启动校验放在方法中标识。<br>
+若当前启动的是<code>LaunchActivity</code>，并且不在栈底的话，则认为是App启动到了前台。</p>
+<p>因此在上述三个方案中都可以按照该方法来监听启动。</p>
+<pre><code>    //检查是否是启动App
+    private boolean checkAppStart(Activity activity) {
+        boolean result = false;
+        if (activity.getClass().getSimpleName().equals(LAUNCH_ACTIVITY_TAG)) {
+            result = activity.isTaskRoot();
+        }
+        return result;
+    }
+</code></pre>
+<p>相应的，前后台切换监听也要做如下修改：</p>
+<pre><code>    /**
+     * App前后台切换监听
+     */
+    public interface AppStatusListener {
+        /**
+         * app 到前台
+         *
+         * @param appStart 是否是App 启动
+         */
+        void onForeground(boolean appStart);
+
+        /**
+         * App切换到后台
+         */
+        void onBackground();
+    }
+</code></pre>
+
+            </div>
+            <!-- <div class="toc-container">
+              <ul class="markdownIt-TOC">
+<li>
+<ul>
+<li><a href="#%E6%96%B9%E6%A1%881">方案1</a></li>
+<li><a href="#%E6%96%B9%E6%A1%882">方案2</a></li>
+<li><a href="#%E6%96%B9%E6%A1%883">方案3</a></li>
+<li><a href="#%E5%88%A4%E6%96%AD%E5%90%AF%E5%8A%A8">判断启动</a></li>
+</ul>
+</li>
+</ul>
+
+            </div> -->
+            <div style="margin-top: 112px"></div>
+            <div class="reward"><div class="reward-button">赏 <span class="reward-code"> <span class="alipay-code"> <img class="alipay-img" src="http://p0sitive.github.io//media/images/alipay.png"><b>支付宝扫码打赏</b> </span> <span class="wechat-code"> <img class="wechat-img" src="http://p0sitive.github.io//media/images/wechat.png"><b>微信打赏</b> </span> </span></div></div>
+
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="http://p0sitive.github.io//post/gradle-wrapper-and-gradle-cache">
+                  <h3 class="post-title">
+                    gradle wrapper与gradle缓存简介
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+              
+                <div id="gitalk-container" data-aos="fade-in"></div>
+              
+
+              
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script type="application/javascript">
+
+AOS.init();
+
+hljs.initHighlightingOnLoad()
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+  
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    <script>
+
+      var gitalk = new Gitalk({
+        clientID: 'd91c7d19b57e27d0dce4',
+        clientSecret: '17ea8ee73139e14382ef34772d66905aa0681ee8',
+        repo: 'p0sitive.github.io',
+        owner: 'p0sitive',
+        admin: ['p0sitive'],
+        id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+        distractionFreeMode: false  // Facebook-like distraction free mode
+      })
+
+      gitalk.render('gitalk-container')
+
+    </script>
+  
+
+  
+
+
+
+
+  </body>
+</html>
