@@ -1,0 +1,456 @@
+
+<html>
+  <head lang="zh">
+        <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"/>
+        <meta content="yes" name="apple-mobile-web-app-capable"/>
+        <meta content="black" name="apple-mobile-web-app-status-bar-style"/>
+        <meta content="telephone=no" name="format-detection"/>
+        <meta name="renderer" content="webkit">
+    <title>解决jgit推送时提示remote-hung-up-unexpectedly错误 | 慕子河的博客</title>
+<link href="http://p0sitive.github.io//styles/main.css" type="text/css" rel="stylesheet"/>
+<script type="text/javascript" src="http://p0sitive.github.io//media/scripts/jquery.js"></script>
+<script type="text/javascript" src="http://p0sitive.github.io//media/scripts/basic.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+  </head>
+
+  <body>
+     <div class="header">
+      <div class="logo_title">
+		  
+        <div class="title animated fadeInDown"><img src="http://p0sitive.github.io//images/avatar.png?v=1655459944852"/>
+
+          <h1 title="慕子河的博客" class="weaklink"><a href="/">慕子河的博客</a>
+
+          </h1>
+
+          <div class="navbar weaklink">
+            <div class="normal_nav">
+
+<div class="bitcron_nav_container">
+
+
+  <div class="bitcron_nav">
+    <div class="mixed_site_nav_wrap site_nav_wrap">
+		
+      <ul class="mixed_site_nav site_nav sm sm-base">
+ 
+  <li><a id="d2ef19af68cc211e98f8a0242ac110003" href="/" class="selected active current nav__item" >首页</a>
+
+  </li>
+ 
+  <li><a id="d2ef19af68cc211e98f8a0242ac110003" href="/archives" class="selected active current nav__item" >归档</a>
+
+  </li>
+ 
+  <li><a id="d2ef19af68cc211e98f8a0242ac110003" href="/tags" class="selected active current nav__item" >标签</a>
+
+  </li>
+ 
+  <li><a id="d2ef19af68cc211e98f8a0242ac110003" href="http://p0sitive.github.io//post/other/" class="selected active current nav__item" >其他</a>
+
+  </li>
+ 
+
+      </ul>
+
+      <div class="clear clear_nav_inline_end"></div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="clear clear_nav_end"></div>
+
+</div>
+
+            </div>
+
+            <div class="hamberger"><i class="fa fa-bars"></i>
+<i class="fa fa-times"></i>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="hidden_nav animated fadeInDown">
+
+<div class="bitcron_nav_container">
+
+
+  <div class="bitcron_nav">
+    <div class="mixed_site_nav_wrap site_nav_wrap">
+      <ul class="mixed_site_nav site_nav sm sm-base">
+		  
+	
+  <li><a id="d2ef19af68cc211e98f8a0242ac110003" href="/" class="selected active current nav__item" >首页</a>
+
+  </li>
+
+
+  <li><a id="d2ef19af68cc211e98f8a0242ac110003" href="/archives" class="selected active current nav__item" >归档</a>
+
+  </li>
+
+
+  <li><a id="d2ef19af68cc211e98f8a0242ac110003" href="/tags" class="selected active current nav__item" >标签</a>
+
+  </li>
+
+
+  <li><a id="d2ef19af68cc211e98f8a0242ac110003" href="http://p0sitive.github.io//post/other/" class="selected active current nav__item" >其他</a>
+
+  </li>
+
+
+
+
+
+      </ul>
+
+      <div class="clear clear_nav_inline_end"></div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="clear clear_nav_end"></div>
+
+</div>
+
+      </div>
+
+    </div>
+
+
+    <div class="main">
+      <div class="main-inner">
+
+
+<div class="content">
+
+
+
+
+
+
+  <div class="post_page" >
+
+<div class="post">
+  <div class="post_title sm_margin">
+    <h2><a>解决jgit推送时提示remote-hung-up-unexpectedly错误</a>
+
+
+
+    </h2>
+  </div>
+
+  <div class="post_details">
+    <div class="info"><i class="fa fa-clock-o"></i>
+<span class="date_info">2022-06-08</span>
+<i class="fa fa-eye"></i>
+
+<span class="date_info"><span id="busuanzi_value_page_pv"></span> Views</span>
+
+
+<i class="fa fa-bookmark-o"></i>
+<span class="tags_info weaklink">
+	
+	<a href="http://p0sitive.github.io/tag/yxfgKT2lg/" class="tag">bug记录</a>
+
+	<a href="http://p0sitive.github.io/tag/android/" class="tag">android</a>
+
+
+</span>
+
+
+    </div>
+
+  </div>
+
+
+
+
+
+  <div class="post_content markdown"><p class="md_block">
+    <span class="md_line md_line_start md_line_end"><h1 id="背景">背景</h1>
+<img src="https://s2.loli.net/2022/06/08/7l1VaY8WpzdckDi.png" style="zoom:50%;" />
+<p>jgit是Eclipse团队推出的一个使用java语言操作git命令的一个框架。在所有的Eclipse软件中封装了jgit工具，由于它的便捷与高效，因此开发团队将其单独剥离出来，成为一个可以供其他项目引用框架。</p>
+<p>项目地址：https://eclipse.org/jgit/</p>
+<!-- more -->
+<h1 id="问题解决">问题解决</h1>
+<p>我们在Android 自定义的gradle插件项目中使用到了jgit框架。在使用jgit操作git push命令到远程时总会遇到<code>remote hung up unexpectedly </code>错误，网上查阅了一些资料都没有解决，最终在github中一个issue中找到了解决方案。<em>可以直接拉到最后看解决方案</em></p>
+<h2 id="排查流程">排查流程</h2>
+<p>先贴一下我的环境：</p>
+<blockquote>
+<p>macOS 12.3.1</p>
+<p>git version 2.30.1</p>
+<p>Android Studio Arctic Fox | 2020.3.1</p>
+<p>gradle ：6.1.1</p>
+</blockquote>
+<p>工程的build.gradle文件仅配置了jgit：<code>org.eclipse.jgit:org.eclipse.jgit:5.11.0.202103091610-r</code>，调用也是很简单的<code>git.push().call()</code>将当前的改动push到远程分支。</p>
+<p>查了很多资料，得出问题产生的原因是由于本地git工程使用了ssh方式，jgit框架并不会解析本地秘钥导致推送操作错误，解析ssh要使用一个jsch库来配合使用才生效。添加相关依赖<code>org.eclipse.jgit:org.eclipse.jgit.ssh.jsch:5.11.0.202103091610-r</code>。</p>
+<p>依赖添加完运行又提示秘钥失败 invalid privatekey: [B@6974f6a0 问题</p>
+<figure data-type="image" tabindex="1"><img src="https://s2.loli.net/2022/06/08/7Y1FnNJ2iKQtgx3.png" alt="" loading="lazy"></figure>
+<p>添加了jsch后会报这个秘钥无效的问题，原因是本地解析秘钥时，会读取jgit设置的<code>GIT_SSH</code>环境变量，未读取到该变量导致解析失败。</p>
+<blockquote>
+<p>当然网上也有其他的解决方案，比如<a href="https://blog.csdn.net/weixin_33912445/article/details/92594810">降低openssh版本</a>，<a href="https://blog.csdn.net/wangfengtong/article/details/105968087">将id_rsa秘钥文件转换为.ppk类型的秘钥文件</a>，网上方案对我这个android工程并不适用。</p>
+</blockquote>
+<p>Google上找到了一个类似的issue：https://github.com/alexvasilkov/GradleGitDependenciesPlugin/issues/20 彻底解决了这个问题。</p>
+<p>原作者是这么解答的：</p>
+<blockquote>
+<p>First of all, it turns out Jgit <a href="https://wiki.eclipse.org/JGit/New_and_Noteworthy/5.8">moved SSH support into separate libs</a> as of version 5.8, so it have to be explicitly included, exactly as you pointed out. But just including the correct lib didn't work as Jgit still cannot find the correct <code>SshSessionFactory</code> (seems like Java <code>ServiceLoader</code> does not work well with Gradle plugins). Luckily it can be set manually.</p>
+<p>But it turned out that <code>org.eclipse.jgit.ssh.jsch</code> does not work well, somehow I got vague &quot;Auth fail&quot; errors even though the old version based on grgit worked just fine. I ended up copying grgit hack that manually checks for <code>ssh</code> in <code>PATH</code> and sets <code>GIT_SSH</code> variable for Jgit to use system command instead of own broken implementation.</p>
+</blockquote>
+<p>翻译一下就是：</p>
+<p>jgit从5.8版本将ssh单独抽出作为一个独立的lib，所以出现了<code>remote hung up unexceptedly</code>错误。但仅仅添加一个jsch依赖并不会解决后续问题，即使你添加一个正确的<code>SshSessionFactory</code>（就像java中的ServiceLoader在gradle插件中不会生效）</p>
+<p>所以参考了grgit的做法：检查系统变量中的<code>ssh</code>，并且设置一个<code>GIT_SSH</code>变量供jgit使用系统命令。</p>
+<h2 id="解决方案">解决方案</h2>
+<ol>
+<li>build.gradle中引入</li>
+</ol>
+<pre><code class="language-groovy">implementation 'org.eclipse.jgit:org.eclipse.jgit:5.11.0.202103091610-r'
+implementation 'org.eclipse.jgit:org.eclipse.jgit.ssh.jsch:5.11.0.202103091610-r'
+</code></pre>
+<ol start="2">
+<li>在程序入口设置SshSessionFactory和SystemReader</li>
+</ol>
+<pre><code class="language-kotlin">fun checkGitEnvironment() {
+        if(isChecked){
+          //只设置一次就OK
+            return
+        }
+        SshSessionFactory.setInstance(JschConfigSessionFactory())
+        SystemReader.setInstance(MSshSystemReader())
+        isChecked = true
+    }
+</code></pre>
+<p>重写SystemReader，用来读取<code>ssh</code>和自定义的<code>GIT_SSH</code>，代码如下：</p>
+<pre><code class="language-kotlin">class MSshSystemReader : SystemReader() {
+    private val delegate: SystemReader = getInstance()
+    override fun getHostname(): String {
+        return delegate.hostname
+    }
+
+    override fun getenv(variable: String): String? {
+        val value = delegate.getenv(variable)
+        return if (&quot;GIT_SSH&quot; == variable &amp;&amp; value == null) {
+            findExecutable(&quot;ssh&quot;) ?: findExecutable(&quot;plink&quot;) ?: &quot;&quot;
+        } else {
+            value
+        }
+    }
+
+    override fun getProperty(key: String): String? {
+        return delegate.getProperty(key)
+    }
+
+    override fun openJGitConfig(parent: Config?, fs: FS): FileBasedConfig {
+        return delegate.openJGitConfig(parent, fs)
+    }
+
+    override fun openUserConfig(parent: Config?, fs: FS): FileBasedConfig {
+        return delegate.openUserConfig(parent, fs)
+    }
+
+    override fun openSystemConfig(parent: Config?, fs: FS): FileBasedConfig {
+        return delegate.openSystemConfig(parent, fs)
+    }
+
+    override fun getCurrentTime(): Long {
+        return delegate.currentTime
+    }
+
+    override fun getTimezone(zone: Long): Int {
+        return delegate.getTimezone(zone)
+    }
+
+
+    companion object {
+        private val PATH_SPLITTER = Pattern.compile(Pattern.quote(File.pathSeparator))
+        private fun findExecutable(exe: String): String? {
+             val path = System.getenv(&quot;PATH&quot;)
+
+            val envPaths = PATH_SPLITTER.split(path)
+            val pathWithExt: List&lt;String&gt; = if (envPaths.isEmpty()) {
+                listOf(exe)
+            } else {
+                envPaths.map { e -&gt;
+                    e + File.separator + exe
+                }
+            }
+
+            return pathWithExt.find {
+                Files.isExecutable(Paths.get(it))
+            }
+        }
+    }
+}
+</code></pre>
+<p>问题完美解决！</p>
+<p>参考文档：</p>
+<p>https://github.com/centic9/jgit-cookbook</p>
+<p>https://www.eclipse.org/forums/index.php/t/1109789/</p>
+<p>http://www.jcraft.com/jsch/</p>
+<p>https://github.com/alexvasilkov/GradleGitDependenciesPlugin/issues/20</p>
+</p>
+
+     <p class="md_block">
+    <div class="reward"><div class="reward-button">赏 <span class="reward-code"> <span class="alipay-code"> <img class="alipay-img" src="http://p0sitive.github.io//media/images/alipay.png"><b>支付宝扫码打赏</b> </span> <span class="wechat-code"> <img class="wechat-img" src="http://p0sitive.github.io//media/images/wechat.png"><b>微信打赏</b> </span> </span></div></div>
+</p> 
+</div>
+
+</div>
+
+
+
+<link href="http://p0sitive.github.io//styles/main.css" type="text/css" rel="stylesheet"/>
+
+<div class="doc_comments">
+
+          
+            <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+<div id="gitalk-container"></div>
+
+<script>
+
+  var gitalk = new Gitalk({
+    clientID: 'd91c7d19b57e27d0dce4',
+    clientSecret: '17ea8ee73139e14382ef34772d66905aa0681ee8',
+    repo: 'p0sitive.github.io',
+    owner: 'p0sitive',
+    admin: ['p0sitive'],
+    id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false  // Facebook-like distraction free mode
+  })
+
+  gitalk.render('gitalk-container')
+
+</script>
+
+          
+			  
+          
+        
+</div>
+
+
+
+  </div>
+</div>
+
+
+
+      </div>
+
+
+
+
+    </div>
+
+   <div class="footer">
+<link href="http://p0sitive.github.io//styles/main.css" type="text/css" rel="stylesheet"/><div class="site_footer_wrap"><div class="site_footer">
+
+      <div class="mysocials"><div class="my_socials">
+		   
+			   
+    
+			   
+    
+			   
+    
+			   
+    
+</div><link href="http://p0sitive.github.io//styles/main.css" type="text/css" rel="stylesheet"/>
+
+      </div>
+
+      <div class="copyright">Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+      </div>
+
+</div></div>
+
+    </div>
+
+
+<style type="text/css">a.back_to_top {
+    text-decoration: none;
+    position: fixed;
+    bottom: 40px;
+    right: 30px;
+    background: #f0f0f0;
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    line-height: 36px;
+    font-size: 18px;
+    text-align: center;
+    transition-duration: .5s;
+    transition-propety: background-color;
+    display: none;
+}
+
+a.back_to_top span {
+    color: #888;
+}
+
+a.back_to_top:hover {
+    cursor: pointer;
+    background: #dfdfdf;
+}
+
+a.back_to_top:hover span {
+    color: #555;
+}
+
+@media print, screen and (max-width: 580px) {
+    .back_to_top {
+        display: none !important;
+    }
+}
+
+
+
+</style><a id="back_to_top" href="#" class="back_to_top"><span>△</span>
+</a>
+<script type="text/javascript" src="http://p0sitive.github.io//media/scripts/jquery.js"></script>
+
+<script>$(document).ready((function(_this) {
+  return function() {
+    var bt;
+    bt = $('#back_to_top');
+    if ($(document).width() > 480) {
+      $(window).scroll(function() {
+        var st;
+        st = $(window).scrollTop();
+        if (st > 30) {
+          return bt.css('display', 'block');
+        } else {
+          return bt.css('display', 'none');
+        }
+      });
+      return bt.click(function() {
+        $('body,html').animate({
+          scrollTop: 0
+        }, 800);
+        return false;
+      });
+    }
+  };
+})(this));
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,458 @@
+
+<html>
+  <head lang="zh">
+        <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"/>
+        <meta content="yes" name="apple-mobile-web-app-capable"/>
+        <meta content="black" name="apple-mobile-web-app-status-bar-style"/>
+        <meta content="telephone=no" name="format-detection"/>
+        <meta name="renderer" content="webkit">
+    <title>gradle wrapper与gradle缓存简介 | 慕子河的博客</title>
+<link href="http://p0sitive.github.io//styles/main.css" type="text/css" rel="stylesheet"/>
+<script type="text/javascript" src="http://p0sitive.github.io//media/scripts/jquery.js"></script>
+<script type="text/javascript" src="http://p0sitive.github.io//media/scripts/basic.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+  </head>
+
+  <body>
+     <div class="header">
+      <div class="logo_title">
+		  
+        <div class="title animated fadeInDown"><img src="http://p0sitive.github.io//images/avatar.png?v=1655459944852"/>
+
+          <h1 title="慕子河的博客" class="weaklink"><a href="/">慕子河的博客</a>
+
+          </h1>
+
+          <div class="navbar weaklink">
+            <div class="normal_nav">
+
+<div class="bitcron_nav_container">
+
+
+  <div class="bitcron_nav">
+    <div class="mixed_site_nav_wrap site_nav_wrap">
+		
+      <ul class="mixed_site_nav site_nav sm sm-base">
+ 
+  <li><a id="d2ef19af68cc211e98f8a0242ac110003" href="/" class="selected active current nav__item" >首页</a>
+
+  </li>
+ 
+  <li><a id="d2ef19af68cc211e98f8a0242ac110003" href="/archives" class="selected active current nav__item" >归档</a>
+
+  </li>
+ 
+  <li><a id="d2ef19af68cc211e98f8a0242ac110003" href="/tags" class="selected active current nav__item" >标签</a>
+
+  </li>
+ 
+  <li><a id="d2ef19af68cc211e98f8a0242ac110003" href="http://p0sitive.github.io//post/other/" class="selected active current nav__item" >其他</a>
+
+  </li>
+ 
+
+      </ul>
+
+      <div class="clear clear_nav_inline_end"></div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="clear clear_nav_end"></div>
+
+</div>
+
+            </div>
+
+            <div class="hamberger"><i class="fa fa-bars"></i>
+<i class="fa fa-times"></i>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="hidden_nav animated fadeInDown">
+
+<div class="bitcron_nav_container">
+
+
+  <div class="bitcron_nav">
+    <div class="mixed_site_nav_wrap site_nav_wrap">
+      <ul class="mixed_site_nav site_nav sm sm-base">
+		  
+	
+  <li><a id="d2ef19af68cc211e98f8a0242ac110003" href="/" class="selected active current nav__item" >首页</a>
+
+  </li>
+
+
+  <li><a id="d2ef19af68cc211e98f8a0242ac110003" href="/archives" class="selected active current nav__item" >归档</a>
+
+  </li>
+
+
+  <li><a id="d2ef19af68cc211e98f8a0242ac110003" href="/tags" class="selected active current nav__item" >标签</a>
+
+  </li>
+
+
+  <li><a id="d2ef19af68cc211e98f8a0242ac110003" href="http://p0sitive.github.io//post/other/" class="selected active current nav__item" >其他</a>
+
+  </li>
+
+
+
+
+
+      </ul>
+
+      <div class="clear clear_nav_inline_end"></div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="clear clear_nav_end"></div>
+
+</div>
+
+      </div>
+
+    </div>
+
+
+    <div class="main">
+      <div class="main-inner">
+
+
+<div class="content">
+
+
+
+
+
+
+  <div class="post_page" >
+
+<div class="post">
+  <div class="post_title sm_margin">
+    <h2><a>gradle wrapper与gradle缓存简介</a>
+
+
+
+    </h2>
+  </div>
+
+  <div class="post_details">
+    <div class="info"><i class="fa fa-clock-o"></i>
+<span class="date_info">2019-12-24</span>
+<i class="fa fa-eye"></i>
+
+<span class="date_info"><span id="busuanzi_value_page_pv"></span> Views</span>
+
+
+<i class="fa fa-bookmark-o"></i>
+<span class="tags_info weaklink">
+	
+	<a href="http://p0sitive.github.io/tag/oJvY0zMMP/" class="tag">gradle</a>
+
+	<a href="http://p0sitive.github.io/tag/android/" class="tag">android</a>
+
+
+</span>
+
+
+    </div>
+
+  </div>
+
+
+
+
+
+  <div class="post_content markdown"><p class="md_block">
+    <span class="md_line md_line_start md_line_end"><figure data-type="image" tabindex="1"><img src="http://p0sitive.github.io//post-images/1577176193286.png" alt="" loading="lazy"></figure>
+<blockquote>
+<p>Gradle在Android工程编译中起着重要的作用，但对于大多数Android开发者而言Gradle是一个熟悉的陌生人，因此多了解一些Gradle内部细节可以有助我们平时的开发。由于近期参与了扎克项目的研发，对于gradle有一些学习。这篇文章将会从gradle wrapper和.gradle两个方面进行简述。</p>
+</blockquote>
+<h1 id="gradle-wrapper">gradle wrapper</h1>
+<p>Gradle Wrapper称为Gradle包装器，是对Gradle的一层包装。为什么需要Gradle Wrapper呢？比如在一个开发团队中，如果每进来一个成员，都需要在计算机中安装Gradle，这个时候运行Gradle的环境和版本就会对构建结果带来不确定性。针对这个问题，Gradle提供了一个解决方案，那就是Gradle Wrapper，它是一个脚本，可以在计算机没有安装Gradle的情况下运行Gradle构建，并且能够指定Gradle的版本，开发人员可以快速启动并运行Gradle项目，而不必手动安装，这样就标准化了项目，从而提高了开发效率。AS在新建项目时会自带Gradle Wrapper，这也是我们很少去单独去下载安装Gradle的原因。Gradle Wrapper的工作流程如下图所示。</p>
+<figure data-type="image" tabindex="2"><img src="https://a.58cdn.com.cn/app58/icons/wrapper_workflow.png" alt="" loading="lazy"></figure>
+<p>Gradle Wrapper在一个工程中的主要文件结构如下：</p>
+<pre><code>├── gradle
+│   └── wrapper
+│       ├── gradle-wrapper.jar
+│       └── gradle-wrapper.properties
+├── gradlew
+└── gradlew.bat
+</code></pre>
+<p><strong>gradle-wrapper.jar</strong>：包含Gradle运行时的逻辑代码。</p>
+<p><strong>gradle-wrapper.properties</strong>：负责配置包装器运行时行为的属性文件，用来配置使用哪个版本的Gradle等属性。</p>
+<p><strong>gradlew</strong>：*nux平台下，用于执行Gralde命令的包装器脚本。</p>
+<p><strong>gradlew.bat</strong>：Windows平台下，用于执行Gralde命令的包装器脚本。</p>
+<h2 id="gradle-wrapperproperties">gradle-wrapper.properties</h2>
+<p><code>gradle-wrapper.properties</code>是Gradle Wrapper的属性文件，用来配置Gradle Wrapper，项目中的<code>gradle-wrapper.properties</code>内容如下。</p>
+<pre><code>//Gradle解压后存储的主目录
+distributionBase=GRADLE_USER_HOME 
+
+//distributionBase指定目录的子目录。distributionBase+distributionPath就是Gradle解压后的存放位置
+distributionPath=wrapper/dists 
+
+//Gradle压缩包存储主目录
+zipStoreBase=GRADLE_USER_HOME 
+
+//zipStoreBase指定目录的子目录。zipStoreBase+zipStorePath就是Gradle压缩包的存放位置
+zipStorePath=wrapper/dists 
+
+//Gradle文件的下载地址
+distributionUrl=https\://services.gradle.org/distributions/gradle-4.10.1-all.zip
+</code></pre>
+<blockquote>
+<p>其中<code>distributionBase</code>解压位置和<code>zipStoreBase</code>下载位置可以不一样。</p>
+</blockquote>
+<p><code>zipStoreBase</code>和<code>distributionBase</code>有两种取值：GRADLE_USER_HOME 和 PROJECT。</p>
+<p><strong>GRADLE_USER_HOME</strong><br>
+表示gradle用户目录。默认在系统用户目录下。也可以在环境变量中指定位置<br>
+在windows下是<code>%USERPROFILE%/.gradle</code>，例如<code>C:\Users\&lt;user_name&gt;\.gradle\</code>。</p>
+<p>在linux下是<code>$HOME/.gradle</code>，例如<code>~/.gradle</code>。</p>
+<p><strong>PROJECT</strong><br>
+表示工程的当前目录，即gradlew所在的目录。</p>
+<p>最后我们可以在电脑中找到gradle源文件所在路径</p>
+<figure data-type="image" tabindex="3"><img src="https://a.58cdn.com.cn/app58/icons/gradle_file.png" alt="" loading="lazy"></figure>
+<p>路径命名规则是<br>
+<code>/wrapper/dists/{gradle-version}-{all/bin}/{hash value}/{gradle-version}</code></p>
+<p>其中要关注的一点是gradle解压后文件路径前的以<code>hash value</code>命名的文件夹。它的生成规则如下：</p>
+<pre><code>private String getHash(String string) {
+    try {
+        //计算传入string的MD5值（这个string是gradle各个版本的下载链接）
+        MessageDigest messageDigest = MessageDigest.getInstance(&quot;MD5&quot;);
+        byte[] bytes = string.getBytes();
+        messageDigest.update(bytes);
+        //转化成一个BigInteger，再取Base36值
+        return new BigInteger(1, messageDigest.digest()).toString(36);
+    } catch (Exception e) {
+        throw new RuntimeException(&quot;Could not hash input string.&quot;, e);
+    }
+}
+</code></pre>
+<blockquote>
+<p>源码：https://github.com/gradle/gradle/blob/master/subprojects/wrapper/src/main/java/org/gradle/wrapper/PathAssembler.java</p>
+</blockquote>
+<p>另外在<code>{gradle-version}</code>的同级目录下有<code>xx.lck</code>文件和<code>xx.ok</code>文件，以及未展示的<code>.part</code>文件</p>
+<ul>
+<li>.lck文件：下载gradle文件前需要lock住这个文件，保证在某个时刻只能有一个使用者在使用该gradle库</li>
+<li>.part文件：下载时会先下载到一个part文件，等下载完成了，就重命名为最终的文件名，这里有个细节，每次下载都会删除掉之前的part文件，也就是说这里并不支持断点下载</li>
+<li>.ok文件：用于表示该gradle库下载校验通过，这个gradle库可以被正常使用</li>
+</ul>
+<h1 id="gradle目录">.gradle目录</h1>
+<p>由上文可知，.gradle目录是gradle全局配置的文件夹，其目录下主要有caches 、daemon 、native 、wrapper 等目录，如下所示：</p>
+<figure data-type="image" tabindex="4"><img src="https://a.58cdn.com.cn/app58/icons/gradle_dir.png" alt="" loading="lazy"></figure>
+<pre><code>caches	gradle下载的缓存目录
+daemon	daemon日志目录
+native	gradle平台相关目录
+workers     空目录
+wrapper     gradle源文件目录
+</code></pre>
+<h2 id="cache目录">cache目录</h2>
+<p>cache目录是gradle下载AAR的全局缓存目录，一般在构建项目时引用的aar，会先检查是否有本地缓存。<br>
+有的话会直接使用本地缓存，没有才会根据gradle文件中记录的maven仓库顺序下载。</p>
+<pre><code>//目录 说明
+4.6	特定于版本的缓存（例如，支持增量构建）
+5.1	特定于版本的缓存（例如，支持增量构建）
+jars-3	共享缓存，一般是jar文件的缓存目录
+modules-2	共享缓存，一般为下载AAR缓存目录
+transforms-1	下载AAR缓存目录
+transforms-2	AAR解压后的缓存目录
+</code></pre>
+<h2 id="modules-2目录">modules-2目录</h2>
+<p>modules-2记录都是AAR缓存目录，规则命名如下：</p>
+<pre><code>{group}/{name}/version/{shanum1}/${package-version}.aar
+{group}/{name}/version/{shanum2}/${package-version}.pom
+{group}/{name}/version/{shanum3}/${package-version}.jar
+//对于aar目录前的shanum，是对于整个文件计算sha1获取到的（长度40位），另有一个特点是首位若是0的话会被省略
+</code></pre>
+<figure data-type="image" tabindex="5"><img src="https://a.58cdn.com.cn/app58/icons/gradle_modules_2.png" alt="" loading="lazy"></figure>
+<h2 id="transforms-1目录">transforms-1目录</h2>
+<p>内部会有<code>package-aware-r.txt</code>文件，该文件记录了AAR中的资源文件名称。</p>
+<figure data-type="image" tabindex="6"><img src="https://a.58cdn.com.cn/app58/icons/gradle_transforms_1.png" alt="" loading="lazy"></figure>
+<h2 id="transforms-2目录">transforms-2目录</h2>
+<p>该文件夹会有同名的<code>bin文件</code>同时存在，部分文件夹下是AAR文件解压后的产物。</p>
+<figure data-type="image" tabindex="7"><img src="https://a.58cdn.com.cn/app58/icons/gradle_transforms_2.png" alt="" loading="lazy"></figure>
+<h2 id="缓存策略">缓存策略</h2>
+<p>从版本4.10开始，Gradle会自动清除其用户主目录。当Gradle守护程序停止或关闭时，清理将在后台运行。如果使用--no-daemon，它将在带有可视进度指示器的构建会话之后在前台运行。<br>
+定期（最多每24小时）应用以下清理策略：</p>
+<ol>
+<li>caches/<gradle-version>/检查特定版本中是否仍在使用它们。如果未被引用，则发布版本的缓存时间为30天，快照版本缓存时间为7天。</li>
+<li>检查caches/（例如jars-*）中的共享缓存是否仍在使用中。如果没有Gradle版本仍在使用它们，则会将其删除。</li>
+<li>当前caches/（例如jars-3或modules-2）中的当前Gradle版本使用的共享缓存中的文件将在上次访问时进行检查。根据是可以在本地重新创建文件，还是必须再次从远程存储库下载文件，将分别在不访问7天或30天后将其删除。</li>
+</ol>
+<hr>
+<p>参考文章：</p>
+<ul>
+<li>https://docs.gradle.org/current/userguide/directory_layout.html#dir:gradle_user_home</li>
+<li>https://docs.gradle.org/current/userguide/gradle_wrapper.html</li>
+<li>https://zhuanlan.zhihu.com/p/26473930</li>
+</ul>
+</p>
+
+     <p class="md_block">
+    <div class="reward"><div class="reward-button">赏 <span class="reward-code"> <span class="alipay-code"> <img class="alipay-img" src="http://p0sitive.github.io//media/images/alipay.png"><b>支付宝扫码打赏</b> </span> <span class="wechat-code"> <img class="wechat-img" src="http://p0sitive.github.io//media/images/wechat.png"><b>微信打赏</b> </span> </span></div></div>
+</p> 
+</div>
+
+</div>
+
+
+
+<link href="http://p0sitive.github.io//styles/main.css" type="text/css" rel="stylesheet"/>
+
+<div class="doc_comments">
+
+          
+            <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+<div id="gitalk-container"></div>
+
+<script>
+
+  var gitalk = new Gitalk({
+    clientID: 'd91c7d19b57e27d0dce4',
+    clientSecret: '17ea8ee73139e14382ef34772d66905aa0681ee8',
+    repo: 'p0sitive.github.io',
+    owner: 'p0sitive',
+    admin: ['p0sitive'],
+    id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false  // Facebook-like distraction free mode
+  })
+
+  gitalk.render('gitalk-container')
+
+</script>
+
+          
+			  
+          
+        
+</div>
+
+
+
+  </div>
+</div>
+
+
+
+      </div>
+
+
+
+
+    </div>
+
+   <div class="footer">
+<link href="http://p0sitive.github.io//styles/main.css" type="text/css" rel="stylesheet"/><div class="site_footer_wrap"><div class="site_footer">
+
+      <div class="mysocials"><div class="my_socials">
+		   
+			   
+    
+			   
+    
+			   
+    
+			   
+    
+</div><link href="http://p0sitive.github.io//styles/main.css" type="text/css" rel="stylesheet"/>
+
+      </div>
+
+      <div class="copyright">Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+      </div>
+
+</div></div>
+
+    </div>
+
+
+<style type="text/css">a.back_to_top {
+    text-decoration: none;
+    position: fixed;
+    bottom: 40px;
+    right: 30px;
+    background: #f0f0f0;
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    line-height: 36px;
+    font-size: 18px;
+    text-align: center;
+    transition-duration: .5s;
+    transition-propety: background-color;
+    display: none;
+}
+
+a.back_to_top span {
+    color: #888;
+}
+
+a.back_to_top:hover {
+    cursor: pointer;
+    background: #dfdfdf;
+}
+
+a.back_to_top:hover span {
+    color: #555;
+}
+
+@media print, screen and (max-width: 580px) {
+    .back_to_top {
+        display: none !important;
+    }
+}
+
+
+
+</style><a id="back_to_top" href="#" class="back_to_top"><span>△</span>
+</a>
+<script type="text/javascript" src="http://p0sitive.github.io//media/scripts/jquery.js"></script>
+
+<script>$(document).ready((function(_this) {
+  return function() {
+    var bt;
+    bt = $('#back_to_top');
+    if ($(document).width() > 480) {
+      $(window).scroll(function() {
+        var st;
+        st = $(window).scrollTop();
+        if (st > 30) {
+          return bt.css('display', 'block');
+        } else {
+          return bt.css('display', 'none');
+        }
+      });
+      return bt.click(function() {
+        $('body,html').animate({
+          scrollTop: 0
+        }, 800);
+        return false;
+      });
+    }
+  };
+})(this));
+</script>
+
+</body>
+
+</html>

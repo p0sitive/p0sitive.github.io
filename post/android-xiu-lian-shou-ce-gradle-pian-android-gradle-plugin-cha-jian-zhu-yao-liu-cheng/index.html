@@ -1,0 +1,622 @@
+
+<html>
+  <head lang="zh">
+        <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"/>
+        <meta content="yes" name="apple-mobile-web-app-capable"/>
+        <meta content="black" name="apple-mobile-web-app-status-bar-style"/>
+        <meta content="telephone=no" name="format-detection"/>
+        <meta name="renderer" content="webkit">
+    <title>【Android 修炼手册】Gradle 篇 -- Android Gradle Plugin 插件主要流程 | 慕子河的博客</title>
+<link href="http://p0sitive.github.io//styles/main.css" type="text/css" rel="stylesheet"/>
+<script type="text/javascript" src="http://p0sitive.github.io//media/scripts/jquery.js"></script>
+<script type="text/javascript" src="http://p0sitive.github.io//media/scripts/basic.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+  </head>
+
+  <body>
+     <div class="header">
+      <div class="logo_title">
+		  
+        <div class="title animated fadeInDown"><img src="http://p0sitive.github.io//images/avatar.png?v=1655459944852"/>
+
+          <h1 title="慕子河的博客" class="weaklink"><a href="/">慕子河的博客</a>
+
+          </h1>
+
+          <div class="navbar weaklink">
+            <div class="normal_nav">
+
+<div class="bitcron_nav_container">
+
+
+  <div class="bitcron_nav">
+    <div class="mixed_site_nav_wrap site_nav_wrap">
+		
+      <ul class="mixed_site_nav site_nav sm sm-base">
+ 
+  <li><a id="d2ef19af68cc211e98f8a0242ac110003" href="/" class="selected active current nav__item" >首页</a>
+
+  </li>
+ 
+  <li><a id="d2ef19af68cc211e98f8a0242ac110003" href="/archives" class="selected active current nav__item" >归档</a>
+
+  </li>
+ 
+  <li><a id="d2ef19af68cc211e98f8a0242ac110003" href="/tags" class="selected active current nav__item" >标签</a>
+
+  </li>
+ 
+  <li><a id="d2ef19af68cc211e98f8a0242ac110003" href="http://p0sitive.github.io//post/other/" class="selected active current nav__item" >其他</a>
+
+  </li>
+ 
+
+      </ul>
+
+      <div class="clear clear_nav_inline_end"></div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="clear clear_nav_end"></div>
+
+</div>
+
+            </div>
+
+            <div class="hamberger"><i class="fa fa-bars"></i>
+<i class="fa fa-times"></i>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="hidden_nav animated fadeInDown">
+
+<div class="bitcron_nav_container">
+
+
+  <div class="bitcron_nav">
+    <div class="mixed_site_nav_wrap site_nav_wrap">
+      <ul class="mixed_site_nav site_nav sm sm-base">
+		  
+	
+  <li><a id="d2ef19af68cc211e98f8a0242ac110003" href="/" class="selected active current nav__item" >首页</a>
+
+  </li>
+
+
+  <li><a id="d2ef19af68cc211e98f8a0242ac110003" href="/archives" class="selected active current nav__item" >归档</a>
+
+  </li>
+
+
+  <li><a id="d2ef19af68cc211e98f8a0242ac110003" href="/tags" class="selected active current nav__item" >标签</a>
+
+  </li>
+
+
+  <li><a id="d2ef19af68cc211e98f8a0242ac110003" href="http://p0sitive.github.io//post/other/" class="selected active current nav__item" >其他</a>
+
+  </li>
+
+
+
+
+
+      </ul>
+
+      <div class="clear clear_nav_inline_end"></div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="clear clear_nav_end"></div>
+
+</div>
+
+      </div>
+
+    </div>
+
+
+    <div class="main">
+      <div class="main-inner">
+
+
+<div class="content">
+
+
+
+
+
+
+  <div class="post_page" >
+
+<div class="post">
+  <div class="post_title sm_margin">
+    <h2><a>【Android 修炼手册】Gradle 篇 -- Android Gradle Plugin 插件主要流程</a>
+
+
+
+    </h2>
+  </div>
+
+  <div class="post_details">
+    <div class="info"><i class="fa fa-clock-o"></i>
+<span class="date_info">2020-06-06</span>
+<i class="fa fa-eye"></i>
+
+<span class="date_info"><span id="busuanzi_value_page_pv"></span> Views</span>
+
+
+<i class="fa fa-bookmark-o"></i>
+<span class="tags_info weaklink">
+	
+	<a href="http://p0sitive.github.io/tag/oJvY0zMMP/" class="tag">gradle</a>
+
+
+</span>
+
+
+    </div>
+
+  </div>
+
+
+
+
+
+  <div class="post_content markdown"><p class="md_block">
+    <span class="md_line md_line_start md_line_end"><h1 id="android-修炼手册gradle-篇-android-gradle-plugin-插件主要流程">【Android 修炼手册】Gradle 篇 -- Android Gradle Plugin 插件主要流程</h1>
+<h2 id="预备知识">预备知识</h2>
+<ol>
+<li>理解 gradle 的基本开发</li>
+<li>了解 gradle task 和 plugin 使用及开发</li>
+<li>了解 android gradle plugin 的使用</li>
+</ol>
+<h2 id="看完本文可以达到什么程度">看完本文可以达到什么程度</h2>
+<ol>
+<li>了解 android gradle plugin 的构建流程</li>
+<li>了解 android gradle plugin 的主要 task 的实现</li>
+<li>学会 hook android 构建流程，添加自己想要的功能</li>
+</ol>
+<h2 id="阅读前准备工作">阅读前准备工作</h2>
+<ol>
+<li>项目添加 android gradle plugin 依赖</li>
+</ol>
+<pre><code class="language-groovy">compile 'com.android.tools.build:gradle:3.0.1'
+</code></pre>
+<p>通过这种方式，可以直接依赖 plugin 的源码，读起来比较方便。<br>
+2. 官方对照源码地址 <a href="https://android.googlesource.com/platform/tools/base/+/refs/tags/gradle_3.0.0/build-system/">android gradle plugin 源码地址</a></p>
+<p>大家可以直接 clone <a href="https://github.com/5A59/android-training/tree/master/gradle/EasyGradle">EasyGradle</a> 项目，把 android-gradle-plugin-source/build.gradle 里的 implementation 'com.android.tools.build:gradle:3.0.1' 注释打开就可以了。</p>
+<p>com.android.application 主要有下面几个流程:<br>
+<img src="http://p0sitive.github.io//post-images/plugin-all.png" alt="plugin流程" loading="lazy"></p>
+<h2 id="一-插件启动的准备工作">一、插件启动的准备工作</h2>
+<figure data-type="image" tabindex="1"><img src="http://p0sitive.github.io//post-images/plugin1.png" alt="plugin1" loading="lazy"></figure>
+<p>在前面讲解自定义插件的时候说到过，要定义一个 xxx.properties 文件，里面声明插件的入口类，而 xxx 就是 apply plugin 时候使用的 id，这里要知道 android gradle plugin 的入口类，看 com.android.application.properties 文件就可以，内容如下：</p>
+<pre><code>implementation-class=com.android.build.gradle.AppPlugin
+</code></pre>
+<p>这里定义了入口是 AppPlugin，AppPlugin 继承自 BasePlugin。<br>
+AppPlugin 里没有做太多的操作，主要是重写了 createTaskManager 和 createExtension，剩下的大部分工作还是在 BasePlugin 里做的。<br>
+插件准备工作中主要做的事情:</p>
+<ol>
+<li>检查插件版本</li>
+</ol>
+<pre><code class="language-groovy">// method: BasePlugin.apply()
+checkPluginVersion();
+</code></pre>
+<ol start="2">
+<li>检查 module 是否重名</li>
+</ol>
+<pre><code class="language-groovy">// method: BasePlugin.apply()
+// 方法中会遍历所有子项目，判断是否有重复的 id
+this.checkModulesForErrors();
+</code></pre>
+<ol start="3">
+<li>初始化插件信息</li>
+</ol>
+<pre><code class="language-groovy">// method: BasePlugin.apply()
+PluginInitializer.initialize(project, this.projectOptions);
+// 创建 Profiler 文件
+ProfilerInitializer.init(project, this.projectOptions);
+// profiler 信息中写入 plugin 版本
+ProcessProfileWriter.getProject(project.getPath()).setAndroidPluginVersion(Version.ANDROID_GRADLE_PLUGIN_VERSION).setAndroidPlugin(this.getAnalyticsPluginType()).setPluginGeneration(PluginGeneration.FIRST);
+</code></pre>
+<h2 id="二-配置项目">二、配置项目</h2>
+<figure data-type="image" tabindex="2"><img src="http://p0sitive.github.io//post-images/plugin2.png" alt="plugin2" loading="lazy"></figure>
+<p>配置项目这一阶段主要做的事情:</p>
+<ol>
+<li>检查 gradle 版本是否匹配</li>
+</ol>
+<pre><code class="language-groovy">// method: BasePlugin.configureProject()
+this.checkGradleVersion();
+</code></pre>
+<ol start="2">
+<li>创建 AndroidBuilder和 DataBindingBuilder</li>
+<li>引入 java plugin 和 jacoco plugin</li>
+</ol>
+<pre><code class="language-groovy">this.project.getPlugins().apply(JavaBasePlugin.class);
+this.project.getPlugins().apply(JacocoPlugin.class);
+</code></pre>
+<ol start="4">
+<li>设置构建完成以后的混存清理工作<br>
+添加了 BuildListener，在 buildFinished 回调里做缓存清理工作</li>
+</ol>
+<h2 id="三-配置-extension">三、配置 Extension</h2>
+<figure data-type="image" tabindex="3"><img src="http://p0sitive.github.io//post-images/plugin3.png" alt="plugin3" loading="lazy"></figure>
+<p>实现在 BasePlugin.configureExtension()<br>
+这一阶段主要做了下面几个事情：</p>
+<ol>
+<li>创建 AppExtension，也就是 build.gradle 里用到的 android {} dsl</li>
+</ol>
+<pre><code class="language-groovy">this.extension = this.createExtension(...);
+
+// AppPlugin 中实现了 createExtension，创建了 android {} dsl
+protected BaseExtension createExtension(...) {
+    return (BaseExtension)project.getExtensions().create(&quot;android&quot;, AppExtension.class, new Object[]{project, projectOptions, instantiator, androidBuilder, sdkHandler, buildTypeContainer, productFlavorContainer, signingConfigContainer, buildOutputs, extraModelInfo});
+}
+</code></pre>
+<ol start="2">
+<li>创建依赖管理，ndk管理，任务管理，variant管理</li>
+<li>注册新增配置的回调函数，包括 signingConfig，buildType，productFlavor</li>
+</ol>
+<pre><code class="language-groovy">// BasePlugin.java createExtension()
+// map the whenObjectAdded callbacks on the containers.
+signingConfigContainer.whenObjectAdded(variantManager::addSigningConfig);
+buildTypeContainer.whenObjectAdded(
+    buildType -&gt; {
+        SigningConfig signingConfig =
+                signingConfigContainer.findByName(BuilderConstants.DEBUG);
+        buildType.init(signingConfig);
+        // addBuildType，会检查命名是否合法，然后创建 BuildTypeData
+        variantManager.addBuildType(buildType);
+    });
+// addProductFlavor 会检查命名是否合法，然后创建 ProductFlavorData
+productFlavorContainer.whenObjectAdded(variantManager::addProductFlavor);
+// VariantManager.java
+// addSigningConfig 就是在 signingConfigs 里新增一个配置
+public void addSigningConfig(SigningConfig signingConfig) {
+    this.signingConfigs.put(signingConfig.getName(), signingConfig);
+}
+// VariantManager.java
+public void addProductFlavor(CoreProductFlavor productFlavor) {
+    String name = productFlavor.getName();
+    // checkName 会检查
+    checkName(name, &quot;ProductFlavor&quot;);
+    if(this.buildTypes.containsKey(name)) {
+        throw new RuntimeException(&quot;ProductFlavor names cannot collide with BuildType names&quot;);
+    } else {
+        // 获取源码位置
+        DefaultAndroidSourceSet mainSourceSet = (DefaultAndroidSourceSet)this.extension.getSourceSets().maybeCreate(productFlavor.getName());
+        DefaultAndroidSourceSet androidTestSourceSet = null;
+        DefaultAndroidSourceSet unitTestSourceSet = null;
+        if(this.variantFactory.hasTestScope()) {
+            // 获取单测源码位置
+            androidTestSourceSet = (DefaultAndroidSourceSet)this.extension.getSourceSets().maybeCreate(computeSourceSetName(productFlavor.getName(), VariantType.ANDROID_TEST));
+            unitTestSourceSet = (DefaultAndroidSourceSet)this.extension.getSourceSets().maybeCreate(computeSourceSetName(productFlavor.getName(), VariantType.UNIT_TEST));
+        }
+
+        // 创建 productFlavorData 对象
+        ProductFlavorData&lt;CoreProductFlavor&gt; productFlavorData = new ProductFlavorData(productFlavor, mainSourceSet, androidTestSourceSet, unitTestSourceSet, this.project);
+        this.productFlavors.put(productFlavor.getName(), productFlavorData);
+    }
+}
+</code></pre>
+<ol start="4">
+<li>创建默认的 debug 签名，创建 debug 和 release 两个 buildType</li>
+</ol>
+<pre><code class="language-groovy">variantFactory.createDefaultComponents(
+    buildTypeContainer, productFlavorContainer, signingConfigContainer);
+// ApplicationVariantFactory.java
+public void createDefaultComponents(...) {
+    signingConfigs.create(&quot;debug&quot;);
+    buildTypes.create(&quot;debug&quot;);
+    buildTypes.create(&quot;release&quot;);
+}
+</code></pre>
+<h3 id="四-创建不依赖-flavor-的-task">四、创建不依赖 flavor 的 task</h3>
+<p><img src="http://p0sitive.github.io//post-images/plugin4.png" alt="plugin4" loading="lazy"><br>
+上述准备，配置阶段完成以后，就开始创建构建需要的 Task 了，是在 BasePlugin.createTasks() 里实现的，主要有两步，创建<strong>不依赖 flavor 的 task</strong> 和创建<strong>构建 task</strong>。<br>
+先看不依赖 flavor 的 task，其实现在 TaskManager.createTasksBeforeEvaluate()。<br>
+这里主要创建了几个 task，包括 uninstallAll，deviceCheck，connectedCheck，preBuild，extractProguardFiles，sourceSets，assembleAndroidTest，compileLint，lint，lintChecks，cleanBuildCacheresolveConfigAttr，consumeConfigAttr。<br>
+这些 task 都是不需要依赖 flavor 数据的公共 task。</p>
+<h3 id="五-创建构建-task">五、创建构建 task</h3>
+<figure data-type="image" tabindex="4"><img src="http://p0sitive.github.io//post-images/plugin5.png" alt="plugin5" loading="lazy"></figure>
+<p>在介绍下面的流程之前，先明确几个概念，flavor，dimension，variant。<br>
+在 android gradle plugin 3.x 之后，每个 flavor 必须对应一个 dimension，可以理解为 flavor 的分组，然后不同 dimension 里的 flavor 组合成一个 variant。<br>
+举个例子：</p>
+<pre><code>flavorDimensions &quot;size&quot;, &quot;color&quot;
+
+productFlavors {
+    big {
+        dimension &quot;size&quot;
+    }
+    small {
+        dimension &quot;size&quot;
+    }
+    blue {
+        dimension &quot;color&quot;
+    }
+    red {
+        dimension &quot;color&quot;
+    }
+}
+</code></pre>
+<p>上面配置对应生成的 variant 就是 bigBlue，bigRed，smallBlue，smallRed，在这个基础上，再加上 buildTypes，就是 bigBlueDebug，bigRedDebug，smallBlueDebug，smallRedDebug，bigBlueRelease，bigRedRelease，smallBlueRelease，smallRedRelease。</p>
+<p>createAndroidTasks 的调用时机和上面不一样，是在 project.afterEvaluate 里调用的，还记得之前文章里说道的 afterEvaluate 回调么？这个时候所有模块配置已经完成了。所以在这个阶段可以获取到对应的 flavor 以及其他配置了。<br>
+在 BasePlugin.createAndroidTasks 里，是调用 VariantManager.createAndroidTasks 完成工作的。<br>
+创建 task 的时候，会先通过 populateVariantDataList 生成 flavor 相关的数据结构，然后调用 createTasksForVariantData 创建 flavor 对应的 task。<br>
+分别看下这两个方法做的事情<br>
+<strong>1.populateVariantDataList</strong><br>
+在方法里，会先根据 flavor 和 dimension 创建对应的组合，存放在 flavorComboList 里，之后调用 createVariantDataForProductFlavors 创建对应的 VariantData。<br>
+其中重要的几个方法：</p>
+<pre><code class="language-groovy">// 创建 flavor 和 dimension 的组合
+List&lt;ProductFlavorCombo&lt;CoreProductFlavor&gt;&gt; flavorComboList =
+                    ProductFlavorCombo.createCombinations(
+                            flavorDimensionList,
+                            flavorDsl);
+// 为每个组合创建 VariantData
+for (ProductFlavorCombo&lt;CoreProductFlavor&gt;  flavorCombo : flavorComboList) {
+    //noinspection unchecked
+    createVariantDataForProductFlavors(
+            (List&lt;ProductFlavor&gt;) (List) flavorCombo.getFlavorList());
+}
+</code></pre>
+<p>创建出来的 VariantData 都是 BaseVariantData 的子类，里面保存了一些 Task，可以看一下 BaseVariantData 里的一些重要的结构，对 BaseVariantData 有个大概的了解。</p>
+<pre><code class="language-groovy">public abstract class BaseVariantData implements TaskContainer {
+    private final GradleVariantConfiguration variantConfiguration;
+    private VariantDependencies variantDependency;
+    private final VariantScope scope;
+    public Task preBuildTask;
+    public Task sourceGenTask;
+    public Task resourceGenTask; // 资源处理
+    public Task assetGenTask;
+    public CheckManifest checkManifestTask; // 检测manifest
+    public AndroidTask&lt;PackageSplitRes&gt; packageSplitResourcesTask; // 打包资源
+    public AndroidTask&lt;PackageSplitAbi&gt; packageSplitAbiTask;
+    public RenderscriptCompile renderscriptCompileTask; 
+    public MergeResources mergeResourcesTask; // 合并资源
+    public ManifestProcessorTask processManifest; // 处理 manifest
+    public MergeSourceSetFolders mergeAssetsTask; // 合并 assets
+    public GenerateBuildConfig generateBuildConfigTask; // 生成 BuildConfig
+    public GenerateResValues generateResValuesTask;
+    public Sync processJavaResourcesTask;
+    public NdkCompile ndkCompileTask; // ndk 编译
+    public JavaCompile javacTask; 
+    public Task compileTask;
+    public Task javaCompilerTask; // java 文件编译
+    // ...
+}
+</code></pre>
+<p>VariantData 里保存了很多 task，下一步就要创建这些 task。</p>
+<p><strong>2.createTasksForVariantData</strong><br>
+创建完 variant 数据，就要给 每个 variantData 创建对应的 task，对应的 task 有 assembleXXXTask，prebuildXXX，generateXXXSource，generateXXXResources，generateXXXAssets，processXXXManifest 等等，重点关注几个方法：</p>
+<pre><code class="language-groovy">VariantManager.createAssembleTaskForVariantData() // 创建 assembleXXXTask
+TaskManager.createTasksForVariantScope() // 是一个抽象类，具体实现在 ApplicationTaskManager.createTasksForVariantScope()
+TaskManager.createPostCompilationTasks() // 创建 .class to dex 的 task， 创建 transformTask，我们创建的 transform 就是这个阶段添加进来的，是在 addCompileTask 里调用的
+
+// createTasksForVariantScope 是一个抽象方法，具体实现在子类中，可以看一下 ApplicationTaskManager.createTasksForVariantScope()
+// createTasksForVariantScope 里的实现，如果在业务中有需要查看相关 task 源码时，可以来这里找
+void createTasksForVariantScope() {
+    this.createCheckManifestTask(tasks, variantScope); // 检测 manifest
+    this.handleMicroApp(tasks, variantScope);
+    this.createDependencyStreams(tasks, variantScope);
+    this.createApplicationIdWriterTask(tasks, variantScope); // application id 
+    this.createMergeApkManifestsTask(tasks, variantScope); // 合并 manifest
+    this.createGenerateResValuesTask(tasks, variantScope);
+    this.createRenderscriptTask(tasks, variantScope);
+    this.createMergeResourcesTask(tasks, variantScope, true); // 合并资源文件
+    this.createMergeAssetsTask(tasks, variantScope, (BiConsumer)null); // 合并 assets
+    this.createBuildConfigTask(tasks, variantScope); // 生成 BuildConfig
+    this.createApkProcessResTask(tasks, variantScope); // 处理资源
+    this.createProcessJavaResTask(tasks, variantScope);
+    this.createAidlTask(tasks, variantScope); // 处理 aidl
+    this.createShaderTask(tasks, variantScope);
+    this.createNdkTasks(tasks, variantScope); // 处理 ndk
+    this.createExternalNativeBuildJsonGenerators(variantScope);
+    this.createExternalNativeBuildTasks(tasks, variantScope);
+    this.createMergeJniLibFoldersTasks(tasks, variantScope); // 合并 jni
+    this.createDataBindingTasksIfNecessary(tasks, variantScope); // 处理 databinding
+    this.addCompileTask(tasks, variantScope); 
+    createStripNativeLibraryTask(tasks, variantScope);
+    this.createSplitTasks(tasks, variantScope);
+    this.createPackagingTask(tasks, variantScope, buildInfoWriterTask); // 打包 apk
+    this.createLintTasks(tasks, variantScope); // lint 
+}
+
+// createPostCompilationTasks 实现:
+// 处理 Android Transform
+void createPostCompilationTasks() {
+    for (int i = 0, count = customTransforms.size(); i &lt; count; i++) {
+        Transform transform = customTransforms.get(i);
+        // TransformManager.addTransform 实际上是为 transform 创建了一个 Task
+        transformManager
+                .addTransform(tasks, variantScope, transform)
+                .ifPresent(t -&gt; {
+                    if (!deps.isEmpty()) {
+                        t.dependsOn(tasks, deps);
+                    }
+                    // if the task is a no-op then we make assemble task depend on it.
+                    if (transform.getScopes().isEmpty()) {
+                        variantScope.getAssembleTask().dependsOn(tasks, t);
+                    }
+                });
+    }
+}
+</code></pre>
+<h3 id="六-总结">六、总结</h3>
+<p>android gradle plugin 的主要流程基本上就结束了，主要流程图如下所示<br>
+<img src="http://p0sitive.github.io//post-images/plugin-summary.png" alt="pluign-summary" loading="lazy"></p>
+<p>这里总结几个要点:</p>
+<ol>
+<li>com.android.application 入口类是 AppPlugin，但大部分工作都是在 BasePlugin 里完成的</li>
+<li>build.gradle 里见到的 android {} dsl 是在 BasePlugin.configureExtension() 里声明的</li>
+<li>主要的 task 是在 BasePlugin.createAndroidTasks() 里生成的</li>
+<li>主要 task 的实现可以在 TaskManager 中找到</li>
+<li>transform 会转化成 TransformTask</li>
+</ol>
+</p>
+
+     <p class="md_block">
+    <div class="reward"><div class="reward-button">赏 <span class="reward-code"> <span class="alipay-code"> <img class="alipay-img" src="http://p0sitive.github.io//media/images/alipay.png"><b>支付宝扫码打赏</b> </span> <span class="wechat-code"> <img class="wechat-img" src="http://p0sitive.github.io//media/images/wechat.png"><b>微信打赏</b> </span> </span></div></div>
+</p> 
+</div>
+
+</div>
+
+
+
+<link href="http://p0sitive.github.io//styles/main.css" type="text/css" rel="stylesheet"/>
+
+<div class="doc_comments">
+
+          
+            <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+<div id="gitalk-container"></div>
+
+<script>
+
+  var gitalk = new Gitalk({
+    clientID: 'd91c7d19b57e27d0dce4',
+    clientSecret: '17ea8ee73139e14382ef34772d66905aa0681ee8',
+    repo: 'p0sitive.github.io',
+    owner: 'p0sitive',
+    admin: ['p0sitive'],
+    id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false  // Facebook-like distraction free mode
+  })
+
+  gitalk.render('gitalk-container')
+
+</script>
+
+          
+			  
+          
+        
+</div>
+
+
+
+  </div>
+</div>
+
+
+
+      </div>
+
+
+
+
+    </div>
+
+   <div class="footer">
+<link href="http://p0sitive.github.io//styles/main.css" type="text/css" rel="stylesheet"/><div class="site_footer_wrap"><div class="site_footer">
+
+      <div class="mysocials"><div class="my_socials">
+		   
+			   
+    
+			   
+    
+			   
+    
+			   
+    
+</div><link href="http://p0sitive.github.io//styles/main.css" type="text/css" rel="stylesheet"/>
+
+      </div>
+
+      <div class="copyright">Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+      </div>
+
+</div></div>
+
+    </div>
+
+
+<style type="text/css">a.back_to_top {
+    text-decoration: none;
+    position: fixed;
+    bottom: 40px;
+    right: 30px;
+    background: #f0f0f0;
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    line-height: 36px;
+    font-size: 18px;
+    text-align: center;
+    transition-duration: .5s;
+    transition-propety: background-color;
+    display: none;
+}
+
+a.back_to_top span {
+    color: #888;
+}
+
+a.back_to_top:hover {
+    cursor: pointer;
+    background: #dfdfdf;
+}
+
+a.back_to_top:hover span {
+    color: #555;
+}
+
+@media print, screen and (max-width: 580px) {
+    .back_to_top {
+        display: none !important;
+    }
+}
+
+
+
+</style><a id="back_to_top" href="#" class="back_to_top"><span>△</span>
+</a>
+<script type="text/javascript" src="http://p0sitive.github.io//media/scripts/jquery.js"></script>
+
+<script>$(document).ready((function(_this) {
+  return function() {
+    var bt;
+    bt = $('#back_to_top');
+    if ($(document).width() > 480) {
+      $(window).scroll(function() {
+        var st;
+        st = $(window).scrollTop();
+        if (st > 30) {
+          return bt.css('display', 'block');
+        } else {
+          return bt.css('display', 'none');
+        }
+      });
+      return bt.click(function() {
+        $('body,html').animate({
+          scrollTop: 0
+        }, 800);
+        return false;
+      });
+    }
+  };
+})(this));
+</script>
+
+</body>
+
+</html>

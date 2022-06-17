@@ -1,0 +1,486 @@
+
+<html>
+  <head lang="zh">
+        <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"/>
+        <meta content="yes" name="apple-mobile-web-app-capable"/>
+        <meta content="black" name="apple-mobile-web-app-status-bar-style"/>
+        <meta content="telephone=no" name="format-detection"/>
+        <meta name="renderer" content="webkit">
+    <title>Handler异步消息和同步屏障SyncBarrier | 慕子河的博客</title>
+<link href="http://p0sitive.github.io//styles/main.css" type="text/css" rel="stylesheet"/>
+<script type="text/javascript" src="http://p0sitive.github.io//media/scripts/jquery.js"></script>
+<script type="text/javascript" src="http://p0sitive.github.io//media/scripts/basic.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+  </head>
+
+  <body>
+     <div class="header">
+      <div class="logo_title">
+		  
+        <div class="title animated fadeInDown"><img src="http://p0sitive.github.io//images/avatar.png?v=1655459944852"/>
+
+          <h1 title="慕子河的博客" class="weaklink"><a href="/">慕子河的博客</a>
+
+          </h1>
+
+          <div class="navbar weaklink">
+            <div class="normal_nav">
+
+<div class="bitcron_nav_container">
+
+
+  <div class="bitcron_nav">
+    <div class="mixed_site_nav_wrap site_nav_wrap">
+		
+      <ul class="mixed_site_nav site_nav sm sm-base">
+ 
+  <li><a id="d2ef19af68cc211e98f8a0242ac110003" href="/" class="selected active current nav__item" >首页</a>
+
+  </li>
+ 
+  <li><a id="d2ef19af68cc211e98f8a0242ac110003" href="/archives" class="selected active current nav__item" >归档</a>
+
+  </li>
+ 
+  <li><a id="d2ef19af68cc211e98f8a0242ac110003" href="/tags" class="selected active current nav__item" >标签</a>
+
+  </li>
+ 
+  <li><a id="d2ef19af68cc211e98f8a0242ac110003" href="http://p0sitive.github.io//post/other/" class="selected active current nav__item" >其他</a>
+
+  </li>
+ 
+
+      </ul>
+
+      <div class="clear clear_nav_inline_end"></div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="clear clear_nav_end"></div>
+
+</div>
+
+            </div>
+
+            <div class="hamberger"><i class="fa fa-bars"></i>
+<i class="fa fa-times"></i>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="hidden_nav animated fadeInDown">
+
+<div class="bitcron_nav_container">
+
+
+  <div class="bitcron_nav">
+    <div class="mixed_site_nav_wrap site_nav_wrap">
+      <ul class="mixed_site_nav site_nav sm sm-base">
+		  
+	
+  <li><a id="d2ef19af68cc211e98f8a0242ac110003" href="/" class="selected active current nav__item" >首页</a>
+
+  </li>
+
+
+  <li><a id="d2ef19af68cc211e98f8a0242ac110003" href="/archives" class="selected active current nav__item" >归档</a>
+
+  </li>
+
+
+  <li><a id="d2ef19af68cc211e98f8a0242ac110003" href="/tags" class="selected active current nav__item" >标签</a>
+
+  </li>
+
+
+  <li><a id="d2ef19af68cc211e98f8a0242ac110003" href="http://p0sitive.github.io//post/other/" class="selected active current nav__item" >其他</a>
+
+  </li>
+
+
+
+
+
+      </ul>
+
+      <div class="clear clear_nav_inline_end"></div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="clear clear_nav_end"></div>
+
+</div>
+
+      </div>
+
+    </div>
+
+
+    <div class="main">
+      <div class="main-inner">
+
+
+<div class="content">
+
+
+
+
+
+
+  <div class="post_page" >
+
+<div class="post">
+  <div class="post_title sm_margin">
+    <h2><a>Handler异步消息和同步屏障SyncBarrier</a>
+
+
+
+    </h2>
+  </div>
+
+  <div class="post_details">
+    <div class="info"><i class="fa fa-clock-o"></i>
+<span class="date_info">2022-06-17</span>
+<i class="fa fa-eye"></i>
+
+<span class="date_info"><span id="busuanzi_value_page_pv"></span> Views</span>
+
+
+<i class="fa fa-bookmark-o"></i>
+<span class="tags_info weaklink">
+	
+	<a href="http://p0sitive.github.io/tag/android/" class="tag">android</a>
+
+
+</span>
+
+
+    </div>
+
+  </div>
+
+
+
+
+
+  <div class="post_content markdown"><p class="md_block">
+    <span class="md_line md_line_start md_line_end"><p>Handler的消息还有异步的？怎个异步法？UI线程的Handler执行时不是统一在UI线程吗，怎么能异步？如果你有这样的疑问，那你需要看看源码咯。</p>
+<!-- more -->
+<h2 id="异步消息">异步消息</h2>
+<p>Handler的异步消息不是按照执行时同步异步来说的，这个异步消息对于Message来说就是一个标记位，标记当前消息是一个<strong>特别</strong>的消息。</p>
+<pre><code class="language-java">    /**
+     *如果是true的话标明该消息是个异步消息，不受同步屏障的约束
+     */
+    public boolean isAsynchronous() {
+        return (flags &amp; FLAG_ASYNCHRONOUS) != 0;
+    }
+
+
+    /**
+     * 设置为异步消息，不受同步消息屏障约束
+     * &lt;p&gt;
+     *对于某些操作，比如view的刷新，会引入同步屏障消息在Looper的消息队列中，防止后续的消息一直分发直到某些情况导致view的刷新被卡住。在调用View#invalidate后就会发送messages通过同步屏障挂起，直到View的下一帧即将要Draw。同步屏障确保UI刷新在能够正常执行。
+     * &lt;/p&gt;&lt;p&gt;
+     *异步消息对于同步屏障来说是免疫的。这些通常是指一些中断操作、输入事件或者是其他处理事件的信号，此时需要挂起其他工作。
+     * &lt;/p&gt;&lt;p&gt;
+     * &lt;/p&gt;
+     *标识异步消息顺序在分发时对于有序的同步消息来说是无用的。如果你的消息需要保持一定的顺序请谨慎使用
+     * @param async True if the message is asynchronous.
+     *
+     * @see #isAsynchronous()
+     */
+    public void setAsynchronous(boolean async) {
+        if (async) {
+            flags |= FLAG_ASYNCHRONOUS;
+        } else {
+            flags &amp;= ~FLAG_ASYNCHRONOUS;
+        }
+    }
+
+</code></pre>
+<p>通过<code>setAsynchronous()</code>和<code>isAsynchronous()</code>这2个方法注释，可以大概了解到异步消息不受同步消息屏障的约束，对于有序的同步消息来说，异步消息是无序的。</p>
+<h2 id="handler同步屏障syncbarrier">Handler同步屏障(SyncBarrier)</h2>
+<p>什么是Handler的同步屏障机制？通常我们使用Handler发消息的时候，都是用的默认的构造方法生成Handler，然后用send方法来发送消息，其实这时候我们发送的都是同步消息，发出去之后就会在消息队列里面排队处理。</p>
+<p>我们都知道，Android系统16ms会刷新一次屏幕，如果主线程的消息过多，在16ms之内没有执行完，必然会造成卡顿或者掉帧。那怎么才能不排队，没有延时的处理呢？这个时候就需要异步消息，在处理异步消息的时候，我们就需要同步屏障，让异步消息不用排队等候处理。可以理解为同步屏障是一过滤网，把同步消息队列拦住，先处理异步消息，等异步消息处理完了，这网就会取消，然后继续处理同步消息。</p>
+<p>所以上文说的<strong>异步消息不受同步屏障约束</strong>，是说同步屏障约束的是普通同步消息！</p>
+<p>怎么来使用这个同步屏障呢？在MessageQueue里面有postSyncBarrier方法：</p>
+<pre><code class="language-java">    public int postSyncBarrier() {
+        return postSyncBarrier(SystemClock.uptimeMillis());
+    }
+
+    private int postSyncBarrier(long when) {
+        // Enqueue a new sync barrier token.
+        // We don't need to wake the queue because the purpose of a barrier is to stall it.
+        synchronized (this) {
+            final int token = mNextBarrierToken++;
+            final Message msg = Message.obtain();
+            msg.markInUse();
+            msg.when = when;
+            msg.arg1 = token;
+
+            Message prev = null;
+            Message p = mMessages;
+            if (when != 0) {
+                while (p != null &amp;&amp; p.when &lt;= when) {
+                    prev = p;
+                    p = p.next;
+                }
+            }
+            if (prev != null) { // invariant: p == prev.next
+                msg.next = p;
+                prev.next = msg;
+            } else {
+                msg.next = p;
+                mMessages = msg;
+            }
+            return token;
+        }
+    }
+
+</code></pre>
+<p>其实很简单，就是创建了一个消息，但是值得注意的是，这个消息<strong>没有target</strong>，普通的消息的必须有target的。然后我们来看看怎么取出消息。</p>
+<h2 id="处理异步消息">处理异步消息</h2>
+<pre><code class="language-java">//MessageQueue.java
+    Message next() {
+        省略代码
+        for (;;) {
+            if (nextPollTimeoutMillis != 0) {
+                Binder.flushPendingCommands();
+            }
+
+            nativePollOnce(ptr, nextPollTimeoutMillis);
+
+            synchronized (this) {
+                // Try to retrieve the next message.  Return if found.
+                final long now = SystemClock.uptimeMillis();
+                Message prevMsg = null;
+                Message msg = mMessages;
+                if (msg != null &amp;&amp; msg.target == null) {//判断是否为屏障消息
+                    // Stalled by a barrier.  Find the next asynchronous message in the queue.
+                    do {
+                        prevMsg = msg;
+                        msg = msg.next;
+                    } while (msg != null &amp;&amp; !msg.isAsynchronous());
+                }
+            省略代码
+        }
+    }
+</code></pre>
+<p>这里可以看到有一个很关键的判断，上面我们知道屏障消息的target为空，所以这里判断为true，while循环直到取出异步消息终止。接下来的处理就跟同步消息一样了，这里不赘述。</p>
+<h2 id="如何发送异步消息">如何发送异步消息</h2>
+<ol>
+<li>Message#setAsynchronous方法设置消息为异步消息<pre><code class="language-java">public void setAsynchronous(boolean async) {
+     if (async) {
+         flags |= FLAG_ASYNCHRONOUS;
+     } else {
+         flags &amp;= ~FLAG_ASYNCHRONOUS;
+     }
+ }
+</code></pre>
+</li>
+<li>通过Handler的构造方法，创建一个只能发送异步消息的Handler<pre><code class="language-java">public Handler(boolean async)
+public Handler(@Nullable Callback callback, boolean async)
+public Handler(@NonNull Looper looper, @Nullable Callback callback, boolean async)
+</code></pre>
+</li>
+</ol>
+<h2 id="如何应用">如何应用</h2>
+<p>发送异步消息要搭配发送同步屏障一起使用才能生效。</p>
+<p>发送同步屏障消息只能通过反射操作。</p>
+<pre><code class="language-java">    public void postSyncBarrier() {
+	   Method method = MessageQueue.class.getDeclaredMethod(&quot;postSyncBarrier&quot;);
+	   token = (int) method.invoke(Looper.getMainLooper().getQueue());
+   }
+
+   public void removeSyncBarrier() {
+	   Method method = MessageQueue.class
+	.     getDeclaredMethod(&quot;removeSyncBarrier&quot;, int.class);
+	    method.invoke(Looper.getMainLooper().getQueue(), token);}
+   }
+</code></pre>
+<blockquote>
+<p>发送同步屏障消息后，异步消息处理完成，需要主动移除屏障，否则主线程会一直挂着！</p>
+</blockquote>
+<p>在Android系统里面为了更快响应UI刷新在<code>ViewRootImpl.scheduleTraversals</code>也有应用：</p>
+<pre><code class="language-java">void scheduleTraversals() {
+    if (!mTraversalScheduled) {
+        mTraversalScheduled = true;
+        mTraversalBarrier = mHandler.getLooper().getQueue().postSyncBarrier();
+        mChoreographer.postCallback(
+                Choreographer.CALLBACK_TRAVERSAL, mTraversalRunnable, null);
+        if (!mUnbufferedInputDispatch) {
+            scheduleConsumeBatchedInput();
+        }
+        notifyRendererOfFramePending();
+        pokeDrawLockIfNeeded();
+    }
+}
+</code></pre>
+</p>
+
+     <p class="md_block">
+    <div class="reward"><div class="reward-button">赏 <span class="reward-code"> <span class="alipay-code"> <img class="alipay-img" src="http://p0sitive.github.io//media/images/alipay.png"><b>支付宝扫码打赏</b> </span> <span class="wechat-code"> <img class="wechat-img" src="http://p0sitive.github.io//media/images/wechat.png"><b>微信打赏</b> </span> </span></div></div>
+</p> 
+</div>
+
+</div>
+
+
+
+<link href="http://p0sitive.github.io//styles/main.css" type="text/css" rel="stylesheet"/>
+
+<div class="doc_comments">
+
+          
+            <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+<div id="gitalk-container"></div>
+
+<script>
+
+  var gitalk = new Gitalk({
+    clientID: 'd91c7d19b57e27d0dce4',
+    clientSecret: '17ea8ee73139e14382ef34772d66905aa0681ee8',
+    repo: 'p0sitive.github.io',
+    owner: 'p0sitive',
+    admin: ['p0sitive'],
+    id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false  // Facebook-like distraction free mode
+  })
+
+  gitalk.render('gitalk-container')
+
+</script>
+
+          
+			  
+          
+        
+</div>
+
+
+
+  </div>
+</div>
+
+
+
+      </div>
+
+
+
+
+    </div>
+
+   <div class="footer">
+<link href="http://p0sitive.github.io//styles/main.css" type="text/css" rel="stylesheet"/><div class="site_footer_wrap"><div class="site_footer">
+
+      <div class="mysocials"><div class="my_socials">
+		   
+			   
+    
+			   
+    
+			   
+    
+			   
+    
+</div><link href="http://p0sitive.github.io//styles/main.css" type="text/css" rel="stylesheet"/>
+
+      </div>
+
+      <div class="copyright">Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+      </div>
+
+</div></div>
+
+    </div>
+
+
+<style type="text/css">a.back_to_top {
+    text-decoration: none;
+    position: fixed;
+    bottom: 40px;
+    right: 30px;
+    background: #f0f0f0;
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    line-height: 36px;
+    font-size: 18px;
+    text-align: center;
+    transition-duration: .5s;
+    transition-propety: background-color;
+    display: none;
+}
+
+a.back_to_top span {
+    color: #888;
+}
+
+a.back_to_top:hover {
+    cursor: pointer;
+    background: #dfdfdf;
+}
+
+a.back_to_top:hover span {
+    color: #555;
+}
+
+@media print, screen and (max-width: 580px) {
+    .back_to_top {
+        display: none !important;
+    }
+}
+
+
+
+</style><a id="back_to_top" href="#" class="back_to_top"><span>△</span>
+</a>
+<script type="text/javascript" src="http://p0sitive.github.io//media/scripts/jquery.js"></script>
+
+<script>$(document).ready((function(_this) {
+  return function() {
+    var bt;
+    bt = $('#back_to_top');
+    if ($(document).width() > 480) {
+      $(window).scroll(function() {
+        var st;
+        st = $(window).scrollTop();
+        if (st > 30) {
+          return bt.css('display', 'block');
+        } else {
+          return bt.css('display', 'none');
+        }
+      });
+      return bt.click(function() {
+        $('body,html').animate({
+          scrollTop: 0
+        }, 800);
+        return false;
+      });
+    }
+  };
+})(this));
+</script>
+
+</body>
+
+</html>

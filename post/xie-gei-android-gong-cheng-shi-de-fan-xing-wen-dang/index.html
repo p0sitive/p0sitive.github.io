@@ -1,0 +1,667 @@
+
+<html>
+  <head lang="zh">
+        <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"/>
+        <meta content="yes" name="apple-mobile-web-app-capable"/>
+        <meta content="black" name="apple-mobile-web-app-status-bar-style"/>
+        <meta content="telephone=no" name="format-detection"/>
+        <meta name="renderer" content="webkit">
+    <title>写给Android工程师的泛型文档 | 慕子河的博客</title>
+<link href="http://p0sitive.github.io//styles/main.css" type="text/css" rel="stylesheet"/>
+<script type="text/javascript" src="http://p0sitive.github.io//media/scripts/jquery.js"></script>
+<script type="text/javascript" src="http://p0sitive.github.io//media/scripts/basic.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+  </head>
+
+  <body>
+     <div class="header">
+      <div class="logo_title">
+		  
+        <div class="title animated fadeInDown"><img src="http://p0sitive.github.io//images/avatar.png?v=1655459944852"/>
+
+          <h1 title="慕子河的博客" class="weaklink"><a href="/">慕子河的博客</a>
+
+          </h1>
+
+          <div class="navbar weaklink">
+            <div class="normal_nav">
+
+<div class="bitcron_nav_container">
+
+
+  <div class="bitcron_nav">
+    <div class="mixed_site_nav_wrap site_nav_wrap">
+		
+      <ul class="mixed_site_nav site_nav sm sm-base">
+ 
+  <li><a id="d2ef19af68cc211e98f8a0242ac110003" href="/" class="selected active current nav__item" >首页</a>
+
+  </li>
+ 
+  <li><a id="d2ef19af68cc211e98f8a0242ac110003" href="/archives" class="selected active current nav__item" >归档</a>
+
+  </li>
+ 
+  <li><a id="d2ef19af68cc211e98f8a0242ac110003" href="/tags" class="selected active current nav__item" >标签</a>
+
+  </li>
+ 
+  <li><a id="d2ef19af68cc211e98f8a0242ac110003" href="http://p0sitive.github.io//post/other/" class="selected active current nav__item" >其他</a>
+
+  </li>
+ 
+
+      </ul>
+
+      <div class="clear clear_nav_inline_end"></div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="clear clear_nav_end"></div>
+
+</div>
+
+            </div>
+
+            <div class="hamberger"><i class="fa fa-bars"></i>
+<i class="fa fa-times"></i>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="hidden_nav animated fadeInDown">
+
+<div class="bitcron_nav_container">
+
+
+  <div class="bitcron_nav">
+    <div class="mixed_site_nav_wrap site_nav_wrap">
+      <ul class="mixed_site_nav site_nav sm sm-base">
+		  
+	
+  <li><a id="d2ef19af68cc211e98f8a0242ac110003" href="/" class="selected active current nav__item" >首页</a>
+
+  </li>
+
+
+  <li><a id="d2ef19af68cc211e98f8a0242ac110003" href="/archives" class="selected active current nav__item" >归档</a>
+
+  </li>
+
+
+  <li><a id="d2ef19af68cc211e98f8a0242ac110003" href="/tags" class="selected active current nav__item" >标签</a>
+
+  </li>
+
+
+  <li><a id="d2ef19af68cc211e98f8a0242ac110003" href="http://p0sitive.github.io//post/other/" class="selected active current nav__item" >其他</a>
+
+  </li>
+
+
+
+
+
+      </ul>
+
+      <div class="clear clear_nav_inline_end"></div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="clear clear_nav_end"></div>
+
+</div>
+
+      </div>
+
+    </div>
+
+
+    <div class="main">
+      <div class="main-inner">
+
+
+<div class="content">
+
+
+
+
+
+
+  <div class="post_page" >
+
+<div class="post">
+  <div class="post_title sm_margin">
+    <h2><a>写给Android工程师的泛型文档</a>
+
+
+
+    </h2>
+  </div>
+
+  <div class="post_details">
+    <div class="info"><i class="fa fa-clock-o"></i>
+<span class="date_info">2021-07-19</span>
+<i class="fa fa-eye"></i>
+
+<span class="date_info"><span id="busuanzi_value_page_pv"></span> Views</span>
+
+
+<i class="fa fa-bookmark-o"></i>
+<span class="tags_info weaklink">
+	
+	<a href="http://p0sitive.github.io/tag/android/" class="tag">android</a>
+
+
+</span>
+
+
+    </div>
+
+  </div>
+
+
+
+
+
+  <div class="post_content markdown"><p class="md_block">
+    <span class="md_line md_line_start md_line_end"><h2 id="什么是泛型">什么是泛型</h2>
+<p>泛型，即“泛化类型”。</p>
+<p>那“泛化类型”是什么？先从参数说起，我们都知道参数是方法中要传递的值，定义方法填写的是形参，调用方法传入的是实参。泛化类型就是将原来具体的类型抽象化，此时类型也定义成参数形式，然后在使用/调用时传入具体的类型</p>
+<!-- more -->
+<pre><code class="language-java">//a,b是形参
+int plusNumber(int a,int b){
+    return a + b;
+}
+
+//调用传入的值为实参
+plusNumber(1,2)
+
+//泛型方法
+T plusNumber(T a, T b){
+    return a + b;
+}
+</code></pre>
+<p>泛型的本质是为了参数化类型（在不创建新的类型的情况下，通过泛型指定的不同类型来控制形参具体限制的类型）。也就是说在泛型使用过程中，操作的数据类型被指定为一个参数。这种参数类型可以用在类、接口和方法中，分别被称为泛型类、泛型接口、泛型方法。</p>
+<p>在我们使用较多的集合类，如<code>ArrayList</code>,<code>HashSet</code>,<code>HashMap</code>等就是泛型类。就像上面说的，我们在使用这些集合类时不会为每一个类型去实现一个具体集合类，因此JDK为我们抽象了传入类型设计了诸多集合类。</p>
+<p>还需要说明的一点是泛型是Java在1.5时引入的，当时为了兼容之前的版本，就选用了在编译时通过<code>类型擦除</code>这种比较别扭的方式来实现泛型。编译器在编译时会擦除类型实参，在运行时不存在任何类型相关的信息，泛型对于 JVM 来说是透明的，有泛型和没有泛型的代码通过编译器编译后所生成的二进制代码是完全相同的</p>
+<h2 id="类型擦除">类型擦除</h2>
+<p>我们在接触到泛型时就会听到有类型擦除这个名词。</p>
+<p>类型擦除是指在编译期间，所有的指定的泛型信息都会被编译器抹去，变为<code>Object</code>类型，在生成的字节码中是不包含泛型中类型信息的。</p>
+<p>举个例子，在代码中定义的<code>List&lt;Object&gt;</code>和<code>List&lt;String&gt;</code>等类型，在编译时都会变成<code>List</code>。JVM识别的只是<code>List</code>，而我们在定义该<code>List&lt;String&gt;</code>等设置的泛型信息对于JVM是看不到的。</p>
+<pre><code class="language-java">public class Test {
+    public static void main(String[] args) {
+        //String列表
+        ArrayList&lt;String&gt; list1 = new ArrayList&lt;&gt;();
+        list1.add(&quot;a string&quot;);
+
+        //Integer列表
+        ArrayList&lt;Integer&gt; list2 = new ArrayList&lt;&gt;();
+        list2.add(1);
+
+        //判断两个List类型是否相等
+        System.out.println(list1.getClass() == list2.getClass());
+    }
+}
+</code></pre>
+<p>这里最后的输出是<code>true</code>，两个list的class是相同的，在编译后泛型<code>String</code>和<code>Integer</code>都被擦除掉了，只剩下原始类型</p>
+<p>我们将上述代码转为class文件查看一下</p>
+<pre><code class="language-java">//Test.class
+public class Test {
+    public Test() {
+    }
+
+    public static void main(String[] var0) {
+        //这里仅剩ArrayList的声明
+        ArrayList var1 = new ArrayList();
+        var1.add(&quot;a string&quot;);
+        //这里仅剩ArrayList的声明
+        ArrayList var2 = new ArrayList();
+        var2.add(1);
+        //两个类型都是ArrayList，所以输出true
+        System.out.println(var1.getClass() == var2.getClass());
+    }
+}
+</code></pre>
+<p>按照上文说的<code>ArrayList</code>在编译后会将泛型擦除，只剩下原始类型。那能否在<code>ArrayList&lt;String&gt;</code>列表添加<code>原始类型</code>数据呢。</p>
+<p>事实上通过反射是可以添加不同类型数据的，看下面这个例子：</p>
+<pre><code class="language-java">public class Test {
+
+    public static void main(String[] args) throws Exception {
+
+        ArrayList&lt;Integer&gt; list = new ArrayList&lt;Integer&gt;();
+
+        list.add(1);  //这样调用 add 方法只能存储整形，因为泛型类型的实例为 Integer
+
+        list.getClass().getMethod(&quot;add&quot;, Object.class).invoke(list, &quot;string&quot;);
+
+        for (int i = 0; i &lt; list.size(); i++) {
+            System.out.println(list.get(i));
+        }
+    }
+}
+</code></pre>
+<p>这个代码会输出：</p>
+<pre><code>1
+string
+</code></pre>
+<p>Java 泛型对于类型的约束只在编译期存在，运行时仍然会按照 Java 5 之前的机制来运行，泛型的具体类型在运行时已经被删除了，所以 JVM 是识别不到我们在代码中指定的具体的泛型类型的<br>
+例如，虽然<code>List&lt;String&gt;</code>只能用于添加字符串，但我们只能泛化地识别到它属于<code>List&lt;?&gt;</code>类型，而无法具体判断出该 List 内部包含的具体类型</p>
+<pre><code class="language-java">public &lt;T&gt; void filter(T data) {
+        //正常
+        if (data instanceof String) {
+
+        }
+        //👇报错 ：Expression expected
+        if (T instanceof String) {
+
+        }
+        //👇报错 ：Class&lt;T&gt; is not a functional interface
+        Class&lt;T&gt; tClass = T::getClass;
+    }
+</code></pre>
+<p>初步看，泛型擦除好像是没什么大的问题，但是仔细想想，在强制类型转换的时候，由于会丢掉类型的一些信息，会导致一些不符合预期的事情。比如有个基类 A，和它的两个子类 B 和 C ，然后我们有下面的一段代码。</p>
+<pre><code class="language-java">List&lt;A&gt; listA = new ArrayList&lt;A&gt;();
+listA.add(new B()); // 错误的，
+</code></pre>
+<p>第二行代码是不符合预期的，因为 listA 里面期望放的是 A 而不是 B。 但是这个好像不太符合预期，我们有时候希望子类是可以放进容器里面的。但是如果支持这个操作的话，会发生什么呢？取出来来的是 B 还是 C ？如果不能明确，那么就没有实现“泛型”。</p>
+<p>为了解决这个问题， Java 大佬们想了个方法，提出了一些通配符来解决这些问题。</p>
+<h2 id="通配符">?通配符</h2>
+<p>? 通配符称为无限通配符，表示不确定类型</p>
+<h2 id="上界通配符-extends">上界通配符 extends</h2>
+<p><code>extends</code>一般称为上界通配符，表示的意思是：取值范围为 (某个类的子类, 某个类]。<code>&lt;? extends E&gt;</code> 的类能保证从这个定义类中拿到的<code>数据E</code>，一定是E的子类。它限定了泛型的父类型。</p>
+<blockquote>
+<p>在继承关系树中，子类继承自父类，可以认为父类在上，子类在下。可以将父类作为上界，子类作为下界来说的话。</p>
+</blockquote>
+<p>因此<code>extends</code>被称为上界通配符.</p>
+<p>不过 <code>extends</code>只能用于输出，不能用于输入。</p>
+<p>举个例子：</p>
+<pre><code class="language-java">List&lt;Dog&gt; dogs = new ArrayList&lt;&gt;();
+List&lt;? extends Animal&gt; animals = dogs;
+Animal animal = animals.get(0);
+                        //👆 可以直接取出
+animals.add(new Dog());
+            //👆 报错：Required type:capture of ? extends Animal   Provided:Dog
+</code></pre>
+<p>声明了上界通配符泛型的集合，不再允许 add 新的对象，子类不行，父类也不行。拓展开来说：不止是集合，自己写的泛型类也不行。</p>
+<p>由于只能输出，向外部提供数据，从这个角度来说，向外提供数据的一方被称为<code>生产者 Producer</code>，即<code>PECS原则</code>中的<code>Producer-Extends</code>。生产者对于的<code>消息者 Customer</code>，对应Java里面另一个泛型通配符：<code>？ super E</code></p>
+<h2 id="下界通配符-super">下界通配符 super</h2>
+<p>下界通配符表示的意思是：取值范围为 [某个类，这个类的父类)，与<code>extends</code>仅能输出相反，<code>? super E</code>只能输入数据，不能输出。</p>
+<pre><code class="language-java">List&lt;? super Dog&gt; dogs = new ArrayList&lt;&gt;();
+dogs.add(new Dog());
+//👆 可以直接添加
+Object obj = dogs.get(0);
+                //👆 get出的Object类型，在 Java 里任何对象都是 Object 的子类
+Animal animal = dogs.get(0);
+                    //👆 报错：Required type:Animal Provided:capture of ? super Dog
+</code></pre>
+<p>下界通配符 <code>? super </code>的泛型，只能读取到 <code>Object</code>对象，一般没有什么实际的使用场景，通常也只拿它来添加数据，也就是消费已有的<code>List&lt;? super E&gt;</code>，往里面添加数据，因此这种泛型类型声明称之为<code>消费者 Consumer</code>即<code>PECS原则</code>中的<code>Consumer-Super</code>。</p>
+<h2 id="协变-逆变">协变、逆变？</h2>
+<p>在我们学习泛型时可能会听到什么：协变、逆变，甚至还有个”不变“？？？下面来介绍一下这几个名词是用来干嘛的。</p>
+<p>协变和逆变都是术语，它们都是用来描述数据在存取过程中显示的类型。</p>
+<p>举个例子：</p>
+<pre><code class="language-java">List&lt;Dog&gt; dogs = new ArrayList&lt;&gt;();
+List&lt;Animal&gt; animals = dogs;
+        //👆 报错：Required type: List&lt;Animal&gt;  Provided:List&lt;Dog&gt;
+</code></pre>
+<p><code>Dog</code>是<code>Animal</code>的子类，但<code>List&lt;Dog&gt;</code>不是<code>List&lt;Animal&gt;</code>子类，上面的赋值出现了错误。这是因为Java的泛型本身具有<strong>不可变性：Invariance</strong>。</p>
+<h3 id="协变">协变</h3>
+<p><strong><code>covariant[koʊˈveriənt,koʊˈværiənt] </code></strong> 在参数类型中父类和子类在构造过程中使用了派生程度更大的父类，叫做<code>协变</code></p>
+<p>例如上个例子里，不能将<code>List&lt;Dog&gt;</code>赋值给<code>List&lt;Animal&gt;</code>，是因为他们俩不具有继承关系。但我们可以通过上界通配符 <code>extends</code>使得<code>List&lt;Dog&gt;</code>是<code>List&lt;? extends Animal&gt;</code>子类，改变了上述中的不可变性，来使泛型支持可变，这种可变叫做协变。</p>
+<pre><code class="language-java">List&lt;Dog&gt; dogs = new ArrayList&lt;&gt;();
+List&lt;? extends Animal&gt; animals = dogs;
+        //👆 赋值通过
+</code></pre>
+<p>但是<code>extends</code>只能读取不能修改，这里的修改仅指对泛型集合添加元素，如果是 remove(int index) 以及 clear 当然是可以的。</p>
+<h3 id="逆变">逆变</h3>
+<p><strong><code>contravariant [kɔntrə'væriənt]</code></strong> 在参数类型中父类和子类在构造过程中逆转了父类，使用了比父类派生程度更小的子类，叫做<code>逆变</code></p>
+<p>例子：</p>
+<pre><code class="language-java">List&lt;Animal&gt; animals = new ArrayList&lt;&gt;();
+List&lt;? super Dog&gt; dogs = animals;
+        //👆 赋值通过
+</code></pre>
+<p>这个例子<code>Animal</code>是<code>Dog</code>的父类，但使用了泛型通配符<code>? super</code>，<code>List&lt;Animal</code>&gt;是<code>List&lt;? super Dog&gt;</code>的子类。协变还比较好理解，毕竟其继承关系是相同的，但逆变就比较反直觉了，整个继承关系都倒过来了。</p>
+<p>使用<code>? super</code>来使泛型支持逆变，但是只能修改不能读取。</p>
+<blockquote>
+<p>这里说的不能读取是指不能按照泛型类型读取，你如果按照 Object 读出来再强转当然也是可以的。</p>
+</blockquote>
+<h2 id="kotlin中的泛型">Kotlin中的泛型</h2>
+<p>kotlin也是支持泛型的，和Java上下界通配符一样，kotlin中使用<code>in</code>和<code>out</code>来标识上下界。</p>
+<h3 id="inout关键字">in，out关键字</h3>
+<p>out 和 in 都是 Kotlin 的关键字，其作用都是为了来应对泛型问题。in 和 out 是一个对立面，同时它们又与泛型不变相对立，统称为型变</p>
+<ul>
+<li>out 出去的意思，本身带有倾向于取值操作，用于泛型协变，等同于 Java 中的上界通配符 ? extends</li>
+<li>in 进来的意思，本身带有倾向于存值操作，用于泛型逆变，等同于 Java 中的下界通配符 ? super</li>
+</ul>
+<h3 id="支持协变的list">支持协变的List</h3>
+<p>对 Kotlin 有一定了解的同学应该知道，Kotlin 中的集合框架分为两种大类：可读可写和只能读不能写<br>
+以 Java 中的 <code>ArrayList</code> 为例，Kotlin 将之分为了 <code>MutableList</code> 和 <code>List</code> 两种类型的接口。而 <code>List</code>接口中的泛型已经使用 <code>out</code>关键字进行修饰了，且不包含任何传入值并保存的方法，即 List 接口只支持读值而不支持写值。</p>
+<pre><code class="language-kotlin">/ Collections.kt
+// E被声明为out
+public interface List&lt;out E&gt; : Collection&lt;E&gt; {
+
+    override val size: Int
+    override fun isEmpty(): Boolean
+
+    // E作为函数形参类型，而且还加上了@UnsafeVariance注解，下面会解释
+    override fun contains(element: @UnsafeVariance E): Boolean
+
+    // E作为函数返回值的类型Iterator泛型的类型实参
+    override fun iterator(): Iterator&lt;E&gt;
+
+    // E作为函数形参的类型Collection泛型的类型实参，而且还加上了@UnsafeVariance注解，下面会解释
+    override fun containsAll(elements: Collection&lt;@UnsafeVariance E&gt;): Boolean
+
+    // E作为函数返回值的类型
+    public operator fun get(index: Int): E
+
+    // E作为函数形参类型，而且还加上了@UnsafeVariance注解，下面会解释
+    public fun indexOf(element: @UnsafeVariance E): Int
+
+    // E作为函数形参类型，而且还加上了@UnsafeVariance注解，下面会解释
+    public fun lastIndexOf(element: @UnsafeVariance E): Int
+
+    // E作为函数返回值的类型ListIterator泛型的类型实参
+    public fun listIterator(): ListIterator&lt;E&gt;
+
+    // E作为函数返回值的类型ListIterator泛型的类型实参
+    public fun listIterator(index: Int): ListIterator&lt;E&gt;
+
+    // E作为函数返回值的类型List泛型的类型实参
+    public fun subList(fromIndex: Int, toIndex: Int): List&lt;E&gt;
+
+}
+</code></pre>
+<h4 id="unsafevariance">@UnsafeVariance</h4>
+<blockquote>
+<p>在上面说的List源码中，我们发现虽然List是协变的，但是有时出现的位置是逆变的位置，这是为什么呢？其实是可以出现在任何位置上，但是要保证以下两点定义：协变保证泛型内部操作类型时是只读的，逆变保证泛型内部操作类型时是只写的，大体上要遵循上面说的那几个out协变点和in逆变点。</p>
+<p>我们可以通过加上@UnsafeVariance注解告诉编译器这个地方是合法、安全，让其通过编译，如果不加的话，编译器会认为你这里是不合法，编译不通过。</p>
+<p>例如上面说的List源码中，有一个contains函数，这个函数的作用是检查此元素是否包含在此集合中，它的实现方法没有出现写操作，所以这里就可以加上@UnsafeVariance注解，让其通过编译器。</p>
+</blockquote>
+<pre><code class="language-kotlin">// Collections.kt
+public interface MutableList&lt;E&gt; : List&lt;E&gt;, MutableCollection&lt;E&gt; {
+
+    // E作为函数形参类型
+    override fun add(element: E): Boolean
+
+    // E作为函数形参类型
+    override fun remove(element: E): Boolean
+
+    // E作为函数形参的类型Collection泛型的类型实参
+    override fun addAll(elements: Collection&lt;E&gt;): Boolean
+
+    // E作为函数形参的类型Collection泛型的类型实参
+    public fun addAll(index: Int, elements: Collection&lt;E&gt;): Boolean
+
+    // E作为函数形参的类型Collection泛型的类型实参
+    override fun removeAll(elements: Collection&lt;E&gt;): Boolean
+
+    // E作为函数形参的类型Collection泛型的类型实参
+    override fun retainAll(elements: Collection&lt;E&gt;): Boolean
+    override fun clear(): Unit
+
+    // E作为函数形参类型
+    public operator fun set(index: Int, element: E): E
+
+    // E作为函数形参类型
+    public fun add(index: Int, element: E): Unit
+
+    // E作为函数返回值的类型
+    public fun removeAt(index: Int): E
+
+    // E作为函数返回值的类型MutableListIterator泛型的类型实参
+    override fun listIterator(): MutableListIterator&lt;E&gt;
+
+    // E作为函数返回值的类型MutableListIterator泛型的类型实参
+    override fun listIterator(index: Int): MutableListIterator&lt;E&gt;
+
+    // E作为函数返回值的类型MutableList泛型的类型实参
+    override fun subList(fromIndex: Int, toIndex: Int): MutableList&lt;E&gt;
+
+}
+</code></pre>
+<h3 id="号">* 号</h3>
+<p>前面讲到了 Java 中单个 ? 号也能作为泛型通配符使用，相当于 <code>? extends Object</code>。<br>
+它在 Kotlin 中有等效的写法：<code>* </code>号，相当于 <code>out Any</code>。</p>
+<pre><code class="language-kotlin">              👇
+var list: List&lt;*&gt;
+</code></pre>
+<p>Kotlin和 Java 不同的地方是，如果你的类型定义里已经有了 out 或者 in，那这个限制在变量声明时也依然在，不会被 * 号去掉。</p>
+<p>比如你的类型定义里是 out T : Number 的，那它加上 &lt;*&gt; 之后的效果就不是 out Any，而是 out Number。</p>
+<h3 id="where-关键字">where 关键字</h3>
+<p>Java 中声明类或接口的时候，可以使用 extends 来设置边界，将泛型类型参数限制为某个类型的子集：</p>
+<p>如果这个边界是可以设置多个，用 <code>&amp;</code> 符号连接：</p>
+<pre><code class="language-java">//                            👇  T 的类型必须同时是 Animal 和 Food 的子类型
+class Monster&lt;T extends Animal &amp; Food&gt;{ 
+}
+</code></pre>
+<p>Kotlin 只是把 extends 换成了 : 冒号。</p>
+<pre><code class="language-kotlin">               👇
+class Monster&lt;T : Animal&gt;
+</code></pre>
+<p>Kotlin设置多个边界可以使用 where 关键字：</p>
+<pre><code class="language-kotlin">                 👇
+class Monster&lt;T&gt; where T : Animal, T : Food
+</code></pre>
+<h3 id="reified">reified</h3>
+<p>前面有说到，由于 Java 中的泛型存在类型擦除的情况，任何在运行时需要知道泛型确切类型信息的操作都没法用了。比如你不能在Java中通过<code>instanceof</code>或kotlin中使用<code>as</code>关键字检查一个对象是否为泛型类型 T 的实例。</p>
+<p>这个问题在Java中解决方式通常是传入当前类型的<code>Class</code>类型的参数，然后通过<code>Class.isInstance</code>方法来检查是否是泛型类。</p>
+<pre><code class="language-java">                              // 👇传入Class&lt;T&gt;
+&lt;T&gt; void check(Object item, Class&lt;T&gt; type) {
+    if (type.isInstance(item)) {
+            //👆 判断是否是泛型T
+    }
+}
+</code></pre>
+<p>Kotlin 中同样可以这么解决，不过还有一个更方便的做法：使用关键字 reified 配合 inline 来解决：</p>
+<pre><code class="language-kotlin">//👇inline关键字  👇reified关键字
+inline fun &lt;reified T&gt; printIfTypeMatch(item: Any) {
+    if (item is T) { // 👈 这里就不会在提示错误了
+
+    }
+}
+</code></pre>
+<p>总结一下：</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>协变</th>
+<th>逆变</th>
+<th>通配符</th>
+<th>判断泛型T</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Java</td>
+<td>&lt;? extends T&gt; 只能输出，不能输入<br/>作为生产者Producer</td>
+<td>&lt;? super T&gt; 只能输入，不能输出<br/>作为消费者Customer</td>
+<td>?代表<code>? extrend Object</code></td>
+<td>传入<code>Class&lt;T&gt;</code><br/>使用<code>class.isInstance(xx)</code></td>
+</tr>
+<tr>
+<td>kotlin</td>
+<td>out</td>
+<td>in</td>
+<td>* 代表 <code>out Any</code></td>
+<td>1. <code>Class&lt;T&gt;</code><br/>2. <code>inline + reified</code></td>
+</tr>
+</tbody>
+</table>
+<br/>
+<br/>
+参考文章：
+<p>https://juejin.cn/post/6935322686943920159</p>
+<p>https://rengwuxian.com/kotlin-generics/</p>
+<p>https://mp.weixin.qq.com/s/peSwYSpaWgN9YYPjwE3rnA</p>
+<p>https://mp.weixin.qq.com/s/g9bufOxbgaZtqxMYowyxdQ</p>
+<p>https://xander_wang.gitee.io/android-note/2021/02/06/android_note/android_note_01/</p>
+<p>https://docs.microsoft.com/zh-cn/dotnet/standard/generics/covariance-and-contravariance</p>
+</p>
+
+     <p class="md_block">
+    <div class="reward"><div class="reward-button">赏 <span class="reward-code"> <span class="alipay-code"> <img class="alipay-img" src="http://p0sitive.github.io//media/images/alipay.png"><b>支付宝扫码打赏</b> </span> <span class="wechat-code"> <img class="wechat-img" src="http://p0sitive.github.io//media/images/wechat.png"><b>微信打赏</b> </span> </span></div></div>
+</p> 
+</div>
+
+</div>
+
+
+
+<link href="http://p0sitive.github.io//styles/main.css" type="text/css" rel="stylesheet"/>
+
+<div class="doc_comments">
+
+          
+            <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+<div id="gitalk-container"></div>
+
+<script>
+
+  var gitalk = new Gitalk({
+    clientID: 'd91c7d19b57e27d0dce4',
+    clientSecret: '17ea8ee73139e14382ef34772d66905aa0681ee8',
+    repo: 'p0sitive.github.io',
+    owner: 'p0sitive',
+    admin: ['p0sitive'],
+    id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false  // Facebook-like distraction free mode
+  })
+
+  gitalk.render('gitalk-container')
+
+</script>
+
+          
+			  
+          
+        
+</div>
+
+
+
+  </div>
+</div>
+
+
+
+      </div>
+
+
+
+
+    </div>
+
+   <div class="footer">
+<link href="http://p0sitive.github.io//styles/main.css" type="text/css" rel="stylesheet"/><div class="site_footer_wrap"><div class="site_footer">
+
+      <div class="mysocials"><div class="my_socials">
+		   
+			   
+    
+			   
+    
+			   
+    
+			   
+    
+</div><link href="http://p0sitive.github.io//styles/main.css" type="text/css" rel="stylesheet"/>
+
+      </div>
+
+      <div class="copyright">Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+      </div>
+
+</div></div>
+
+    </div>
+
+
+<style type="text/css">a.back_to_top {
+    text-decoration: none;
+    position: fixed;
+    bottom: 40px;
+    right: 30px;
+    background: #f0f0f0;
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    line-height: 36px;
+    font-size: 18px;
+    text-align: center;
+    transition-duration: .5s;
+    transition-propety: background-color;
+    display: none;
+}
+
+a.back_to_top span {
+    color: #888;
+}
+
+a.back_to_top:hover {
+    cursor: pointer;
+    background: #dfdfdf;
+}
+
+a.back_to_top:hover span {
+    color: #555;
+}
+
+@media print, screen and (max-width: 580px) {
+    .back_to_top {
+        display: none !important;
+    }
+}
+
+
+
+</style><a id="back_to_top" href="#" class="back_to_top"><span>△</span>
+</a>
+<script type="text/javascript" src="http://p0sitive.github.io//media/scripts/jquery.js"></script>
+
+<script>$(document).ready((function(_this) {
+  return function() {
+    var bt;
+    bt = $('#back_to_top');
+    if ($(document).width() > 480) {
+      $(window).scroll(function() {
+        var st;
+        st = $(window).scrollTop();
+        if (st > 30) {
+          return bt.css('display', 'block');
+        } else {
+          return bt.css('display', 'none');
+        }
+      });
+      return bt.click(function() {
+        $('body,html').animate({
+          scrollTop: 0
+        }, 800);
+        return false;
+      });
+    }
+  };
+})(this));
+</script>
+
+</body>
+
+</html>

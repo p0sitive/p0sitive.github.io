@@ -1,0 +1,440 @@
+
+<html>
+  <head lang="zh">
+        <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"/>
+        <meta content="yes" name="apple-mobile-web-app-capable"/>
+        <meta content="black" name="apple-mobile-web-app-status-bar-style"/>
+        <meta content="telephone=no" name="format-detection"/>
+        <meta name="renderer" content="webkit">
+    <title>聊聊Android Clean框架 | 慕子河的博客</title>
+<link href="http://p0sitive.github.io//styles/main.css" type="text/css" rel="stylesheet"/>
+<script type="text/javascript" src="http://p0sitive.github.io//media/scripts/jquery.js"></script>
+<script type="text/javascript" src="http://p0sitive.github.io//media/scripts/basic.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+  </head>
+
+  <body>
+     <div class="header">
+      <div class="logo_title">
+		  
+        <div class="title animated fadeInDown"><img src="http://p0sitive.github.io//images/avatar.png?v=1655459944852"/>
+
+          <h1 title="慕子河的博客" class="weaklink"><a href="/">慕子河的博客</a>
+
+          </h1>
+
+          <div class="navbar weaklink">
+            <div class="normal_nav">
+
+<div class="bitcron_nav_container">
+
+
+  <div class="bitcron_nav">
+    <div class="mixed_site_nav_wrap site_nav_wrap">
+		
+      <ul class="mixed_site_nav site_nav sm sm-base">
+ 
+  <li><a id="d2ef19af68cc211e98f8a0242ac110003" href="/" class="selected active current nav__item" >首页</a>
+
+  </li>
+ 
+  <li><a id="d2ef19af68cc211e98f8a0242ac110003" href="/archives" class="selected active current nav__item" >归档</a>
+
+  </li>
+ 
+  <li><a id="d2ef19af68cc211e98f8a0242ac110003" href="/tags" class="selected active current nav__item" >标签</a>
+
+  </li>
+ 
+  <li><a id="d2ef19af68cc211e98f8a0242ac110003" href="http://p0sitive.github.io//post/other/" class="selected active current nav__item" >其他</a>
+
+  </li>
+ 
+
+      </ul>
+
+      <div class="clear clear_nav_inline_end"></div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="clear clear_nav_end"></div>
+
+</div>
+
+            </div>
+
+            <div class="hamberger"><i class="fa fa-bars"></i>
+<i class="fa fa-times"></i>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="hidden_nav animated fadeInDown">
+
+<div class="bitcron_nav_container">
+
+
+  <div class="bitcron_nav">
+    <div class="mixed_site_nav_wrap site_nav_wrap">
+      <ul class="mixed_site_nav site_nav sm sm-base">
+		  
+	
+  <li><a id="d2ef19af68cc211e98f8a0242ac110003" href="/" class="selected active current nav__item" >首页</a>
+
+  </li>
+
+
+  <li><a id="d2ef19af68cc211e98f8a0242ac110003" href="/archives" class="selected active current nav__item" >归档</a>
+
+  </li>
+
+
+  <li><a id="d2ef19af68cc211e98f8a0242ac110003" href="/tags" class="selected active current nav__item" >标签</a>
+
+  </li>
+
+
+  <li><a id="d2ef19af68cc211e98f8a0242ac110003" href="http://p0sitive.github.io//post/other/" class="selected active current nav__item" >其他</a>
+
+  </li>
+
+
+
+
+
+      </ul>
+
+      <div class="clear clear_nav_inline_end"></div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="clear clear_nav_end"></div>
+
+</div>
+
+      </div>
+
+    </div>
+
+
+    <div class="main">
+      <div class="main-inner">
+
+
+<div class="content">
+
+
+
+
+
+
+  <div class="post_page" >
+
+<div class="post">
+  <div class="post_title sm_margin">
+    <h2><a>聊聊Android Clean框架</a>
+
+
+
+    </h2>
+  </div>
+
+  <div class="post_details">
+    <div class="info"><i class="fa fa-clock-o"></i>
+<span class="date_info">2020-09-11</span>
+<i class="fa fa-eye"></i>
+
+<span class="date_info"><span id="busuanzi_value_page_pv"></span> Views</span>
+
+
+<i class="fa fa-bookmark-o"></i>
+<span class="tags_info weaklink">
+	
+	<a href="http://p0sitive.github.io/tag/ougDIJB1O/" class="tag">架构</a>
+
+	<a href="http://p0sitive.github.io/tag/android/" class="tag">android</a>
+
+
+</span>
+
+
+    </div>
+
+  </div>
+
+
+
+
+
+  <div class="post_content markdown"><p class="md_block">
+    <span class="md_line md_line_start md_line_end"><h2 id="背景">背景</h2>
+<p><code>Clean Architecture</code>是由Uncle Bob在2012年提出的一种架构模式。</p>
+<figure data-type="image" tabindex="1"><img src="https://blog.cleancoder.com/uncle-bob/images/2012-08-13-the-clean-architecture/CleanArchitecture.jpg" alt="" loading="lazy"></figure>
+<p>Clean架构的目标是<strong>关注点分离</strong>，实现解耦。上面的洋葱图中，将软件分为了很多层，层层包裹，其中有一个重要的依赖规则：源码依赖方向只能由外向内。内圈不能依赖外圈，即内圈相对来是业务核心，中间层是业务转换模块，外部则是可以替换的部分。</p>
+<!-- more -->
+<p>同时Bob在提出架构体系中也归纳了一个架构应该满足的一些条件：</p>
+<ul>
+<li>
+<p>独立框架。架构不依赖于一些满载功能的软件库。这可以让你像使用工具一样使用这样的框架，而不是把系统塞到他们有限的约束之中。</p>
+</li>
+<li>
+<p>可测试性。可以在没有UI，数据库，Web服务器或任何其他外部元素的情况下测试业务规则。</p>
+</li>
+<li>
+<p>UI独立。UI可以轻松更改，而无需更改系统的其余部分。例如，可以在不更改业务规则的情况下用控制台UI替换Web UI。</p>
+</li>
+<li>
+<p>独立于数据库。您的业​​务规则未绑定到数据库，这样就可以将Oracle或SQL Server换成MongoDb，My SQL或其他数据库。</p>
+</li>
+<li>
+<p>外部机制独立。事实上业务规则根本不知道外层的事情。</p>
+</li>
+</ul>
+<h2 id="洋葱图层级">洋葱图层级</h2>
+<p>我们再仔细看一下这个洋葱图右上角，对软件的四个层由外向内进行的简述</p>
+<h3 id="框架和驱动frameworks-and-drivers">框架和驱动（Frameworks and Drivers）</h3>
+<p>最外层包含框架和工具，一般为表现当前软件的具体内容。包括UI、框架、数据库等，从上面的描述，这一层是可以被替换的，比如ui的实现，数据库的类型等等。</p>
+<h3 id="接口适配器interface-adapter">接口适配器（Interface Adapter）</h3>
+<p>这一层是软件的一系列的适配器，主要作用是将用例和实体使用的数据格式方便的转化为数据库或者Web等外层方便的数据格式。</p>
+<p>这里的实现可以是 <code>Controller</code> 、 <code>Presenter</code> 和 <code>ViewModel</code> 等我们常说的 <code>MVC</code> ， <code>MVP</code> 和 <code>MVVM</code> 等 <strong>MVX</strong> 中 <strong>X</strong> 实现的地方</p>
+<h3 id="应用业务规则application-business-rules">应用业务规则（Application Business Rules）</h3>
+<p>这一层又可以称为 <code>Use Case</code> 。他包含了特定的业务规则，整合并实现了系统中所需要的所有用例。这些用例协调者通向内层实体间的数据流，并且使用当前的业务规则来实现业务逻辑。</p>
+<p>由依赖原则来说，不希望这层的改动，而影响到内层，同样的不希望外层 <code>Interface Adapter</code> 改动后影响到该层。这一层应该是独立，但往往对于一个软件来说业务逻辑有可能是会改变的，那如果发生了改变的话，这层代码当然也要改变。</p>
+<h3 id="实体entities">实体（Entities）</h3>
+<p>实体层封装了业务范围的规则。这层不仅仅是我们在数据库中映射的对象，还可以是有方法的对象，或者一系列数据结构和方法。</p>
+<h3 id="一定是4层吗">一定是4层吗</h3>
+<p>Bob在文章中也提到了，<strong>这4层只是一个简述，实际可能要比四层多，但依赖原则是一定要从外向内的。越往内层移动抽象的等级越高</strong>。最外层环是低抽象等级的具体细节，也封装了更高等级的策略，最内层是最通用的策略。</p>
+<h2 id="android-中的使用-clean">Android 中的使用 Clean</h2>
+<p>对于 Android 来说使用 Clean 框架，有一个重要的开源项目<a href="https://github.com/android10/Android-CleanArchitecture/">Android-CleanArchitecture</a></p>
+<p>这个工程中将洋葱图简化为以下，</p>
+<figure data-type="image" tabindex="2"><img src="https://raw.githubusercontent.com/android10/Sample-Data/master/Android-CleanArchitecture/clean_architecture.png" alt="" loading="lazy"></figure>
+<p>同时项目作者 <strong>Fernando</strong>大神也将洋葱图在 Android 上的使用抽取简化为以下三层结构<br>
+<code>Presentation Layer</code>、<code>Domain Layer</code>和<code>Data Layer</code>。这三层都有自己存在的目的，并且相对独立。</p>
+<figure data-type="image" tabindex="3"><img src="https://raw.githubusercontent.com/android10/Sample-Data/master/Android-CleanArchitecture/clean_architecture_layers.png" alt="" loading="lazy"></figure>
+<h3 id="presentation-layer"><code>Presentation Layer</code></h3>
+<p>这里是 <strong>MVX</strong> 中 <strong>X</strong> （Presenter、ViewModel）所在的地方，这里持有了View，是操作UI该如何渲染的地方。</p>
+<h3 id="domain-layer"><code>Domain Layer</code></h3>
+<figure data-type="image" tabindex="4"><img src="https://fernandocejas.com/assets/img/blog/clean_architecture_clean_way_domain.png" alt="" loading="lazy"></figure>
+<p>所有的业务逻辑和<code>Use Case</code> 应该在这一层被实现。在这里包含了use case(用例)以及Bussiness Objects(业务对象),按照洋葱图的依赖规则，这层属于最内层，也就是完全不依赖于外层。Fernando大神建议这一层应该是一个纯java模块</p>
+<figure data-type="image" tabindex="5"><img src="https://wos.58cdn.com.cn/IjGfEdCbIlr/ishare/a6f23031-bd20-4f40-bb14-ea5a99ff9363image.png" alt="image.png" loading="lazy"></figure>
+<h4 id="use-case">Use Case</h4>
+<p>Use Case 描述了业务逻辑，是整个App中最核心的元素。举个例子，假如说我对你的app一无所知，我只需要看你的domain层的描述，就能完全知道你的app能做什么，完全不需要看其他层次，它规定了要做什么，至于怎么做怎么实现，这些具体的实现逻辑就是外层的事情了，因为按照Uncle bob的说法，越往内层抽象的等级越高，最外层通常是具体的实现细节。</p>
+<p>你完全可以在app中建立多个Use Case，即使是一些很小看起来很简单的逻辑，Domain层的大部分业务逻辑都是在 <code>Use Case</code> 中实现的。这里是一个纯java模块，不包含任何的 Android 依赖。</p>
+<h3 id="data-layer"><code>Data Layer</code></h3>
+<p>数据层主要作用是提供应用中所有的数据需求。该层实现可以使用 <code>Repository Pattern</code>方式。</p>
+<blockquote>
+<p>什么是 <strong>Respository</strong> ?</p>
+<p><strong>Repository是不同的域(domain)中数据和操作之间的桥梁。</strong><br>
+使用 <code>Respository</code> 将检索数据和实体模型的映射与作用于实体的的业务逻辑分离。业务逻辑应该与包含此数据的数据层实现无关，比如说，数据层可以是数据库，一个网络服务等。</p>
+<p>程序中的 <code>Repository</code> 应该是在数据层和业务逻辑层中间，它从数据层查询数据，将数据从数据源映射到业务实体，并将业务实体的更改保留到数据源。存储库将业务逻辑与与底层数据源或Web服务的交互分离。</p>
+</blockquote>
+<p>一个比较简单的理解方式就是 上层<code>Domain</code> 层提供了业务接口，传递给 <code>Data</code> 层但不关心数据层是如何实现的。 <code>Data</code> 层的 <code>Respository</code> 只需要实现相关接口提供服务就可以。</p>
+<figure data-type="image" tabindex="6"><img src="https://fernandocejas.com/assets/img/blog/clean_architecture_clean_way_repository.png" alt="" loading="lazy"></figure>
+<h2 id="数据跨越">数据跨越</h2>
+<figure data-type="image" tabindex="7"><img src="https://wos.58cdn.com.cn/IjGfEdCbIlr/ishare/0eb20529-e794-4ccb-9f92-393455a01dafimage.png" alt="image.png" loading="lazy"></figure>
+<p>洋葱图的右下方是一个表示如何跨越环形界限的列子。它展现了 <code>Controllers</code> 和 <code>Presenters</code> 进行的一次的用户交互情形。看一下 <code>Flow of control</code> 这条线，它开始于<code>Controller</code> ，并引用到了穿越 <code>Use Case</code> 层，然后在 <code>Persenter</code> 层执行。简单点来说为了规避这样可能出现违反<strong>Clean向内层依赖原则</strong>，从而创建出了 <code>Output Port</code> 和 <code>Input Port</code>接口。这样以抽象接口的方式解决内层依赖外层模块的方式叫做 <strong>依赖倒置</strong></p>
+<blockquote>
+<p><strong>依赖倒置 DIP: Dependence Inversion Principle</strong><br>
+依赖倒置原则指代了一种特定的解耦形式，使得高层次的模块不依赖于低层次的模块的实现细节的目的，依赖模块被颠倒了.</p>
+<p>在 Java 语言中，抽象就是指接口或抽象类，两者都是不能直接被实例化的；细节就是实现类，实现接口或继承抽象类而产生的类就是细节，其特点就是，可以直接被实例化，也就是可以加上一个关键字 new 产生一个对象。高层模块就是调用端，低层模块就是具体实现类。依赖倒置原则在 Java 语言中的表现就是：<strong>模块间的依赖通过抽象发生，实现类之间不发生直接的依赖关系，其依赖关系是通过接口或抽象类产生的</strong>。其实简单来说就是：面向接口编程，或者说是面向抽象编程。</p>
+<p>本段节选自《Android 源码设计模式解析与实战》</p>
+</blockquote>
+<h3 id="数据流动">数据流动</h3>
+<p>在分析了架构的各层依赖关系以后，我们通过具体的例子来分析数据是怎么流动的，这能更好的帮助我们理解整个机制。</p>
+<p>举个例子，比如说从Presenter层传递一个对象UserModel给Data层进行存储：</p>
+<h4 id="presenter层">Presenter层：</h4>
+<ol>
+<li>用户输入数据，并点击OK按钮(View)</li>
+<li>Presenter(ViewModel,Controller等同样)获取到数据，并构造一个UserModel</li>
+<li>使用UserModelMapper（Presenter层的数据Mapper对象）将UserModel转换成User对象</li>
+<li>调用UseCase.store(user)</li>
+</ol>
+<h4 id="domain层唯一的目的就是执行上面的业务逻辑存储对象">Domain层(唯一的目的就是执行上面的业务逻辑:存储对象)：</h4>
+<ol>
+<li>StoreUseCase接受到User对象</li>
+<li>这里可以先做额外的逻辑</li>
+<li>调用UserRepository接口的方法，传入User</li>
+</ol>
+<h4 id="data层">Data层：</h4>
+<ol>
+<li>UserDataRepository(UserRepository接口的实现类)，接受到User对象</li>
+<li>调用Mapper方法(Data层)将User对象转换成UserEntity</li>
+<li>存储UserEntity对象</li>
+</ol>
+<figure data-type="image" tabindex="8"><img src="https://upload-images.jianshu.io/upload_images/3267534-1dde87567ff688ca.png" alt="" loading="lazy"></figure>
+<p>这样可以清楚的看到数据的流动过程，从左往右，但是这只是数据的流动过程，与依赖关系无关。Domain层实际上不持有任何依赖。</p>
+<hr>
+<p>参考文章</p>
+<p>https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html</p>
+<p>https://github.com/android10/Android-CleanArchitecture/</p>
+<p>https://fernandocejas.com/blog/engineering/2014-09-03-architecting-android-the-clean-way/</p>
+<p>https://www.jianshu.com/p/66e749e19f0d</p>
+<p>https://www.jianshu.com/p/f97466245ed8</p>
+<p>https://www.jianshu.com/p/cba6663435c7</p>
+</p>
+
+     <p class="md_block">
+    <div class="reward"><div class="reward-button">赏 <span class="reward-code"> <span class="alipay-code"> <img class="alipay-img" src="http://p0sitive.github.io//media/images/alipay.png"><b>支付宝扫码打赏</b> </span> <span class="wechat-code"> <img class="wechat-img" src="http://p0sitive.github.io//media/images/wechat.png"><b>微信打赏</b> </span> </span></div></div>
+</p> 
+</div>
+
+</div>
+
+
+
+<link href="http://p0sitive.github.io//styles/main.css" type="text/css" rel="stylesheet"/>
+
+<div class="doc_comments">
+
+          
+            <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+<div id="gitalk-container"></div>
+
+<script>
+
+  var gitalk = new Gitalk({
+    clientID: 'd91c7d19b57e27d0dce4',
+    clientSecret: '17ea8ee73139e14382ef34772d66905aa0681ee8',
+    repo: 'p0sitive.github.io',
+    owner: 'p0sitive',
+    admin: ['p0sitive'],
+    id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false  // Facebook-like distraction free mode
+  })
+
+  gitalk.render('gitalk-container')
+
+</script>
+
+          
+			  
+          
+        
+</div>
+
+
+
+  </div>
+</div>
+
+
+
+      </div>
+
+
+
+
+    </div>
+
+   <div class="footer">
+<link href="http://p0sitive.github.io//styles/main.css" type="text/css" rel="stylesheet"/><div class="site_footer_wrap"><div class="site_footer">
+
+      <div class="mysocials"><div class="my_socials">
+		   
+			   
+    
+			   
+    
+			   
+    
+			   
+    
+</div><link href="http://p0sitive.github.io//styles/main.css" type="text/css" rel="stylesheet"/>
+
+      </div>
+
+      <div class="copyright">Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+      </div>
+
+</div></div>
+
+    </div>
+
+
+<style type="text/css">a.back_to_top {
+    text-decoration: none;
+    position: fixed;
+    bottom: 40px;
+    right: 30px;
+    background: #f0f0f0;
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    line-height: 36px;
+    font-size: 18px;
+    text-align: center;
+    transition-duration: .5s;
+    transition-propety: background-color;
+    display: none;
+}
+
+a.back_to_top span {
+    color: #888;
+}
+
+a.back_to_top:hover {
+    cursor: pointer;
+    background: #dfdfdf;
+}
+
+a.back_to_top:hover span {
+    color: #555;
+}
+
+@media print, screen and (max-width: 580px) {
+    .back_to_top {
+        display: none !important;
+    }
+}
+
+
+
+</style><a id="back_to_top" href="#" class="back_to_top"><span>△</span>
+</a>
+<script type="text/javascript" src="http://p0sitive.github.io//media/scripts/jquery.js"></script>
+
+<script>$(document).ready((function(_this) {
+  return function() {
+    var bt;
+    bt = $('#back_to_top');
+    if ($(document).width() > 480) {
+      $(window).scroll(function() {
+        var st;
+        st = $(window).scrollTop();
+        if (st > 30) {
+          return bt.css('display', 'block');
+        } else {
+          return bt.css('display', 'none');
+        }
+      });
+      return bt.click(function() {
+        $('body,html').animate({
+          scrollTop: 0
+        }, 800);
+        return false;
+      });
+    }
+  };
+})(this));
+</script>
+
+</body>
+
+</html>

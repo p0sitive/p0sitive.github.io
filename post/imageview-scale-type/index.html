@@ -1,0 +1,445 @@
+
+<html>
+  <head lang="zh">
+        <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"/>
+        <meta content="yes" name="apple-mobile-web-app-capable"/>
+        <meta content="black" name="apple-mobile-web-app-status-bar-style"/>
+        <meta content="telephone=no" name="format-detection"/>
+        <meta name="renderer" content="webkit">
+    <title>ImageView ScaleType介绍 | 慕子河的博客</title>
+<link href="http://p0sitive.github.io//styles/main.css" type="text/css" rel="stylesheet"/>
+<script type="text/javascript" src="http://p0sitive.github.io//media/scripts/jquery.js"></script>
+<script type="text/javascript" src="http://p0sitive.github.io//media/scripts/basic.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+  </head>
+
+  <body>
+     <div class="header">
+      <div class="logo_title">
+		  
+        <div class="title animated fadeInDown"><img src="http://p0sitive.github.io//images/avatar.png?v=1655459944852"/>
+
+          <h1 title="慕子河的博客" class="weaklink"><a href="/">慕子河的博客</a>
+
+          </h1>
+
+          <div class="navbar weaklink">
+            <div class="normal_nav">
+
+<div class="bitcron_nav_container">
+
+
+  <div class="bitcron_nav">
+    <div class="mixed_site_nav_wrap site_nav_wrap">
+		
+      <ul class="mixed_site_nav site_nav sm sm-base">
+ 
+  <li><a id="d2ef19af68cc211e98f8a0242ac110003" href="/" class="selected active current nav__item" >首页</a>
+
+  </li>
+ 
+  <li><a id="d2ef19af68cc211e98f8a0242ac110003" href="/archives" class="selected active current nav__item" >归档</a>
+
+  </li>
+ 
+  <li><a id="d2ef19af68cc211e98f8a0242ac110003" href="/tags" class="selected active current nav__item" >标签</a>
+
+  </li>
+ 
+  <li><a id="d2ef19af68cc211e98f8a0242ac110003" href="http://p0sitive.github.io//post/other/" class="selected active current nav__item" >其他</a>
+
+  </li>
+ 
+
+      </ul>
+
+      <div class="clear clear_nav_inline_end"></div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="clear clear_nav_end"></div>
+
+</div>
+
+            </div>
+
+            <div class="hamberger"><i class="fa fa-bars"></i>
+<i class="fa fa-times"></i>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="hidden_nav animated fadeInDown">
+
+<div class="bitcron_nav_container">
+
+
+  <div class="bitcron_nav">
+    <div class="mixed_site_nav_wrap site_nav_wrap">
+      <ul class="mixed_site_nav site_nav sm sm-base">
+		  
+	
+  <li><a id="d2ef19af68cc211e98f8a0242ac110003" href="/" class="selected active current nav__item" >首页</a>
+
+  </li>
+
+
+  <li><a id="d2ef19af68cc211e98f8a0242ac110003" href="/archives" class="selected active current nav__item" >归档</a>
+
+  </li>
+
+
+  <li><a id="d2ef19af68cc211e98f8a0242ac110003" href="/tags" class="selected active current nav__item" >标签</a>
+
+  </li>
+
+
+  <li><a id="d2ef19af68cc211e98f8a0242ac110003" href="http://p0sitive.github.io//post/other/" class="selected active current nav__item" >其他</a>
+
+  </li>
+
+
+
+
+
+      </ul>
+
+      <div class="clear clear_nav_inline_end"></div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="clear clear_nav_end"></div>
+
+</div>
+
+      </div>
+
+    </div>
+
+
+    <div class="main">
+      <div class="main-inner">
+
+
+<div class="content">
+
+
+
+
+
+
+  <div class="post_page" >
+
+<div class="post">
+  <div class="post_title sm_margin">
+    <h2><a>ImageView ScaleType介绍</a>
+
+
+
+    </h2>
+  </div>
+
+  <div class="post_details">
+    <div class="info"><i class="fa fa-clock-o"></i>
+<span class="date_info">2016-10-13</span>
+<i class="fa fa-eye"></i>
+
+<span class="date_info"><span id="busuanzi_value_page_pv"></span> Views</span>
+
+
+<i class="fa fa-bookmark-o"></i>
+<span class="tags_info weaklink">
+	
+	<a href="http://p0sitive.github.io/tag/gui-dang/" class="tag">归档</a>
+
+	<a href="http://p0sitive.github.io/tag/android/" class="tag">android</a>
+
+
+</span>
+
+
+    </div>
+
+  </div>
+
+
+
+
+
+  <div class="post_content markdown"><p class="md_block">
+    <span class="md_line md_line_start md_line_end"><p>我们可以通过ImageView的ScaleType属性来实现图片在ImageView的展示方式。通过阅读源码可知ScaleType设置是通过ImageView中的Matrix变换得来的。在此做一个简单的文字记录</p>
+<!-- more -->
+<p>ImageView的scaleType的属性有好几种，分别是matrix（默认）、center、centerCrop、centerInside、fitCenter、fitEnd、fitStart、fitXY</p>
+<p>基本使用：<br>
+布局文件中<code>android:scaleType=&quot;xxxx&quot;</code><br>
+代码中：<code>imageView.setScaleType(ImageView.ScaleType.FIT_XY)</code></p>
+<p>下面主要介绍一下各个类型显示是怎么样的<br>
+<code>android:scaleType=&quot;center&quot;</code></p>
+<p>保持原图的大小，显示在ImageView的中心。当原图的size大于ImageView的size，超过部分裁剪处理。</p>
+<p><code>android:scaleType=&quot;centerCrop&quot;</code></p>
+<p>以填满整个ImageView为目的，将原图的中心对准ImageView的中心，等比例放大原图，直到填满ImageView为止（指的是ImageView的宽和高都要填满），原图超过ImageView的部分作裁剪处理。</p>
+<p><code>android:scaleType=&quot;centerInside&quot;</code></p>
+<p>以原图完全显示为目的，将图片的内容完整居中显示，通过按比例缩小原图的size宽(高)等于或小于ImageView的宽(高)。如果原图的size本身就小于ImageView的size，则原图的size不作任何处理，居中显示在ImageView。</p>
+<p><code>android:scaleType=&quot;matrix&quot;</code></p>
+<p>不改变原图的大小，从ImageView的左上角开始绘制原图，原图超过ImageView的部分作裁剪处理。</p>
+<p><code>android:scaleType=&quot;fitCenter&quot;</code></p>
+<p>把原图按比例扩大或缩小到ImageView的ImageView的高度，居中显示</p>
+<p><code>android:scaleType=&quot;fitEnd&quot;</code></p>
+<p>把原图按比例扩大(缩小)到ImageView的高度，显示在ImageView的下部分位置</p>
+<p><code>android:scaleType=&quot;fitStart&quot;</code></p>
+<p>把原图按比例扩大(缩小)到ImageView的高度，显示在ImageView的上部分位置</p>
+<p><code>android:scaleType=&quot;fitXY&quot;</code></p>
+<p>把原图按照指定的大小在View中显示，拉伸显示图片，不保持原比例，填满ImageView.</p>
+<p>ImageView设置ScaleType部分源码</p>
+<pre><code class="language-java">private void configureBounds() {
+    if (mDrawable == null || !mHaveFrame) {
+        return;
+    }
+
+    int dwidth = mDrawableWidth;
+    int dheight = mDrawableHeight;
+
+    int vwidth = getWidth() - mPaddingLeft - mPaddingRight;
+    int vheight = getHeight() - mPaddingTop - mPaddingBottom;
+
+    boolean fits = (dwidth &lt; 0 || vwidth == dwidth) &amp;&amp;
+                   (dheight &lt; 0 || vheight == dheight);
+
+    if (dwidth &lt;= 0 || dheight &lt;= 0 || ScaleType.FIT_XY == mScaleType) {
+        /* 
+            如果图片没有固定的大小，我们会使用fit方式，铺满整个view
+        */
+        mDrawable.setBounds(0, 0, vwidth, vheight);
+        mDrawMatrix = null;
+    } else {
+        // 我们要设置相应的缩放类型，需要图片自己的大小
+        mDrawable.setBounds(0, 0, dwidth, dheight);
+
+        if (ScaleType.MATRIX == mScaleType) {
+            // Use the specified matrix as-is.
+            if (mMatrix.isIdentity()) {
+                mDrawMatrix = null;
+            } else {
+                mDrawMatrix = mMatrix;
+            }
+        } else if (fits) {
+            // 当前的bitmap是fit方式，没有必要做变换
+            mDrawMatrix = null;
+        } else if (ScaleType.CENTER == mScaleType) {
+            // 居中展示bitmap，不需要缩放，仅仅是将图片和view的中心点对齐即可
+            mDrawMatrix = mMatrix;
+            mDrawMatrix.setTranslate(Math.round((vwidth - dwidth) * 0.5f),
+                                     Math.round((vheight - dheight) * 0.5f));
+        } else if (ScaleType.CENTER_CROP == mScaleType) {
+            mDrawMatrix = mMatrix;
+            //CenterCrop方式，先缩放，然后居中（会有dx或dy的移除效果）
+            float scale;
+            float dx = 0, dy = 0;
+
+            if (dwidth * vheight &gt; vwidth * dheight) {
+                scale = (float) vheight / (float) dheight; 
+                dx = (vwidth - dwidth * scale) * 0.5f;
+            } else {
+                scale = (float) vwidth / (float) dwidth;
+                dy = (vheight - dheight * scale) * 0.5f;
+            }
+
+            mDrawMatrix.setScale(scale, scale);
+            mDrawMatrix.postTranslate(Math.round(dx), Math.round(dy));
+        } else if (ScaleType.CENTER_INSIDE == mScaleType) {
+            //先缩放，后居中，完全展示
+            mDrawMatrix = mMatrix;
+            float scale;
+            float dx;
+            float dy;
+            
+            if (dwidth &lt;= vwidth &amp;&amp; dheight &lt;= vheight) {
+                scale = 1.0f;
+            } else {
+                scale = Math.min((float) vwidth / (float) dwidth,
+                        (float) vheight / (float) dheight);
+            }
+            
+            dx = Math.round((vwidth - dwidth * scale) * 0.5f);
+            dy = Math.round((vheight - dheight * scale) * 0.5f);
+
+            mDrawMatrix.setScale(scale, scale);
+            mDrawMatrix.postTranslate(dx, dy);
+        } else {
+            // 针对主动设置变换
+            mTempSrc.set(0, 0, dwidth, dheight);
+            mTempDst.set(0, 0, vwidth, vheight);
+            
+            mDrawMatrix = mMatrix;
+            mDrawMatrix.setRectToRect(mTempSrc, mTempDst, scaleTypeToScaleToFit(mScaleType));
+        }
+    }
+}
+</code></pre>
+</p>
+
+     <p class="md_block">
+    <div class="reward"><div class="reward-button">赏 <span class="reward-code"> <span class="alipay-code"> <img class="alipay-img" src="http://p0sitive.github.io//media/images/alipay.png"><b>支付宝扫码打赏</b> </span> <span class="wechat-code"> <img class="wechat-img" src="http://p0sitive.github.io//media/images/wechat.png"><b>微信打赏</b> </span> </span></div></div>
+</p> 
+</div>
+
+</div>
+
+
+
+<link href="http://p0sitive.github.io//styles/main.css" type="text/css" rel="stylesheet"/>
+
+<div class="doc_comments">
+
+          
+            <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+<div id="gitalk-container"></div>
+
+<script>
+
+  var gitalk = new Gitalk({
+    clientID: 'd91c7d19b57e27d0dce4',
+    clientSecret: '17ea8ee73139e14382ef34772d66905aa0681ee8',
+    repo: 'p0sitive.github.io',
+    owner: 'p0sitive',
+    admin: ['p0sitive'],
+    id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false  // Facebook-like distraction free mode
+  })
+
+  gitalk.render('gitalk-container')
+
+</script>
+
+          
+			  
+          
+        
+</div>
+
+
+
+  </div>
+</div>
+
+
+
+      </div>
+
+
+
+
+    </div>
+
+   <div class="footer">
+<link href="http://p0sitive.github.io//styles/main.css" type="text/css" rel="stylesheet"/><div class="site_footer_wrap"><div class="site_footer">
+
+      <div class="mysocials"><div class="my_socials">
+		   
+			   
+    
+			   
+    
+			   
+    
+			   
+    
+</div><link href="http://p0sitive.github.io//styles/main.css" type="text/css" rel="stylesheet"/>
+
+      </div>
+
+      <div class="copyright">Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+      </div>
+
+</div></div>
+
+    </div>
+
+
+<style type="text/css">a.back_to_top {
+    text-decoration: none;
+    position: fixed;
+    bottom: 40px;
+    right: 30px;
+    background: #f0f0f0;
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    line-height: 36px;
+    font-size: 18px;
+    text-align: center;
+    transition-duration: .5s;
+    transition-propety: background-color;
+    display: none;
+}
+
+a.back_to_top span {
+    color: #888;
+}
+
+a.back_to_top:hover {
+    cursor: pointer;
+    background: #dfdfdf;
+}
+
+a.back_to_top:hover span {
+    color: #555;
+}
+
+@media print, screen and (max-width: 580px) {
+    .back_to_top {
+        display: none !important;
+    }
+}
+
+
+
+</style><a id="back_to_top" href="#" class="back_to_top"><span>△</span>
+</a>
+<script type="text/javascript" src="http://p0sitive.github.io//media/scripts/jquery.js"></script>
+
+<script>$(document).ready((function(_this) {
+  return function() {
+    var bt;
+    bt = $('#back_to_top');
+    if ($(document).width() > 480) {
+      $(window).scroll(function() {
+        var st;
+        st = $(window).scrollTop();
+        if (st > 30) {
+          return bt.css('display', 'block');
+        } else {
+          return bt.css('display', 'none');
+        }
+      });
+      return bt.click(function() {
+        $('body,html').animate({
+          scrollTop: 0
+        }, 800);
+        return false;
+      });
+    }
+  };
+})(this));
+</script>
+
+</body>
+
+</html>

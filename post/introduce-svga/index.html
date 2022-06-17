@@ -1,0 +1,597 @@
+
+<html>
+  <head lang="zh">
+        <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"/>
+        <meta content="yes" name="apple-mobile-web-app-capable"/>
+        <meta content="black" name="apple-mobile-web-app-status-bar-style"/>
+        <meta content="telephone=no" name="format-detection"/>
+        <meta name="renderer" content="webkit">
+    <title>SVGA动画框架介绍 | 慕子河的博客</title>
+<link href="http://p0sitive.github.io//styles/main.css" type="text/css" rel="stylesheet"/>
+<script type="text/javascript" src="http://p0sitive.github.io//media/scripts/jquery.js"></script>
+<script type="text/javascript" src="http://p0sitive.github.io//media/scripts/basic.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+  </head>
+
+  <body>
+     <div class="header">
+      <div class="logo_title">
+		  
+        <div class="title animated fadeInDown"><img src="http://p0sitive.github.io//images/avatar.png?v=1655459944852"/>
+
+          <h1 title="慕子河的博客" class="weaklink"><a href="/">慕子河的博客</a>
+
+          </h1>
+
+          <div class="navbar weaklink">
+            <div class="normal_nav">
+
+<div class="bitcron_nav_container">
+
+
+  <div class="bitcron_nav">
+    <div class="mixed_site_nav_wrap site_nav_wrap">
+		
+      <ul class="mixed_site_nav site_nav sm sm-base">
+ 
+  <li><a id="d2ef19af68cc211e98f8a0242ac110003" href="/" class="selected active current nav__item" >首页</a>
+
+  </li>
+ 
+  <li><a id="d2ef19af68cc211e98f8a0242ac110003" href="/archives" class="selected active current nav__item" >归档</a>
+
+  </li>
+ 
+  <li><a id="d2ef19af68cc211e98f8a0242ac110003" href="/tags" class="selected active current nav__item" >标签</a>
+
+  </li>
+ 
+  <li><a id="d2ef19af68cc211e98f8a0242ac110003" href="http://p0sitive.github.io//post/other/" class="selected active current nav__item" >其他</a>
+
+  </li>
+ 
+
+      </ul>
+
+      <div class="clear clear_nav_inline_end"></div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="clear clear_nav_end"></div>
+
+</div>
+
+            </div>
+
+            <div class="hamberger"><i class="fa fa-bars"></i>
+<i class="fa fa-times"></i>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="hidden_nav animated fadeInDown">
+
+<div class="bitcron_nav_container">
+
+
+  <div class="bitcron_nav">
+    <div class="mixed_site_nav_wrap site_nav_wrap">
+      <ul class="mixed_site_nav site_nav sm sm-base">
+		  
+	
+  <li><a id="d2ef19af68cc211e98f8a0242ac110003" href="/" class="selected active current nav__item" >首页</a>
+
+  </li>
+
+
+  <li><a id="d2ef19af68cc211e98f8a0242ac110003" href="/archives" class="selected active current nav__item" >归档</a>
+
+  </li>
+
+
+  <li><a id="d2ef19af68cc211e98f8a0242ac110003" href="/tags" class="selected active current nav__item" >标签</a>
+
+  </li>
+
+
+  <li><a id="d2ef19af68cc211e98f8a0242ac110003" href="http://p0sitive.github.io//post/other/" class="selected active current nav__item" >其他</a>
+
+  </li>
+
+
+
+
+
+      </ul>
+
+      <div class="clear clear_nav_inline_end"></div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="clear clear_nav_end"></div>
+
+</div>
+
+      </div>
+
+    </div>
+
+
+    <div class="main">
+      <div class="main-inner">
+
+
+<div class="content">
+
+
+
+
+
+
+  <div class="post_page" >
+
+<div class="post">
+  <div class="post_title sm_margin">
+    <h2><a>SVGA动画框架介绍</a>
+
+
+
+    </h2>
+  </div>
+
+  <div class="post_details">
+    <div class="info"><i class="fa fa-clock-o"></i>
+<span class="date_info">2019-10-13</span>
+<i class="fa fa-eye"></i>
+
+<span class="date_info"><span id="busuanzi_value_page_pv"></span> Views</span>
+
+
+<i class="fa fa-bookmark-o"></i>
+<span class="tags_info weaklink">
+	
+	<a href="http://p0sitive.github.io/tag/svga/" class="tag">svga</a>
+
+	<a href="http://p0sitive.github.io/tag/android/" class="tag">android</a>
+
+
+</span>
+
+
+    </div>
+
+  </div>
+
+
+
+
+
+  <div class="post_content markdown"><p class="md_block">
+    <span class="md_line md_line_start md_line_end"><p>人都是视觉动物，一个App的动效做的炫酷，优雅，是很吸引用户使用的。</p>
+<!-- more -->
+<p>Android实现复杂动效的方式有如下几种：</p>
+<ul>
+<li>原生补间动画和属性动画实现</li>
+<li>自定义View draw canvas实现</li>
+<li>序列帧，使用帧动画显示，apng</li>
+<li>GIF动图实现</li>
+<li>Lottie，svga</li>
+<li>显示视频</li>
+</ul>
+<p><strong>自定义View</strong>：需要自己实现动画的细节，开发效率和效果可能不够好。</p>
+<p><strong>APNG</strong>：一整个png的序列图。png是支持alpha通道的，因此显示效果和以png为主的帧动画一致。但android原生ImageView并不支持这种图片格式的显示，需要第三方库去支持。</p>
+<p><strong>Lottie</strong>：<br>
+Lottie是Airbnb推出的开源跨平台动画库，通过AE做出动效导出json文件，然后移动端使用播放器进行原生渲染播放。<br>
+<img src="https://pic4.zhimg.com/80/v2-0e4e99fb36b64d2241966fa96deadb51_hd.jpg" alt="image" loading="lazy"></p>
+<p><strong>SVGA</strong>:<br>
+SVGA是YY直播公司开源的跨平台动效播放方案，和Lottie有着很相似的功能。</p>
+<p><strong>svga和svg关系？</strong></p>
+<p><strong>svg</strong>：</p>
+<blockquote>
+<p>Scalable Vector Graphics 可缩放矢量图形，是一个基于XML语言，描述二维矢量图形的图形格式。<br>
+svg是由w3c制定，是一个开放标准。常见的图片格式如png，jpg，gif等都是位图，位图是由点构成的，矢量图则是由一些形状元素构成。该图中显示放大位图可以看到点，而放大矢量图看到的仍然是形状。SVG属于矢量图，因此能够无级缩放，而不会导致马赛克。</p>
+</blockquote>
+<p>svga是描述动效的文件，由Adobe After Effects导出动效，内部包含矢量图像，音效等，在1.x格式时使用ZIP进行打包，在2.x格式中，直接使用ProtoBuf+Zlib方式打包。因此svga文件不可直接打开预览。当然我们做为移动端开发人员不用关心svga内部文件结构实现。</p>
+<blockquote>
+<p>protocol buffers：<br>
+Protocol buffers 是一种语言中立，平台无关，可扩展的序列化数据的格式，可用于通信协议，数据存储等。Protocol buffers 在序列化数据方面，它是灵活的，高效的。相比于 XML 来说，Protocol buffers 更加小巧，更加快速，更加简单。一旦定义了要处理的数据的数据结构之后，就可以利用 Protocol buffers 的代码生成工具生成相关的代码。甚至可以在无需重新部署程序的情况下更新数据结构。只需使用 Protobuf 对数据结构进行一次描述，即可利用各种不同语言或从各种不同数据流中对你的结构化数据轻松读写。<br>
+Protocol buffers 很适合做数据存储或 RPC 数据交换格式。可用于通讯协议、数据存储等领域的语言无关、平台无关、可扩展的序列化结构数据格式。</p>
+</blockquote>
+<p>下面开始着重介绍一下svga框架。</p>
+<figure data-type="image" tabindex="1"><img src="https://i.loli.net/2019/10/12/1ZX6unyNvMbAxhE.png" alt="image" loading="lazy"></figure>
+<p>上图是svga.io官网上的介绍图。从图中我们可知，svga格式动效支持Android、iOS、web。设计师在After Effects完成动效设计，使用SVGA Converter工具将动效资源转成svga文件。客户端使用SVGA-Parser将动效生成相应的player进行播放。</p>
+<p>下面我们针对Android平台源码进行分析。</p>
+<p>SVGA动画播放示例<br>
+显示一个asset中svga动效流程如下：</p>
+<pre><code>//显示svga动效 demo
+private void loadAnimation() {
+    //创建Parser
+    SVGAParser parser = new SVGAParser(this);
+    //从Asset文件夹中加载svga文件
+    parser.decodeFromAssets(&quot;test.svga&quot;, new SVGAParser.ParseCompletion() {
+        @Override
+        public void onComplete(@NotNull SVGAVideoEntity videoItem) {
+            //将转化后的VideoEntity设置给SVGAImageView
+            animationView.setVideoItem(videoItem);
+            //开启动效
+            animationView.stepToFrame(0, true);
+        }
+        @Override
+        public void onError() {
+
+        }
+    });
+}
+</code></pre>
+<h3 id="svga动画文件解析">SVGA动画文件解析</h3>
+<p><strong>SVGAParser</strong></p>
+<p><code>SVGAParser</code>类是将svga文件转化成<code>SVGAImageView</code>识别的<code>VideoEntity</code>的转化类。根据源码可知，它支持三种方式加载svga文件。</p>
+<pre><code>decodeFromAssets(string, callback)
+decodeFromURL(string,callback)
+decodeFromInputStream(inputStream,callback)
+</code></pre>
+<figure data-type="image" tabindex="2"><img src="https://i.loli.net/2019/10/12/UyGi9ThVq7XtvcK.png" alt="image.png" loading="lazy"></figure>
+<p>最终都会将已有的svga以<code>InputStream</code>方式加载，我们看一下<code>decodeFromInputStream</code>代码</p>
+<pre><code>fun decodeFromInputStream(inputStream: InputStream, cacheKey: String, callback: ParseCompletion, closeInputStream: Boolean = false) {
+    threadPoolExecutor.execute {
+        try {
+            readAsBytes(inputStream)?.let { bytes -&gt;
+                //检查当前传入文件的是否有缓存
+                if (bytes.size &gt; 4 &amp;&amp; bytes[0].toInt() == 80 &amp;&amp; bytes[1].toInt() == 75 &amp;&amp; bytes[2].toInt() == 3 &amp;&amp; bytes[3].toInt() == 4) {
+                    //检查缓存文件
+                    if (!buildCacheDir(cacheKey).exists()) {
+                        ByteArrayInputStream(bytes).use {
+                            //解压到该缓存目录下
+                            unzip(it, cacheKey)
+                        }
+                    }
+                    //从缓存中加载svga文件
+                    this.decodeFromCacheKey(cacheKey, callback)
+                }
+                else {
+                    inflate(bytes)?.let {
+                        //使用SVGAVideoEntity类将传入的inputStream
+                        val videoItem = SVGAVideoEntity(MovieEntity.ADAPTER.decode(it), File(cacheKey))
+                        //将VideoEntity回调到主线程处理
+                        videoItem.prepare {
+                            this.invokeCompleteCallback(videoItem, callback)
+                        }
+                    }
+                }
+            }
+        } catch (e: java.lang.Exception) {
+            this.invokeErrorCallback(e, callback)
+        } finally {
+            if (closeInputStream) {
+                inputStream.close()
+            }
+        }
+    }
+}
+</code></pre>
+<p><code>MovieEntity</code>是SVGA文件通过<code>protocol buffers</code>解释器解释后的产物。它内部包括了关键帧sprites、图片images、音频资源audios等信息。</p>
+<figure data-type="image" tabindex="3"><img src="https://i.loli.net/2019/10/12/RpAILbSTC4HxasF.png" alt="debug-svga.png" loading="lazy"></figure>
+<p><code>SVGAVideoEntity</code>就是将<code>MovieEntity</code>的属性拿出来设置给自己，并通过传入的cacheKey文件添加缓存信息。</p>
+<pre><code>class SVGAVideoEntity {
+    ...
+    var antiAlias = true
+    var videoSize //动画显示大小
+    var FPS = 15 //fps值
+    var frames: Int = 0 //帧数
+    //绘制帧
+    internal var sprites: List&lt;SVGAVideoSpriteEntity&gt; = listOf()
+    //音频
+    internal var audios: List&lt;SVGAAudioEntity&gt; = listOf()
+    //使用soundPool播放
+    internal var soundPool: SoundPool? = null
+    //图片
+    internal var images = HashMap&lt;String, Bitmap&gt;()
+    //缓存路径
+    private var cacheDir: File
+
+    constructor(obj: JSONObject, cacheDir: File) {
+        this.cacheDir = cacheDir
+        obj.optJSONObject(&quot;movie&quot;)?.let {
+            it.optJSONObject(&quot;viewBox&quot;)?.let {
+                videoSize = SVGARect(0.0, 0.0, it.optDouble(&quot;width&quot;, 0.0), it.optDouble(&quot;height&quot;, 0.0))
+            }
+            FPS = it.optInt(&quot;fps&quot;, 20)
+            frames = it.optInt(&quot;frames&quot;, 0)
+        }
+        resetImages(obj)
+        resetSprites(obj)
+    }
+    ...
+    }
+
+</code></pre>
+<h3 id="svga动画播放">SVGA动画播放</h3>
+<p>梳理完svga文件解析，下面介绍一下动画是如何播放的。<br>
+svga动画的播放主要涉及到3个类：<code>SVGAImageView</code>、<code>SVGADrawable</code>、<code>SVGACanvasDrawer</code>。</p>
+<p>如下图所示，<code>SVGAImageView</code>接收解析后的<code>VideoEntitiy</code>数据然后包装成<code>SVGADrawable</code>，通过<code>SVGADrawable</code>内部的<code>SVGADrawar</code>来绘制动画图形。</p>
+<figure data-type="image" tabindex="4"><img src="https://i.loli.net/2019/10/12/agif9KBktpOdShl.png" alt="svga-imageview.png" loading="lazy"></figure>
+<p><code>SVGAImageView</code>是显示动画的类，继承自ImageView。主要关注两个方法：<code>setVideoItem</code>和<code>startAnimtion</code>。</p>
+<pre><code>fun setVideoItem(videoItem: SVGAVideoEntity?, dynamicItem: SVGADynamicEntity?) {
+    if (videoItem == null) {
+        setImageDrawable(null)
+        return
+    }
+    //将传入的VideoEntity和DynamicEntity包装成一个SVGADrawable
+    val drawable = SVGADrawable(videoItem, dynamicItem ?: SVGADynamicEntity())
+    drawable.cleared = clearsAfterStop
+    //将此Drawable设置为imageView的Drawable
+    setImageDrawable(drawable)
+}
+
+
+fun startAnimation(range: SVGARange?, reverse: Boolean = false) {
+    stopAnimation(false)
+    //当前的Drawable是SVGADrawable
+    val drawable = drawable as? SVGADrawable ?: return
+    //初始化Drawable的属性
+    drawable.cleared = false
+    drawable.scaleType = scaleType
+    //VideoItem中记录着动画的帧数和显示内容
+    drawable.videoItem.let {
+        var durationScale = 1.0
+        //确定起始帧
+        val startFrame = Math.max(0, range?.location ?: 0)
+        val endFrame = Math.min(it.frames - 1, ((range?.location ?: 0) + (range?.length ?: Int.MAX_VALUE) - 1))
+        val animator = ValueAnimator.ofInt(startFrame, endFrame)
+        //这个try-catch代码块主要是恢复在开发者选项中设置的动画缩放参数，防止在播放SVGA动画时出现帧数错误
+        try {
+            ...
+        } catch (e: Exception) {}
+        animator.interpolator = LinearInterpolator()
+        //动画时长是由帧数和FPS决定的
+        animator.duration = ((endFrame - startFrame + 1) * (1000 / it.FPS) / durationScale).toLong()
+        animator.repeatCount = if (loops &lt;= 0) 99999 else loops - 1
+        animator.addUpdateListener {
+            //更新关键帧
+            drawable.currentFrame = animator.animatedValue as Int
+            callback?.onStep(drawable.currentFrame, ((drawable.currentFrame + 1).toDouble() / drawable.videoItem.frames.toDouble()))
+        }
+        ...忽略其他...
+    }
+}
+</code></pre>
+<p><code>SVGADrawable</code>内部有个关键的属性<code>currentFrame</code>，用来记录当前绘制的哪一帧，发生改变时调用自身的<code>invalidateSelf()</code>方法进行绘制。</p>
+<pre><code>var currentFrame = 0
+    internal set (value) {
+        if (field == value) {
+            return
+        }
+        field = value
+        invalidateSelf()
+    }
+</code></pre>
+<p><code>SVGACanvasDrawer</code>是最终的绘制类，主要调用<code>drawFrame</code>来绘制每个元素</p>
+<pre><code>override fun drawFrame(canvas: Canvas, frameIndex: Int, scaleType: ImageView.ScaleType) {
+    super.drawFrame(canvas,frameIndex, scaleType)
+    this.pathCache.onSizeChanged(canvas)
+    //获取当前要绘制的数据
+    val sprites = requestFrameSprites(frameIndex)
+    sprites.forEach {
+        //绘制每一个元素
+        drawSprite(it, canvas, frameIndex)
+    }
+    //播放音频
+    playAudio(frameIndex)
+}
+</code></pre>
+<p>流程基本梳理完成了，简单来说就是svga内部记录了所有要绘制的元素和每一帧信息，直接通过遍历当前帧进行绘制即可，效率比较高。</p>
+<p>下面做一个svga和Lottie的对比</p>
+<p>以Lottie官方给出的点赞动效为例，我下载了最新版<code>Adobe After Effects 2019</code>，并且安装了svga和Lottie导出动画的插件<code>BodyMovin</code>和<code>SGVA Converter</code>。分别导出这个动效的json文件和svga文件</p>
+<p>并且放到一个简单页面中播放对比。两个文件都放置在asset文件夹中，播放页面中没有其他UI元素。</p>
+<h3 id="svga">svga</h3>
+<figure data-type="image" tabindex="5"><img src="https://i.loli.net/2019/10/30/IVepP9X1ahy4KbE.gif" alt="demo-svga.gif" width="288" height="594" loading="lazy"></figure>
+<h3 id="lottie">Lottie</h3>
+<figure data-type="image" tabindex="6"><img src="https://i.loli.net/2019/10/30/aQziZbUlWJvH2t9.gif" alt="demo-lottie.gif" width="288" height="594" loading="lazy"></figure>
+<table>
+<thead>
+<tr>
+<th>文件</th>
+<th>文件大小</th>
+<th>CPU</th>
+<th>内存占用</th>
+<th>GPU程式分析</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>svga</td>
+<td>11k</td>
+<td>6%</td>
+<td>108.8m</td>
+<td>如下图：每一帧都在绿线以下</td>
+</tr>
+<tr>
+<td>Lottie</td>
+<td>35k</td>
+<td>13%</td>
+<td>121.2m</td>
+<td>绿色和蓝色较长表示进行了过多的运算</td>
+</tr>
+</tbody>
+</table>
+<p>svga</p>
+<figure data-type="image" tabindex="7"><img src="https://i.loli.net/2019/10/12/ljSDzRAkHPwmBxb.png" alt="svga-gpu.png" width="288" height="594" loading="lazy"></figure>
+<p>Lottie<br>
+<img src="https://i.loli.net/2019/10/12/HfCbBl6qLuYtTwX.png" alt="lottie-gpu.png" width="288" height="594" loading="lazy"></p>
+<p>分析可知：<br>
+Lottie文件是导出的json文件，内部的元素明文显示。svga则是使用了<code>protocol buffers</code>+<code>zlib</code>方式做了压缩，文件体积比较小。在播放动效时，svga在导出时已经做了高阶差值计算，因此只用绘制图形即可，相较于Lottie绘制效率较高。</p>
+<p>参考：</p>
+<ul>
+<li>https://zh.wikipedia.org/wiki/%E5%8F%AF%E7%B8%AE%E6%94%BE%E5%90%91%E9%87%8F%E5%9C%96%E5%BD%A2</li>
+<li>https://halfrost.com/protobuf_encode/</li>
+<li>https://svga.io/intro.html</li>
+<li>https://jfson.github.io/2018/01/08/41-anim/</li>
+<li>https://jfson.github.io/2018/06/21/49-svga/</li>
+</ul>
+</p>
+
+     <p class="md_block">
+    <div class="reward"><div class="reward-button">赏 <span class="reward-code"> <span class="alipay-code"> <img class="alipay-img" src="http://p0sitive.github.io//media/images/alipay.png"><b>支付宝扫码打赏</b> </span> <span class="wechat-code"> <img class="wechat-img" src="http://p0sitive.github.io//media/images/wechat.png"><b>微信打赏</b> </span> </span></div></div>
+</p> 
+</div>
+
+</div>
+
+
+
+<link href="http://p0sitive.github.io//styles/main.css" type="text/css" rel="stylesheet"/>
+
+<div class="doc_comments">
+
+          
+            <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+<div id="gitalk-container"></div>
+
+<script>
+
+  var gitalk = new Gitalk({
+    clientID: 'd91c7d19b57e27d0dce4',
+    clientSecret: '17ea8ee73139e14382ef34772d66905aa0681ee8',
+    repo: 'p0sitive.github.io',
+    owner: 'p0sitive',
+    admin: ['p0sitive'],
+    id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false  // Facebook-like distraction free mode
+  })
+
+  gitalk.render('gitalk-container')
+
+</script>
+
+          
+			  
+          
+        
+</div>
+
+
+
+  </div>
+</div>
+
+
+
+      </div>
+
+
+
+
+    </div>
+
+   <div class="footer">
+<link href="http://p0sitive.github.io//styles/main.css" type="text/css" rel="stylesheet"/><div class="site_footer_wrap"><div class="site_footer">
+
+      <div class="mysocials"><div class="my_socials">
+		   
+			   
+    
+			   
+    
+			   
+    
+			   
+    
+</div><link href="http://p0sitive.github.io//styles/main.css" type="text/css" rel="stylesheet"/>
+
+      </div>
+
+      <div class="copyright">Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+      </div>
+
+</div></div>
+
+    </div>
+
+
+<style type="text/css">a.back_to_top {
+    text-decoration: none;
+    position: fixed;
+    bottom: 40px;
+    right: 30px;
+    background: #f0f0f0;
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    line-height: 36px;
+    font-size: 18px;
+    text-align: center;
+    transition-duration: .5s;
+    transition-propety: background-color;
+    display: none;
+}
+
+a.back_to_top span {
+    color: #888;
+}
+
+a.back_to_top:hover {
+    cursor: pointer;
+    background: #dfdfdf;
+}
+
+a.back_to_top:hover span {
+    color: #555;
+}
+
+@media print, screen and (max-width: 580px) {
+    .back_to_top {
+        display: none !important;
+    }
+}
+
+
+
+</style><a id="back_to_top" href="#" class="back_to_top"><span>△</span>
+</a>
+<script type="text/javascript" src="http://p0sitive.github.io//media/scripts/jquery.js"></script>
+
+<script>$(document).ready((function(_this) {
+  return function() {
+    var bt;
+    bt = $('#back_to_top');
+    if ($(document).width() > 480) {
+      $(window).scroll(function() {
+        var st;
+        st = $(window).scrollTop();
+        if (st > 30) {
+          return bt.css('display', 'block');
+        } else {
+          return bt.css('display', 'none');
+        }
+      });
+      return bt.click(function() {
+        $('body,html').animate({
+          scrollTop: 0
+        }, 800);
+        return false;
+      });
+    }
+  };
+})(this));
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>http://p0sitive.github.io/</id>
+    <title>慕子河的博客</title>
+    <updated>2022-06-17T10:54:59.663Z</updated>
+    <generator>https://github.com/jpmonette/feed</generator>
+    <link rel="alternate" href="http://p0sitive.github.io/"/>
+    <link rel="self" href="http://p0sitive.github.io/atom.xml"/>
+    <subtitle>温故而知新</subtitle>
+    <logo>http://p0sitive.github.io/images/avatar.png</logo>
+    <icon>http://p0sitive.github.io/favicon.ico</icon>
+    <rights>All rights reserved 2022, 慕子河的博客</rights>
+    <entry>
+        <title type="html"><![CDATA[Handler异步消息和同步屏障SyncBarrier]]></title>
+        <id>http://p0sitive.github.io/post/handler-asynchronous-message-and-syncbarrier/</id>
+        <link href="http://p0sitive.github.io/post/handler-asynchronous-message-and-syncbarrier/">
+        </link>
+        <updated>2022-06-17T06:53:26.000Z</updated>
+        <summary type="html"><![CDATA[<p>Handler的消息还有异步的？怎个异步法？UI线程的Handler执行时不是统一在UI线程吗，怎么能异步？如果你有这样的疑问，那你需要看看源码咯。</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>Handler的消息还有异步的？怎个异步法？UI线程的Handler执行时不是统一在UI线程吗，怎么能异步？如果你有这样的疑问，那你需要看看源码咯。</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[【转】58同城Android端-最小插件化框架实战和原理分析]]></title>
+        <id>http://p0sitive.github.io/post/min-android-plugin-impl/</id>
+        <link href="http://p0sitive.github.io/post/min-android-plugin-impl/">
+        </link>
+        <updated>2022-06-15T02:24:49.000Z</updated>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[解决jgit推送时提示remote-hung-up-unexpectedly错误]]></title>
+        <id>http://p0sitive.github.io/post/jie-jue-jgit-tui-song-shi-ti-shi-remote-hung-up-unexpectedly-cuo-wu/</id>
+        <link href="http://p0sitive.github.io/post/jie-jue-jgit-tui-song-shi-ti-shi-remote-hung-up-unexpectedly-cuo-wu/">
+        </link>
+        <updated>2022-06-08T10:16:37.000Z</updated>
+        <summary type="html"><![CDATA[<h1 id="背景">背景</h1>
+<img src="https://s2.loli.net/2022/06/08/7l1VaY8WpzdckDi.png" style="zoom:50%;" />
+<p>jgit是Eclipse团队推出的一个使用java语言操作git命令的一个框架。在所有的Eclipse软件中封装了jgit工具，由于它的便捷与高效，因此开发团队将其单独剥离出来，成为一个可以供其他项目引用框架。</p>
+<p>项目地址：https://eclipse.org/jgit/</p>
+]]></summary>
+        <content type="html"><![CDATA[<h1 id="背景">背景</h1>
+<img src="https://s2.loli.net/2022/06/08/7l1VaY8WpzdckDi.png" style="zoom:50%;" />
+<p>jgit是Eclipse团队推出的一个使用java语言操作git命令的一个框架。在所有的Eclipse软件中封装了jgit工具，由于它的便捷与高效，因此开发团队将其单独剥离出来，成为一个可以供其他项目引用框架。</p>
+<p>项目地址：https://eclipse.org/jgit/</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Execution failed for task ':app:kaptDebugKotlin'问题记录]]></title>
+        <id>http://p0sitive.github.io/post/execution-failed-for-task-appkaptdebugkotlinwen-ti-ji-lu/</id>
+        <link href="http://p0sitive.github.io/post/execution-failed-for-task-appkaptdebugkotlinwen-ti-ji-lu/">
+        </link>
+        <updated>2021-08-24T07:03:29.000Z</updated>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[写给Android工程师的泛型文档]]></title>
+        <id>http://p0sitive.github.io/post/xie-gei-android-gong-cheng-shi-de-fan-xing-wen-dang/</id>
+        <link href="http://p0sitive.github.io/post/xie-gei-android-gong-cheng-shi-de-fan-xing-wen-dang/">
+        </link>
+        <updated>2021-07-19T11:12:34.000Z</updated>
+        <summary type="html"><![CDATA[<h2 id="什么是泛型">什么是泛型</h2>
+<p>泛型，即“泛化类型”。</p>
+<p>那“泛化类型”是什么？先从参数说起，我们都知道参数是方法中要传递的值，定义方法填写的是形参，调用方法传入的是实参。泛化类型就是将原来具体的类型抽象化，此时类型也定义成参数形式，然后在使用/调用时传入具体的类型</p>
+]]></summary>
+        <content type="html"><![CDATA[<h2 id="什么是泛型">什么是泛型</h2>
+<p>泛型，即“泛化类型”。</p>
+<p>那“泛化类型”是什么？先从参数说起，我们都知道参数是方法中要传递的值，定义方法填写的是形参，调用方法传入的是实参。泛化类型就是将原来具体的类型抽象化，此时类型也定义成参数形式，然后在使用/调用时传入具体的类型</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[聊聊Android Clean框架]]></title>
+        <id>http://p0sitive.github.io/post/about-clean-architecture/</id>
+        <link href="http://p0sitive.github.io/post/about-clean-architecture/">
+        </link>
+        <updated>2020-09-11T11:12:06.000Z</updated>
+        <summary type="html"><![CDATA[<h2 id="背景">背景</h2>
+<p><code>Clean Architecture</code>是由Uncle Bob在2012年提出的一种架构模式。</p>
+<figure data-type="image" tabindex="1"><img src="https://blog.cleancoder.com/uncle-bob/images/2012-08-13-the-clean-architecture/CleanArchitecture.jpg" alt="" loading="lazy"></figure>
+<p>Clean架构的目标是<strong>关注点分离</strong>，实现解耦。上面的洋葱图中，将软件分为了很多层，层层包裹，其中有一个重要的依赖规则：源码依赖方向只能由外向内。内圈不能依赖外圈，即内圈相对来是业务核心，中间层是业务转换模块，外部则是可以替换的部分。</p>
+]]></summary>
+        <content type="html"><![CDATA[<h2 id="背景">背景</h2>
+<p><code>Clean Architecture</code>是由Uncle Bob在2012年提出的一种架构模式。</p>
+<figure data-type="image" tabindex="1"><img src="https://blog.cleancoder.com/uncle-bob/images/2012-08-13-the-clean-architecture/CleanArchitecture.jpg" alt="" loading="lazy"></figure>
+<p>Clean架构的目标是<strong>关注点分离</strong>，实现解耦。上面的洋葱图中，将软件分为了很多层，层层包裹，其中有一个重要的依赖规则：源码依赖方向只能由外向内。内圈不能依赖外圈，即内圈相对来是业务核心，中间层是业务转换模块，外部则是可以替换的部分。</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[【Android修炼手册】Gradle篇 -- Gradle构建生命周期]]></title>
+        <id>http://p0sitive.github.io/post/android-kai-fa-shou-ce-gradle-cha-jian-kai-fa-zhi-gradle-gou-jian-sheng-ming-zhou-qi/</id>
+        <link href="http://p0sitive.github.io/post/android-kai-fa-shou-ce-gradle-cha-jian-kai-fa-zhi-gradle-gou-jian-sheng-ming-zhou-qi/">
+        </link>
+        <updated>2020-06-19T11:31:31.000Z</updated>
+        <summary type="html"><![CDATA[<h1 id="前言">前言</h1>
+<p>自定义gradle插件是Android开发工程师的必备技能之一。通过gradle打包的机制，可以在打包过程中插入自定义的task，实现我们想要的功能。例如对于class文件的hook或者资源文件的修改。</p>
+<p>下面以开发的png转webp插件为例，介绍一下自定义gradle插件的开发过程，以及需要注意的点。本文主要从gradle构建的生命周期和Android打包时主要的task讲起。万丈高楼平地起，介绍了基础知识点有助于后续的开发设计。</p>
+]]></summary>
+        <content type="html"><![CDATA[<h1 id="前言">前言</h1>
+<p>自定义gradle插件是Android开发工程师的必备技能之一。通过gradle打包的机制，可以在打包过程中插入自定义的task，实现我们想要的功能。例如对于class文件的hook或者资源文件的修改。</p>
+<p>下面以开发的png转webp插件为例，介绍一下自定义gradle插件的开发过程，以及需要注意的点。本文主要从gradle构建的生命周期和Android打包时主要的task讲起。万丈高楼平地起，介绍了基础知识点有助于后续的开发设计。</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[【Android 修炼手册】Gradle 篇 -- Android Gradle Plugin 插件主要流程]]></title>
+        <id>http://p0sitive.github.io/post/android-xiu-lian-shou-ce-gradle-pian-android-gradle-plugin-cha-jian-zhu-yao-liu-cheng/</id>
+        <link href="http://p0sitive.github.io/post/android-xiu-lian-shou-ce-gradle-pian-android-gradle-plugin-cha-jian-zhu-yao-liu-cheng/">
+        </link>
+        <updated>2020-06-06T09:45:10.000Z</updated>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[APP前后台切换那些事]]></title>
+        <id>http://p0sitive.github.io/post/app-foreground-listener/</id>
+        <link href="http://p0sitive.github.io/post/app-foreground-listener/">
+        </link>
+        <updated>2020-01-16T09:36:23.000Z</updated>
+        <summary type="html"><![CDATA[<blockquote>
+<p>监听app前后台切换对于App来说是一个比较实用的功能。一些功能的实现离不开前后台切换的时机，比如App进入前台检查剪切板、统计用户在线时间等等。下面本文就从前后台切换监听说起。</p>
+</blockquote>
+]]></summary>
+        <content type="html"><![CDATA[<blockquote>
+<p>监听app前后台切换对于App来说是一个比较实用的功能。一些功能的实现离不开前后台切换的时机，比如App进入前台检查剪切板、统计用户在线时间等等。下面本文就从前后台切换监听说起。</p>
+</blockquote>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[gradle wrapper与gradle缓存简介]]></title>
+        <id>http://p0sitive.github.io/post/gradle-wrapper-and-gradle-cache/</id>
+        <link href="http://p0sitive.github.io/post/gradle-wrapper-and-gradle-cache/">
+        </link>
+        <updated>2019-12-24T08:28:43.000Z</updated>
+    </entry>
+</feed>

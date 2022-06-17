@@ -1,0 +1,780 @@
+
+<html>
+  <head lang="zh">
+        <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"/>
+        <meta content="yes" name="apple-mobile-web-app-capable"/>
+        <meta content="black" name="apple-mobile-web-app-status-bar-style"/>
+        <meta content="telephone=no" name="format-detection"/>
+        <meta name="renderer" content="webkit">
+    <title>【Android修炼手册】Gradle篇 -- Gradle构建生命周期 | 慕子河的博客</title>
+<link href="http://p0sitive.github.io//styles/main.css" type="text/css" rel="stylesheet"/>
+<script type="text/javascript" src="http://p0sitive.github.io//media/scripts/jquery.js"></script>
+<script type="text/javascript" src="http://p0sitive.github.io//media/scripts/basic.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+  </head>
+
+  <body>
+     <div class="header">
+      <div class="logo_title">
+		  
+        <div class="title animated fadeInDown"><img src="http://p0sitive.github.io//images/avatar.png?v=1655459944852"/>
+
+          <h1 title="慕子河的博客" class="weaklink"><a href="/">慕子河的博客</a>
+
+          </h1>
+
+          <div class="navbar weaklink">
+            <div class="normal_nav">
+
+<div class="bitcron_nav_container">
+
+
+  <div class="bitcron_nav">
+    <div class="mixed_site_nav_wrap site_nav_wrap">
+		
+      <ul class="mixed_site_nav site_nav sm sm-base">
+ 
+  <li><a id="d2ef19af68cc211e98f8a0242ac110003" href="/" class="selected active current nav__item" >首页</a>
+
+  </li>
+ 
+  <li><a id="d2ef19af68cc211e98f8a0242ac110003" href="/archives" class="selected active current nav__item" >归档</a>
+
+  </li>
+ 
+  <li><a id="d2ef19af68cc211e98f8a0242ac110003" href="/tags" class="selected active current nav__item" >标签</a>
+
+  </li>
+ 
+  <li><a id="d2ef19af68cc211e98f8a0242ac110003" href="http://p0sitive.github.io//post/other/" class="selected active current nav__item" >其他</a>
+
+  </li>
+ 
+
+      </ul>
+
+      <div class="clear clear_nav_inline_end"></div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="clear clear_nav_end"></div>
+
+</div>
+
+            </div>
+
+            <div class="hamberger"><i class="fa fa-bars"></i>
+<i class="fa fa-times"></i>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="hidden_nav animated fadeInDown">
+
+<div class="bitcron_nav_container">
+
+
+  <div class="bitcron_nav">
+    <div class="mixed_site_nav_wrap site_nav_wrap">
+      <ul class="mixed_site_nav site_nav sm sm-base">
+		  
+	
+  <li><a id="d2ef19af68cc211e98f8a0242ac110003" href="/" class="selected active current nav__item" >首页</a>
+
+  </li>
+
+
+  <li><a id="d2ef19af68cc211e98f8a0242ac110003" href="/archives" class="selected active current nav__item" >归档</a>
+
+  </li>
+
+
+  <li><a id="d2ef19af68cc211e98f8a0242ac110003" href="/tags" class="selected active current nav__item" >标签</a>
+
+  </li>
+
+
+  <li><a id="d2ef19af68cc211e98f8a0242ac110003" href="http://p0sitive.github.io//post/other/" class="selected active current nav__item" >其他</a>
+
+  </li>
+
+
+
+
+
+      </ul>
+
+      <div class="clear clear_nav_inline_end"></div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="clear clear_nav_end"></div>
+
+</div>
+
+      </div>
+
+    </div>
+
+
+    <div class="main">
+      <div class="main-inner">
+
+
+<div class="content">
+
+
+
+
+
+
+  <div class="post_page" >
+
+<div class="post">
+  <div class="post_title sm_margin">
+    <h2><a>【Android修炼手册】Gradle篇 -- Gradle构建生命周期</a>
+
+
+
+    </h2>
+  </div>
+
+  <div class="post_details">
+    <div class="info"><i class="fa fa-clock-o"></i>
+<span class="date_info">2020-06-19</span>
+<i class="fa fa-eye"></i>
+
+<span class="date_info"><span id="busuanzi_value_page_pv"></span> Views</span>
+
+
+<i class="fa fa-bookmark-o"></i>
+<span class="tags_info weaklink">
+	
+	<a href="http://p0sitive.github.io/tag/oJvY0zMMP/" class="tag">gradle</a>
+
+
+</span>
+
+
+    </div>
+
+  </div>
+
+
+
+
+
+  <div class="post_content markdown"><p class="md_block">
+    <span class="md_line md_line_start md_line_end"><h1 id="前言">前言</h1>
+<p>自定义gradle插件是Android开发工程师的必备技能之一。通过gradle打包的机制，可以在打包过程中插入自定义的task，实现我们想要的功能。例如对于class文件的hook或者资源文件的修改。</p>
+<p>下面以开发的png转webp插件为例，介绍一下自定义gradle插件的开发过程，以及需要注意的点。本文主要从gradle构建的生命周期和Android打包时主要的task讲起。万丈高楼平地起，介绍了基础知识点有助于后续的开发设计。</p>
+<!-- more -->
+<h1 id="基础概念">基础概念</h1>
+<h2 id="gradle构建流程">Gradle构建流程</h2>
+<figure data-type="image" tabindex="1"><img src="https://i.loli.net/2020/06/10/hDJ4wSey5POskrj.png" alt="gradle-flow.png" loading="lazy"></figure>
+<p>可以看到gradle构建时总共分为三步：初始化、配置、执行。</p>
+<ol>
+<li>
+<p>解析 settings.gradle 来获取模块信息，这是初始化阶段。</p>
+</li>
+<li>
+<p>配置每个模块，配置的时候并不会执行 task。配置完了以后，有一个重要的回调 project.afterEvaluate，它表示所有的模块都已经配置完了，可以准备执行 task 了。</p>
+</li>
+<li>
+<p>执行指定的 task 及其依赖的 task，完成打包</p>
+</li>
+</ol>
+<h3 id="生命周期流程">生命周期流程</h3>
+<p>gradle执行有相应的生命周期回调，在回调中可以获取到gradle的生命周期方法。代码如下所示。</p>
+<pre><code class="language-java">mProject.gradle.addBuildListener(new BuildListener() {
+
+            @Override
+            void buildStarted(Gradle gradle) {
+            //build开始
+            }
+
+            @Override
+            void settingsEvaluated(Settings settings) {
+            //执行setting文件配置，评估完成
+            }
+
+            @Override
+            void projectsLoaded(Gradle gradle) {
+            //项目结构加载完成（初始化阶段结束）
+            }
+
+            @Override
+            void projectsEvaluated(Gradle gradle) {
+            //所有项目评估完成（配置阶段结束）
+            }
+
+            @Override
+            void buildFinished(BuildResult result) {
+            //项目构建结束
+            }
+        })
+</code></pre>
+<p>后面会根据生命周期方法结合上文的初始化、配置和执行这三个步骤进行讲解。</p>
+<h3 id="初始化">初始化</h3>
+<figure data-type="image" tabindex="2"><img src="https://i.loli.net/2020/06/10/ygJQsM7uBPqdIoA.png" alt="gradle-init.png" loading="lazy"></figure>
+<p>在这个阶段中，会读取根工程中的 <code>setting.gradle</code> 中的 <code>include</code> 信息，确定有多少工程加入构建，然后，会为每一个项目（<code>build.gradle</code> 脚本文件）创建一个与之对应的 Project 实例，最终形成一个项目的层次结构。</p>
+<p>与初始化阶段相关的脚本文件是 <code>settings.gradle</code>，而一个 <code>settings.gradle</code> 脚本对应一个 Settings 对象，我们最常用来声明项目的层次结构的 include 就是 Settings 对象下的一个方法，在 Gradle 初始化的时候会构造一个 Settings 实例对象，以执行各个 Project 的初始化配置。</p>
+<h3 id="配置">配置</h3>
+<figure data-type="image" tabindex="3"><img src="https://i.loli.net/2020/06/10/i7IwKO1faT5b9yJ.png" alt="gradle-evalute.png" loading="lazy"></figure>
+<p>配置阶段的任务是 执行各项目下的 <code>build.gradle</code> 脚本，完成 Project 的配置，与此同时，会构造 Task 任务依赖关系图以便在执行阶段按照依赖关系执行  Task。而在配置阶段执行的代码通常来说都会包括以下三个部分的内容：</p>
+<ol>
+<li><code>build.gralde</code> 中的各种语句。</li>
+<li>闭包。</li>
+<li>Task 中的配置段语句。</li>
+</ol>
+<p>需要注意的是，执行任何 Gradle 命令，在初始化阶段和配置阶段的代码都会被执行。</p>
+<h3 id="执行">执行</h3>
+<figure data-type="image" tabindex="4"><img src="https://i.loli.net/2020/06/10/w8ZljoDdsVRpt1G.png" alt="gradle-handle.png" loading="lazy"></figure>
+<p>在配置阶段结束后，Gradle 会根据各个任务 Task 的依赖关系来创建一个有向无环图。Gradle 构建系统会通过调用 gradle &lt;任务名&gt; 来执行相应的各个任务，最终完成打包。</p>
+<p>以上就是gradle生命周期的内容，可以看到gradle执行打包流程还是很清晰的。</p>
+<h2 id="android打包task-简介">Android打包task 简介</h2>
+<p>在介绍 Android Gradle Plugin Task 之前，我们先放一张官方流程图，看看一个 apk 的打包构建流程：</p>
+<figure data-type="image" tabindex="5"><img src="https://developer.android.google.cn/images/tools/studio/build-process_2x.png?hl=zh_cn" alt="" loading="lazy"></figure>
+<p>官方介绍的流程如下：</p>
+<ol>
+<li>
+<p>编译器将您的源代码转换成 DEX（Dalvik Executable) 文件（其中包括 Android 设备上运行的字节码），将所有其他内容转换成已编译资源。</p>
+</li>
+<li>
+<p>APK 打包器将 DEX 文件和已编译资源合并成单个 APK。</p>
+</li>
+<li>
+<p>APK 打包器使用调试或发布密钥库签署您的 APK：</p>
+</li>
+<li>
+<p>在生成最终 APK 之前，打包器会使用 zipalign 工具对应用进行优化，减少其在设备上运行时占用的内存。</p>
+</li>
+</ol>
+<p>上面是一个比较粗略的框架图，我们更多看到的是比较详细的图，如下</p>
+<figure data-type="image" tabindex="6"><img src="https://i.loli.net/2020/06/10/yiZNKM52WCT34qY.png" alt="build_process.png" loading="lazy"></figure>
+<p>其中主要流程有：</p>
+<ol>
+<li>aapt处理资源文件，生成R文件</li>
+<li>处理aidl文件，生成对应的java文件</li>
+<li>编译项目代码，生成class文件</li>
+<li>转化所有的class文件生成dex文件</li>
+<li>打包生成APK文件</li>
+<li>对APK文件进行签名</li>
+<li>对签名后的APK文件进行对齐处理</li>
+</ol>
+<p>上面说的打包流程都可以在Android gradle plugin 的找到对应的task。具体见下文的分析。</p>
+<h3 id="全部task">全部task</h3>
+<p>我们可以使用<code>./gradlew -m assembDebug</code>命令来获取当前项目的所有task（但不会真正执行这些task）。创建一个空的Android工程执行该命令后的task截图。</p>
+<p><img src="https://i.loli.net/2020/06/10/Z8cOlImd9DAhJey.png" alt="gradle-all-task.png" loading="lazy"><br>
+将上述task进行逐一分析，</p>
+<table>
+<thead>
+<tr>
+<th>Task</th>
+<th>对应实现类</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>preBuild</td>
+<td></td>
+<td>空 task，只做锚点使用</td>
+</tr>
+<tr>
+<td>preDebugBuild</td>
+<td></td>
+<td>空 task，只做锚点使用，与 preBuild 区别是这个 task 是 variant 的锚点</td>
+</tr>
+<tr>
+<td>compileDebugAidl</td>
+<td>AidlCompile</td>
+<td>处理 aidl</td>
+</tr>
+<tr>
+<td>compileDebugRenderscript</td>
+<td>RenderscriptCompile</td>
+<td>处理 renderscript</td>
+</tr>
+<tr>
+<td>checkDebugManifest</td>
+<td>CheckManifest</td>
+<td>检测 manifest 是否存在</td>
+</tr>
+<tr>
+<td>generateDebugBuildConfig</td>
+<td>GenerateBuildConfig</td>
+<td>生成 BuildConfig.java</td>
+</tr>
+<tr>
+<td>prepareLintJar</td>
+<td>PrepareLintJar</td>
+<td>拷贝 lint jar 包到指定位置</td>
+</tr>
+<tr>
+<td>generateDebugResValues</td>
+<td>GenerateResValues</td>
+<td>生成 resvalues，generated.xml</td>
+</tr>
+<tr>
+<td>generateDebugResources</td>
+<td></td>
+<td>空 task，锚点</td>
+</tr>
+<tr>
+<td>mergeDebugResources</td>
+<td>MergeResources</td>
+<td>合并资源文件</td>
+</tr>
+<tr>
+<td>createDebugCompatibleScreenManifests</td>
+<td>CompatibleScreensManifest</td>
+<td>manifest 文件中生成 compatible-screens，指定屏幕适配</td>
+</tr>
+<tr>
+<td>processDebugManifest</td>
+<td>MergeManifests</td>
+<td>合并 manifest 文件</td>
+</tr>
+<tr>
+<td>splitsDiscoveryTaskDebug</td>
+<td>SplitsDiscovery</td>
+<td>生成 split-list.json，用于 apk 分包</td>
+</tr>
+<tr>
+<td>processDebugResources</td>
+<td>ProcessAndroidResources</td>
+<td>aapt 打包资源</td>
+</tr>
+<tr>
+<td>generateDebugSources</td>
+<td></td>
+<td>空 task，锚点</td>
+</tr>
+<tr>
+<td>javaPreCompileDebug</td>
+<td>JavaPreCompileTask</td>
+<td>生成 annotationProcessors.json 文件</td>
+</tr>
+<tr>
+<td>compileDebugJavaWithJavac</td>
+<td>AndroidJavaCompile</td>
+<td>编译 java 文件</td>
+</tr>
+<tr>
+<td>compileDebugNdk</td>
+<td>NdkCompile</td>
+<td>编译 ndk</td>
+</tr>
+<tr>
+<td>compileDebugSources</td>
+<td></td>
+<td>空 task，锚点使用</td>
+</tr>
+<tr>
+<td>mergeDebugShaders</td>
+<td>MergeSourceSetFolders</td>
+<td>合并 shader 文件</td>
+</tr>
+<tr>
+<td>compileDebugShaders</td>
+<td>ShaderCompile</td>
+<td>编译 shaders</td>
+</tr>
+<tr>
+<td>generateDebugAssets</td>
+<td></td>
+<td>空 task，锚点</td>
+</tr>
+<tr>
+<td>mergeDebugAssets</td>
+<td>MergeSourceSetFolders</td>
+<td>合并 assets 文件</td>
+</tr>
+<tr>
+<td>transformClassesWithDexBuilderForDebug</td>
+<td>DexArchiveBuilderTransform</td>
+<td>class 打包 dex</td>
+</tr>
+<tr>
+<td>transformDexArchiveWithExternalLibsDexMergerForDebug</td>
+<td>ExternalLibsMergerTransform</td>
+<td>打包三方库的 dex，在 dex 增量的时候就不需要再 merge 了，节省时间</td>
+</tr>
+<tr>
+<td>transformDexArchiveWithDexMergerForDebug</td>
+<td>DexMergerTransform</td>
+<td>打包最终的 dex</td>
+</tr>
+<tr>
+<td>mergeDebugJniLibFolders</td>
+<td>MergeSouceSetFolders</td>
+<td>合并 jni lib 文件</td>
+</tr>
+<tr>
+<td>transformNativeLibsWithMergeJniLibsForDebug</td>
+<td>MergeJavaResourcesTransform</td>
+<td>合并 jnilibs</td>
+</tr>
+<tr>
+<td>transformNativeLibsWithStripDebugSymbolForDebug</td>
+<td>StripDebugSymbolTransform</td>
+<td>去掉 native lib 里的 debug 符号</td>
+</tr>
+<tr>
+<td>processDebugJavaRes</td>
+<td>ProcessJavaResConfigAction</td>
+<td>处理 java res</td>
+</tr>
+<tr>
+<td>transformResourcesWithMergeJavaResForDebug</td>
+<td>MergeJavaResourcesTransform</td>
+<td>合并 java res</td>
+</tr>
+<tr>
+<td>validateSigningDebug</td>
+<td>ValidateSigningTask</td>
+<td>验证签名</td>
+</tr>
+<tr>
+<td>packageDebug</td>
+<td>PackageApplication</td>
+<td>打包 apk</td>
+</tr>
+<tr>
+<td>assembleDebug</td>
+<td></td>
+<td>空 task，锚点</td>
+</tr>
+</tbody>
+</table>
+<p>可以看到gradle打包涉及到很多task，但我们主要关注的还是资源，代码文件和dex文件处理相关的task。</p>
+<h3 id="mergedebugresources">mergeDebugResources</h3>
+<p><code>mergeResources</code>是合并资源文件的Task，它的实现类是<code>MergeResources</code>，继承自<code>IncrementalTask</code>支持增量。主要任务流程如下：</p>
+<ol>
+<li>通过 getConfiguredResourceSets() 获取 resourceSets，包括了自己的 res/ 和 依赖库的 res/ 以及 build/generated/res/rs</li>
+</ol>
+<pre><code class="language-groovy">// MergeResources.doFullTaskAction()
+List&lt;ResourceSet&gt; resourceSets = getConfiguredResourceSets(preprocessor);
+</code></pre>
+<ol start="2">
+<li>创建 ResourceMerger</li>
+</ol>
+<pre><code class="language-groovy">// MergeResources.doFullTaskAction()
+ResourceMerger merger = new ResourceMerger(minSdk);
+</code></pre>
+<ol start="3">
+<li>创建 QueueableResourceCompiler，因为 gradle3.x 以后支持了 aapt2，所以这里有两种选择 aapt 和 aapt2。这里默认创建了 QueueableAapt2</li>
+</ol>
+<pre><code class="language-groovy">// MergeResources.doFullTaskAction()
+// makeAapt 中会判断使用 aapt 还是 aapt2，这里以 aapt2 为例，返回的是 QueueableAapt2 对象
+QueueableResourceCompiler resourceCompiler =
+    makeAapt(
+        aaptGeneration,
+        getBuilder(),
+        fileCache,
+        crunchPng,
+        variantScope,
+        getAaptTempDir(),
+        mergingLog)
+</code></pre>
+<ol start="4">
+<li>将第一步获取的 resourceSet 加入 ResourceMerger 中</li>
+</ol>
+<pre><code class="language-groovy">for (ResourceSet resourceSet : resourceSets) {
+    resourceSet.loadFromFiles(getILogger());
+    merger.addDataSet(resourceSet);
+}
+</code></pre>
+<ol start="5">
+<li>创建 MergedResourceWriter</li>
+<li>调用 ResourceMerger.mergeData 合并资源</li>
+</ol>
+<pre><code class="language-groovy">// MergeResources.doFullTaskAction()
+merger.mergeData(writer, false /*doCleanUp*/);
+</code></pre>
+<ol start="7">
+<li>调用 MergedResourceWriter 的 start()，addItem()，end() 方法，伪代码如下：</li>
+</ol>
+<pre><code class="language-groovy">// DataMerger.mergeData
+consumer.start()
+for item in sourceSets:
+  // item 包括了需要处理的资源，包括 xml 和 图片资源，每一个 item 对应的文件，会创建一个 CompileResourceRequest 对象，加入到 mCompileResourceRequests 里
+  consumer.addItem(item)
+consumer.end()
+</code></pre>
+<ol start="8">
+<li>调用 QueueableAapt2 -&gt; Aapt2QueuedResourceProcessor -&gt; AaptProcess 处理资源</li>
+</ol>
+<pre><code class="language-groovy">// MergedResourceWriter.end()
+Future&lt;File&gt; result = this.mResourceCompiler.compile(new CompileResourceRequest(fileToCompile, request.getOutput(), request.getFolderName(), this.pseudoLocalesEnabled, this.crunchPng));
+// AaptProcess.compile
+public void compile(
+        @NonNull CompileResourceRequest request,
+        @NonNull Job&lt;AaptProcess&gt; job,
+        @Nullable ProcessOutputHandler processOutputHandler)
+        throws IOException {
+    // ... 
+    // 使用 AaptV2CommandBuilder 生成 aapt2 命令
+    mWriter.write(joiner.join(AaptV2CommandBuilder.makeCompile(request)));
+    mWriter.flush(); // 输出命令
+}
+</code></pre>
+<p>这一步调用 aapt2 命令去处理资源，处理完以后 xxx.xml.flat 格式</p>
+<p>前面提到<code>mergeResources</code>支持增量，实际上增量任务过程和全量其实差异不大，只不过是在获取 resourceSets 的时候，使用的是修改后的文件</p>
+<h2 id="transformclasseswithdexbuilderfordebug">transformClassesWithDexBuilderForDebug</h2>
+<p><code>transformClassesWithDexBuilderForDebug</code>的实现类是DexArchiveBuilderTransform，这个task的主要作用是class转化为dex。在这个Task中对 class 的处理分为两种方式，一种是对 目录下的 class 进行处理，一种是对 .jar 里的 class 进行处理。<br>
+为什么要分为这两种方式呢？.jar 中的 class 一般来说都是依赖库，基本上不会改变，gradle 在这里做了一个缓存，但是两种方式最终都会调用到 convertToDexArchive统一处理。</p>
+<ul>
+<li>convertJarToDexArchive 处理 jar<br>
+处理 .jar 时，会对 jar 包中的每一个 class 都单独打成一个 .dex 文件，之后还是放在 .jar 包中</li>
+</ul>
+<pre><code class="language-groovy">    private List&lt;File&gt; convertJarToDexArchive(
+            @NonNull Context context,
+            @NonNull JarInput toConvert,
+            @NonNull TransformOutputProvider transformOutputProvider)
+            throws Exception {
+
+        File cachedVersion = cacheHandler.getCachedVersionIfPresent(toConvert);
+        if (cachedVersion == null) {
+                // 如果没有缓存，调用 convertToDexArchive 去生成 dex
+            return convertToDexArchive(context, toConvert, transformOutputProvider, false);
+        } else {
+                // 如果有缓存，直接使用缓存的 jar
+            File outputFile = getPreDexJar(transformOutputProvider, toConvert, null);
+            Files.copy(
+                    cachedVersion.toPath(),
+                    outputFile.toPath(),
+                    StandardCopyOption.REPLACE_EXISTING);
+            // no need to try to cache an already cached version.
+            return ImmutableList.of();
+        }
+    }
+</code></pre>
+<ul>
+<li>convertToDexArchive 处理 dir 以及 jar 的后续处理<br>
+对 dir 处理使用 convertToDexArchive<br>
+其中会调用 launchProcessing</li>
+</ul>
+<pre><code class="language-groovy">    private static void launchProcessing(
+            @NonNull DexConversionParameters dexConversionParameters,
+            @NonNull OutputStream outStream,
+            @NonNull OutputStream errStream)
+            throws IOException, URISyntaxException {
+        // ...
+        boolean hasIncrementalInfo =
+                dexConversionParameters.isDirectoryBased() &amp;&amp; dexConversionParameters.isIncremental;
+        // 判断 class 是否新增或者修改过，如果新增或者修改过，就需要处理
+        Predicate&lt;String&gt; toProcess =
+                hasIncrementalInfo
+                        ? path -&gt; {
+                            Map&lt;File, Status&gt; changedFiles =
+                                    ((DirectoryInput) dexConversionParameters.input)
+                                            .getChangedFiles();
+
+                            File resolved = inputPath.resolve(path).toFile();
+                            Status status = changedFiles.get(resolved);
+                            return status == Status.ADDED || status == Status.CHANGED;
+                        }
+                        : path -&gt; true;
+
+        bucketFilter = bucketFilter.and(toProcess);
+
+        try (ClassFileInput input = ClassFileInputs.fromPath(inputPath)) {
+            // 内部调用 dx 或者 d8 去打 dex
+            dexArchiveBuilder.convert(
+                    input.entries(bucketFilter),
+                    Paths.get(new URI(dexConversionParameters.output)),
+                    dexConversionParameters.isDirectoryBased());
+        } catch (DexArchiveBuilderException ex) {
+            throw new DexArchiveBuilderException(&quot;Failed to process &quot; + inputPath.toString(), ex);
+        }
+    }
+</code></pre>
+<p>在 launchProcessing 中，有下面几个步骤：</p>
+<ol>
+<li>判断目录下的 class 是否新增或者修改过</li>
+<li>调用 DexArchiveBuilder.build 去处理修改过的 class</li>
+<li>DexArchiveBuilder 有两个子类，D8DexArchiveBuilder 和 DxDexArchiveBuilder，分别是调用 d8 和 dx 去打 dex</li>
+</ol>
+<p>这里只对这两个Android Gradle Task进行分析，在上述表格中都可以找到对应的Task实现类。</p>
+<h1 id="总结">总结</h1>
+<p>本文主要简述了gradle执行打包时初始化、配置、执行这三个步骤，结合BuildListener进行生命周期的分析。</p>
+<ul>
+<li>初始化阶段 执行setting.gradle文件</li>
+<li>配置阶段 执行build.gradle文件</li>
+<li>执行阶段 运行相关task，完成打包</li>
+</ul>
+<p>最后对APK的打包构建流程和Android Gradle Task有个大致的介绍，帮助我们了解Gradle打包APK流程。<br>
+对于其中比较重要的任务如<code>mergeResources</code>和<code>transformClassesWithDexBuilderForDebug</code>进行分析。</p>
+<p><strong>参考</strong></p>
+<p>https://developer.android.google.cn/studio/build?hl=zh_cn</p>
+<p>https://mp.weixin.qq.com/s/2Un0ZyNgcfo8fwcNHhNgyg</p>
+<p>https://juejin.im/post/5e9c46c8518825737f1a7b4c#heading-50</p>
+</p>
+
+     <p class="md_block">
+    <div class="reward"><div class="reward-button">赏 <span class="reward-code"> <span class="alipay-code"> <img class="alipay-img" src="http://p0sitive.github.io//media/images/alipay.png"><b>支付宝扫码打赏</b> </span> <span class="wechat-code"> <img class="wechat-img" src="http://p0sitive.github.io//media/images/wechat.png"><b>微信打赏</b> </span> </span></div></div>
+</p> 
+</div>
+
+</div>
+
+
+
+<link href="http://p0sitive.github.io//styles/main.css" type="text/css" rel="stylesheet"/>
+
+<div class="doc_comments">
+
+          
+            <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+<div id="gitalk-container"></div>
+
+<script>
+
+  var gitalk = new Gitalk({
+    clientID: 'd91c7d19b57e27d0dce4',
+    clientSecret: '17ea8ee73139e14382ef34772d66905aa0681ee8',
+    repo: 'p0sitive.github.io',
+    owner: 'p0sitive',
+    admin: ['p0sitive'],
+    id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false  // Facebook-like distraction free mode
+  })
+
+  gitalk.render('gitalk-container')
+
+</script>
+
+          
+			  
+          
+        
+</div>
+
+
+
+  </div>
+</div>
+
+
+
+      </div>
+
+
+
+
+    </div>
+
+   <div class="footer">
+<link href="http://p0sitive.github.io//styles/main.css" type="text/css" rel="stylesheet"/><div class="site_footer_wrap"><div class="site_footer">
+
+      <div class="mysocials"><div class="my_socials">
+		   
+			   
+    
+			   
+    
+			   
+    
+			   
+    
+</div><link href="http://p0sitive.github.io//styles/main.css" type="text/css" rel="stylesheet"/>
+
+      </div>
+
+      <div class="copyright">Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+      </div>
+
+</div></div>
+
+    </div>
+
+
+<style type="text/css">a.back_to_top {
+    text-decoration: none;
+    position: fixed;
+    bottom: 40px;
+    right: 30px;
+    background: #f0f0f0;
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    line-height: 36px;
+    font-size: 18px;
+    text-align: center;
+    transition-duration: .5s;
+    transition-propety: background-color;
+    display: none;
+}
+
+a.back_to_top span {
+    color: #888;
+}
+
+a.back_to_top:hover {
+    cursor: pointer;
+    background: #dfdfdf;
+}
+
+a.back_to_top:hover span {
+    color: #555;
+}
+
+@media print, screen and (max-width: 580px) {
+    .back_to_top {
+        display: none !important;
+    }
+}
+
+
+
+</style><a id="back_to_top" href="#" class="back_to_top"><span>△</span>
+</a>
+<script type="text/javascript" src="http://p0sitive.github.io//media/scripts/jquery.js"></script>
+
+<script>$(document).ready((function(_this) {
+  return function() {
+    var bt;
+    bt = $('#back_to_top');
+    if ($(document).width() > 480) {
+      $(window).scroll(function() {
+        var st;
+        st = $(window).scrollTop();
+        if (st > 30) {
+          return bt.css('display', 'block');
+        } else {
+          return bt.css('display', 'none');
+        }
+      });
+      return bt.click(function() {
+        $('body,html').animate({
+          scrollTop: 0
+        }, 800);
+        return false;
+      });
+    }
+  };
+})(this));
+</script>
+
+</body>
+
+</html>
